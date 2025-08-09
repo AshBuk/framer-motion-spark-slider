@@ -1,0 +1,14 @@
+# Build outputs
+.next/
+out/
+
+# Dependencies  
+node_modules/
+
+# Lock files (keep original formatting)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Static assets (keep original formatting)
+public/**

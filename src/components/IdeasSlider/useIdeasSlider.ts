@@ -1,0 +1,237 @@
+'use client';
+
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import type { PanInfo } from 'framer-motion';
+import { SLIDER_CONFIG } from './config';
+
+interface UseIdeasSliderProps {
+  totalIdeas: number;
+  autoPlayInterval: number;
+  onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
+  onFilteredCountChange?: (current: number, total: number) => void;
+}
+
+export const useIdeasSlider = ({
+  totalIdeas,
+  autoPlayInterval,
+  onIdeaSelect,
+  onFilteredCountChange,
+}: UseIdeasSliderProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [lastCenterTap, setLastCenterTap] = useState<number | null>(null);
+  const [pendingSelection, setPendingSelection] = useState<{
+    ideaId: number;
+    isSelected: boolean;
+  } | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [vhInPixels, setVhInPixels] = useState(1);
+  const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null
+  );
+
+  useEffect(() => {
+    setVhInPixels(window.innerHeight / 100);
+  }, []);
+
+  // Keep vhInPixels in sync with viewport height changes
+  useEffect(() => {
+    const onResize = () => setVhInPixels(window.innerHeight / 100);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const onFilteredCountChangeRef = useRef(onFilteredCountChange);
+  useEffect(() => {
+    onFilteredCountChangeRef.current = onFilteredCountChange;
+  });
+
+  const onIdeaSelectRef = useRef(onIdeaSelect);
+  useEffect(() => {
+    onIdeaSelectRef.current = onIdeaSelect;
+  });
+
+  useEffect(() => {
+    if (!onFilteredCountChangeRef.current) return;
+    onFilteredCountChangeRef.current(selectedIds.size, totalIdeas);
+  }, [selectedIds.size, totalIdeas]);
+
+  useEffect(() => {
+    if (pendingSelection) {
+      onIdeaSelectRef.current?.(
+        pendingSelection.ideaId,
+        pendingSelection.isSelected
+      );
+      setPendingSelection(null);
+    }
+  }, [pendingSelection]);
+
+  useEffect(() => {
+    if (isUserInteracting) return;
+
+    const effectiveInterval =
+      autoPlayInterval / SLIDER_CONFIG.AUTO_SCROLL_SPEED_MULTIPLIER;
+
+    const interval = setInterval(() => {
+      if (!isTransitioning) {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          setCurrentIndex((prev) => (prev + 1) % totalIdeas);
+          setTimeout(() => {
+            setIsTransitioning(false);
+          }, SLIDER_CONFIG.TRANSITION_DURATION_MS);
+        }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
+      }
+    }, effectiveInterval);
+
+    return () => clearInterval(interval);
+  }, [autoPlayInterval, totalIdeas, isUserInteracting, isTransitioning]);
+
+  const handleInteractionStart = useCallback(() => {
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
+      interactionTimeoutRef.current = null;
+    }
+    setIsUserInteracting(true);
+  }, []);
+
+  const handleInteractionEnd = useCallback(() => {
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
+    }
+    interactionTimeoutRef.current = setTimeout(
+      () => setIsUserInteracting(false),
+      SLIDER_CONFIG.USER_INTERACTION_DEBOUNCE_MS
+    );
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (interactionTimeoutRef.current) {
+        clearTimeout(interactionTimeoutRef.current);
+      }
+    },
+    []
+  );
+
+  const handleCenterCardClick = useCallback(
+    (event: React.MouseEvent | React.TouchEvent) => {
+      if (isDragging) {
+        event.preventDefault();
+        return;
+      }
+
+      const now = Date.now();
+      const ideaId = currentIndex + 1;
+
+      if (
+        lastCenterTap &&
+        now - lastCenterTap < SLIDER_CONFIG.DOUBLE_TAP_THRESHOLD_MS
+      ) {
+        setSelectedIds((prev) => {
+          const newSet = new Set(prev);
+          const wasSelected = newSet.has(ideaId);
+          if (wasSelected) newSet.delete(ideaId);
+          else newSet.add(ideaId);
+          setPendingSelection({ ideaId, isSelected: !wasSelected });
+          return newSet;
+        });
+        setLastCenterTap(null);
+      } else {
+        setLastCenterTap(now);
+      }
+    },
+    [currentIndex, lastCenterTap, isDragging]
+  );
+
+  const handleSideCardClick = useCallback(
+    (index: number) => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentIndex(index);
+        setTimeout(
+          () => setIsTransitioning(false),
+          SLIDER_CONFIG.TRANSITION_DURATION_MS
+        );
+      }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
+    },
+    [isTransitioning]
+  );
+
+  const handleDragStart = useCallback(() => {
+    setIsDragging(true);
+    setDragOffset(0);
+    handleInteractionStart();
+  }, [handleInteractionStart]);
+
+  const handleDrag = useCallback(
+    (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      if (!isDragging) return;
+      setDragOffset(info.offset.x);
+    },
+    [isDragging]
+  );
+
+  const handleDragEnd = useCallback(
+    (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      if (isTransitioning) return;
+
+      setIsDragging(false);
+      setDragOffset(0);
+
+      if (Math.abs(info.offset.x) > SLIDER_CONFIG.SWIPE_THRESHOLD_PX) {
+        setIsTransitioning(true);
+        setTimeout(() => {
+          if (info.offset.x > 0) {
+            setCurrentIndex((prev) => (prev === 0 ? totalIdeas - 1 : prev - 1));
+          } else {
+            setCurrentIndex((prev) => (prev + 1) % totalIdeas);
+          }
+          setTimeout(
+            () => setIsTransitioning(false),
+            SLIDER_CONFIG.TRANSITION_DURATION_MS
+          );
+        }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
+      }
+
+      handleInteractionEnd();
+    },
+    [totalIdeas, isTransitioning, handleInteractionEnd]
+  );
+
+  const handlers = useMemo(
+    () => ({
+      handleInteractionStart,
+      handleInteractionEnd,
+      handleCenterCardClick,
+      handleSideCardClick,
+      handleDragStart,
+      handleDrag,
+      handleDragEnd,
+    }),
+    [
+      handleInteractionStart,
+      handleInteractionEnd,
+      handleCenterCardClick,
+      handleSideCardClick,
+      handleDragStart,
+      handleDrag,
+      handleDragEnd,
+    ]
+  );
+
+  return {
+    currentIndex,
+    selectedIds,
+    isUserInteracting,
+    isTransitioning,
+    isDragging,
+    dragOffset,
+    vhInPixels,
+    handlers,
+  };
+};
