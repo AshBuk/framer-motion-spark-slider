@@ -8,14 +8,14 @@ interface UseIdeasSliderProps {
   totalIdeas: number;
   autoPlayInterval: number;
   onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
-  onFilteredCountChange?: (current: number, total: number) => void;
+  onSelectionChange?: (current: number, total: number) => void;
 }
 
 export const useIdeasSlider = ({
   totalIdeas,
   autoPlayInterval,
   onIdeaSelect,
-  onFilteredCountChange,
+  onSelectionChange,
 }: UseIdeasSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -45,9 +45,9 @@ export const useIdeasSlider = ({
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const onFilteredCountChangeRef = useRef(onFilteredCountChange);
+  const onSelectionChangeRef = useRef(onSelectionChange);
   useEffect(() => {
-    onFilteredCountChangeRef.current = onFilteredCountChange;
+    onSelectionChangeRef.current = onSelectionChange;
   });
 
   const onIdeaSelectRef = useRef(onIdeaSelect);
@@ -56,8 +56,8 @@ export const useIdeasSlider = ({
   });
 
   useEffect(() => {
-    if (!onFilteredCountChangeRef.current) return;
-    onFilteredCountChangeRef.current(selectedIds.size, totalIdeas);
+    if (!onSelectionChangeRef.current) return;
+    onSelectionChangeRef.current(selectedIds.size, totalIdeas);
   }, [selectedIds.size, totalIdeas]);
 
   useEffect(() => {
@@ -76,18 +76,24 @@ export const useIdeasSlider = ({
     const effectiveInterval =
       autoPlayInterval / SLIDER_CONFIG.AUTO_SCROLL_SPEED_MULTIPLIER;
 
+    const scheduleTransition = (update: () => void) => {
+      setIsDragging(false);
+      setDragOffset(0);
+      setIsTransitioning(true);
+      setTimeout(() => {
+        update();
+        setTimeout(
+          () => setIsTransitioning(false),
+          SLIDER_CONFIG.TRANSITION_DURATION_MS
+        );
+      }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
+    };
+
     const interval = setInterval(() => {
       if (!isTransitioning) {
-        // Soft reset drag visuals before programmatic slide to avoid partial states
-        setIsDragging(false);
-        setDragOffset(0);
-        setIsTransitioning(true);
-        setTimeout(() => {
-          setCurrentIndex((prev) => (prev + 1) % totalIdeas);
-          setTimeout(() => {
-            setIsTransitioning(false);
-          }, SLIDER_CONFIG.TRANSITION_DURATION_MS);
-        }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
+        scheduleTransition(() =>
+          setCurrentIndex((prev) => (prev + 1) % totalIdeas)
+        );
       }
     }, effectiveInterval);
 
@@ -160,6 +166,9 @@ export const useIdeasSlider = ({
         handleInteractionEnd();
         return;
       }
+      // Soft programmatic transition to selected index
+      setIsDragging(false);
+      setDragOffset(0);
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex(index);
@@ -169,7 +178,7 @@ export const useIdeasSlider = ({
         );
       }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
     },
-    [isTransitioning]
+    [isTransitioning, handleInteractionEnd]
   );
 
   const handleDragStart = useCallback(() => {
@@ -235,6 +244,17 @@ export const useIdeasSlider = ({
       handleDragStart,
       handleDrag,
       handleDragEnd,
+      toggleCenterSelection: () => {
+        const ideaId = currentIndex + 1;
+        setSelectedIds((prev) => {
+          const newSet = new Set(prev);
+          const wasSelected = newSet.has(ideaId);
+          if (wasSelected) newSet.delete(ideaId);
+          else newSet.add(ideaId);
+          setPendingSelection({ ideaId, isSelected: !wasSelected });
+          return newSet;
+        });
+      },
     }),
     [
       handleInteractionStart,
@@ -244,6 +264,7 @@ export const useIdeasSlider = ({
       handleDragStart,
       handleDrag,
       handleDragEnd,
+      currentIndex,
     ]
   );
 

@@ -34,11 +34,7 @@ export default function HomePage() {
         }}
       />
       <div className='mt-6'>
-        <IdeasSlider
-          images={images}
-          altPrefix='Image'
-          onFilteredCountChange={() => {}}
-        />
+        <IdeasSlider images={images} altPrefix='Image' onSelectionChange={() => {}} />
       </div>
     </main>
   );

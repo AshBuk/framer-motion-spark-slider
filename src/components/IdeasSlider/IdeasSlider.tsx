@@ -7,13 +7,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useIdeasSlider } from './useIdeasSlider';
 import { SLIDER_CONFIG } from './config';
 
-export type SlideItem = string | readonly [string, string];
-
 interface IdeasSliderProps {
-  images: readonly SlideItem[];
+  images: readonly string[];
   onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
   autoPlayInterval?: number;
-  onFilteredCountChange?: (current: number, total: number) => void;
+  onSelectionChange?: (current: number, total: number) => void;
   altPrefix?: string;
 }
 
@@ -25,21 +23,17 @@ type CardPosition =
   | 'far-right'
   | 'hidden';
 
-const getImage = (item: SlideItem): string =>
-  Array.isArray(item) ? item[0] : (item as string);
-
 const IdeasSlider = ({
   images,
   onIdeaSelect,
   autoPlayInterval = 6000,
-  onFilteredCountChange,
+  onSelectionChange,
   altPrefix = 'Slide',
 }: IdeasSliderProps) => {
   const totalIdeas = images.length;
   const {
     currentIndex,
     selectedIds,
-    isUserInteracting,
     isTransitioning,
     isDragging,
     dragOffset,
@@ -49,7 +43,7 @@ const IdeasSlider = ({
     totalIdeas,
     autoPlayInterval,
     onIdeaSelect,
-    onFilteredCountChange,
+    onSelectionChange,
   });
 
   const getCardPosition = useCallback(
@@ -129,22 +123,54 @@ const IdeasSlider = ({
         }
       }
 
+      // Prevent fully invisible non-center cards in rare race conditions
+      if (position !== 'center') {
+        baseOpacity = Math.max(baseOpacity, SLIDER_CONFIG.MIN_SIDE_OPACITY);
+      }
+
+      // Ensure blur is never negative to avoid keyframe filter warnings
+      const clampedBlur = Math.max(0, baseBlur);
+
       return {
         x: `${baseX}vh`,
         scale: baseScale,
         opacity: baseOpacity,
-        filter: `blur(${baseBlur}px)`,
+        filter: `blur(${clampedBlur}px)`,
         zIndex: baseZIndex,
       };
     },
     [isDragging, dragOffset, vhInPixels]
   );
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'ArrowLeft') {
+        handlers.handleInteractionStart();
+        const prevIndex = currentIndex === 0 ? totalIdeas - 1 : currentIndex - 1;
+        handlers.handleSideCardClick(prevIndex);
+        handlers.handleInteractionEnd();
+        e.preventDefault();
+      } else if (e.key === 'ArrowRight') {
+        handlers.handleInteractionStart();
+        const nextIndex = (currentIndex + 1) % totalIdeas;
+        handlers.handleSideCardClick(nextIndex);
+        handlers.handleInteractionEnd();
+        e.preventDefault();
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        // Programmatic toggle for center card selection
+        (handlers as unknown as { toggleCenterSelection?: () => void })
+          .toggleCenterSelection?.();
+        e.preventDefault();
+      }
+    },
+    [currentIndex, totalIdeas, handlers]
+  );
+
   const renderCard = useCallback(
     (index: number, isCenter: boolean, position: CardPosition) => {
       const ideaId = index + 1;
       const isSelected = selectedIds.has(ideaId);
-      const imageSrc = getImage(images[index % images.length]);
+      const imageSrc = images[index % images.length];
 
       const aspectClass =
         SLIDER_CONFIG.CARD_LAYOUT === 'vertical'
@@ -250,8 +276,24 @@ const IdeasSlider = ({
   );
 
   return (
-    <div className='relative w-full overflow-hidden'>
-      <div className='relative h-[40vh] w-full overflow-hidden md:h-[48vh]'>
+    <div
+      className='relative w-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-xl'
+      tabIndex={0}
+      role='region'
+      aria-label='Ideas slider'
+      onKeyDown={handleKeyDown}
+      onFocus={handlers.handleInteractionStart}
+      onBlur={handlers.handleInteractionEnd}
+    >
+      <div
+        className='relative w-full overflow-hidden'
+        style={{
+          height: `min(${SLIDER_CONFIG.CONTAINER_HEIGHTS_VH.base}vh, 100svh)`,
+        }}
+        // md breakpoint override via CSS variable
+        // Consumers can override via Tailwind if needed
+        // We keep a single source of truth in config for base height
+      >
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
           <AnimatePresence mode='sync'>
             {images.map((_, cardIndex) => {
@@ -264,25 +306,19 @@ const IdeasSlider = ({
               const spring = isTransitioning
                 ? SLIDER_CONFIG.spring.transitioning
                 : SLIDER_CONFIG.spring.idle;
-              const duration = isTransitioning
-                ? isUserInteracting
-                  ? SLIDER_CONFIG.duration.transitioning.user
-                  : SLIDER_CONFIG.duration.transitioning.auto
-                : isUserInteracting
-                  ? SLIDER_CONFIG.duration.idle.user
-                  : SLIDER_CONFIG.duration.idle.auto;
+              // Use spring presets only for consistent timing
 
               return (
                 <motion.div
                   key={`card-${cardIndex}`}
                   className='pointer-events-auto absolute'
-                  initial={{ ...transform, opacity: 0 }}
+                  initial={isCenter ? transform : { ...transform, opacity: 0 }}
                   animate={transform}
                   exit={{ ...transform, opacity: 0 }}
                   transition={
                     isDragging
                       ? { type: 'tween', duration: 0 }
-                      : { type: 'spring', ...spring, duration }
+                      : { type: 'spring', ...spring }
                   }
                   style={{
                     transformOrigin: 'center center',

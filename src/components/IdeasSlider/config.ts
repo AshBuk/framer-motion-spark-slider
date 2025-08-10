@@ -1,3 +1,11 @@
+export type CardPosition =
+  | 'center'
+  | 'left'
+  | 'right'
+  | 'far-left'
+  | 'far-right'
+  | 'hidden';
+
 export const SLIDER_CONFIG = {
   // Card layout: 'horizontal' (laptop) or 'vertical' (phone)
   CARD_LAYOUT: 'horizontal' as 'horizontal' | 'vertical',
@@ -15,6 +23,12 @@ export const SLIDER_CONFIG = {
 
   CARD_WIDTH_VH: 20,
   SPACING_VH: 3,
+  MIN_SIDE_OPACITY: 0.05,
+
+  CONTAINER_HEIGHTS_VH: {
+    base: 40,
+    md: 48,
+  },
 
   DRAG_CONSTRAINTS_PX: 100,
   DRAG_ELASTICITY: 0.1,
@@ -50,7 +64,16 @@ export const SLIDER_CONFIG = {
       xOffsetFactor: 0.7,
     },
     hidden: { scale: 0.5, opacity: 0, blur: 5, zIndex: 10, xOffsetFactor: 0 },
-  },
+  } satisfies Record<
+    CardPosition,
+    {
+      scale: number;
+      opacity: number;
+      blur: number;
+      zIndex: number;
+      xOffsetFactor: number;
+    }
+  >,
 
   drag: {
     center: {
