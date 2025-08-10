@@ -29,6 +29,7 @@ export const useIdeasSlider = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [vhInPixels, setVhInPixels] = useState(1);
+  const lastSwipeAtRef = useRef<number>(0);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
@@ -77,6 +78,9 @@ export const useIdeasSlider = ({
 
     const interval = setInterval(() => {
       if (!isTransitioning) {
+        // Soft reset drag visuals before programmatic slide to avoid partial states
+        setIsDragging(false);
+        setDragOffset(0);
         setIsTransitioning(true);
         setTimeout(() => {
           setCurrentIndex((prev) => (prev + 1) % totalIdeas);
@@ -149,7 +153,13 @@ export const useIdeasSlider = ({
 
   const handleSideCardClick = useCallback(
     (index: number) => {
-      if (isTransitioning) return;
+      if (isTransitioning) {
+        // During transition ignore and ensure visuals are clean
+        setIsDragging(false);
+        setDragOffset(0);
+        handleInteractionEnd();
+        return;
+      }
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrentIndex(index);
@@ -178,12 +188,24 @@ export const useIdeasSlider = ({
 
   const handleDragEnd = useCallback(
     (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      if (isTransitioning) return;
+      if (isTransitioning) {
+        setIsDragging(false);
+        setDragOffset(0);
+        handleInteractionEnd();
+        return;
+      }
 
       setIsDragging(false);
       setDragOffset(0);
 
+      const now = Date.now();
+      if (now - lastSwipeAtRef.current < SLIDER_CONFIG.SWIPE_COOLDOWN_MS) {
+        handleInteractionEnd();
+        return;
+      }
+
       if (Math.abs(info.offset.x) > SLIDER_CONFIG.SWIPE_THRESHOLD_PX) {
+        lastSwipeAtRef.current = now;
         setIsTransitioning(true);
         setTimeout(() => {
           if (info.offset.x > 0) {
@@ -191,10 +213,11 @@ export const useIdeasSlider = ({
           } else {
             setCurrentIndex((prev) => (prev + 1) % totalIdeas);
           }
-          setTimeout(
-            () => setIsTransitioning(false),
-            SLIDER_CONFIG.TRANSITION_DURATION_MS
-          );
+          setTimeout(() => {
+            setIsTransitioning(false);
+            setIsDragging(false);
+            setDragOffset(0);
+          }, SLIDER_CONFIG.TRANSITION_DURATION_MS);
         }, SLIDER_CONFIG.TRANSITION_DELAY_MS);
       }
 

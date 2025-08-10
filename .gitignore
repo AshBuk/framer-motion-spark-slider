@@ -26,6 +26,9 @@ Thumbs.db
 # Coverage
 coverage/
 
+# TypeScript incremental build info
+tsconfig.tsbuildinfo
+
 # Docker
 *.pid
 
