@@ -1,6 +1,6 @@
-# Framer Motion Ideas Slider
+# Framer Motion Spark Slider
 
-A minimal, production-ready slider built with Next.js and Framer Motion. Includes a simple image upload API that stores files in `public/uploads`.
+Optimized production-ready slider built with Next.js and Framer Motion. Includes a simple image upload API that stores files in `public/uploads`.
 
 ## Features
 
@@ -47,9 +47,9 @@ This mounts `./public/uploads` as a volume for persistence.
 ## Usage (component)
 
 ```tsx
-import IdeasSlider from '@/components/IdeasSlider/IdeasSlider';
+import SparkSlider from '@/components/SparkSlider/SparkSlider';
 
-<IdeasSlider images={['/uploads/one.jpg', '/uploads/two.jpg']} />;
+<SparkSlider images={['/uploads/one.jpg', '/uploads/two.jpg']} />;
 ```
 
 - `images`: array of strings

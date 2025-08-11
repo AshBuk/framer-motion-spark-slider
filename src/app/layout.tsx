@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Framer Motion Ideas Slider',
-  description: 'Open-source ideas slider built with Framer Motion and Next.js',
+  title: 'Framer Motion Spark Slider',
+  description: 'Open-source slider built with Framer Motion and Next.js',
 };
 
 export const viewport: Viewport = {

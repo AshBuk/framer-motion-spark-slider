@@ -4,10 +4,10 @@ import React, { useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { useIdeasSlider } from './useIdeasSlider';
+import { useSparkSlider } from './useSparkSlider';
 import { SLIDER_CONFIG } from './config';
 
-interface IdeasSliderProps {
+interface SparkSliderProps {
   images: readonly string[];
   onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
   autoPlayInterval?: number;
@@ -23,13 +23,13 @@ type CardPosition =
   | 'far-right'
   | 'hidden';
 
-const IdeasSlider = ({
+const SparkSlider = ({
   images,
   onIdeaSelect,
   autoPlayInterval = 6000,
   onSelectionChange,
   altPrefix = 'Slide',
-}: IdeasSliderProps) => {
+}: SparkSliderProps) => {
   const totalIdeas = images.length;
   const {
     currentIndex,
@@ -39,7 +39,7 @@ const IdeasSlider = ({
     dragOffset,
     vhInPixels,
     handlers,
-  } = useIdeasSlider({
+  } = useSparkSlider({
     totalIdeas,
     autoPlayInterval,
     onIdeaSelect,
@@ -280,7 +280,7 @@ const IdeasSlider = ({
       className='relative w-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-xl'
       tabIndex={0}
       role='region'
-      aria-label='Ideas slider'
+      aria-label='Spark slider'
       onKeyDown={handleKeyDown}
       onFocus={handlers.handleInteractionStart}
       onBlur={handlers.handleInteractionEnd}
@@ -336,4 +336,4 @@ const IdeasSlider = ({
   );
 };
 
-export default IdeasSlider;
+export default SparkSlider;

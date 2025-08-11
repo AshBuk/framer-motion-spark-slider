@@ -4,19 +4,19 @@ import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import type { PanInfo } from 'framer-motion';
 import { SLIDER_CONFIG } from './config';
 
-interface UseIdeasSliderProps {
+interface UseSparkSliderProps {
   totalIdeas: number;
   autoPlayInterval: number;
   onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
   onSelectionChange?: (current: number, total: number) => void;
 }
 
-export const useIdeasSlider = ({
+export const useSparkSlider = ({
   totalIdeas,
   autoPlayInterval,
   onIdeaSelect,
   onSelectionChange,
-}: UseIdeasSliderProps) => {
+}: UseSparkSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [isUserInteracting, setIsUserInteracting] = useState(false);
