@@ -34,11 +34,7 @@ export default function HomePage() {
         }}
       />
       <div className='mt-6'>
-        <SparkSlider
-          images={images}
-          altPrefix='Image'
-          onSelectionChange={() => {}}
-        />
+        <SparkSlider images={images} alt='Image' onSelectionChange={() => {}} />
       </div>
     </main>
   );

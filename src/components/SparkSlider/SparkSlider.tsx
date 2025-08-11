@@ -1,36 +1,37 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useSparkSlider } from './useSparkSlider';
-import { SLIDER_CONFIG } from './config';
+import { SLIDER_CONFIG, type CardPosition } from './config';
 
 interface SparkSliderProps {
   images: readonly string[];
-  onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
+  onSlideSelect?: (index: number, isSelected: boolean) => void;
   autoPlayInterval?: number;
   onSelectionChange?: (current: number, total: number) => void;
-  altPrefix?: string;
+  alt?: string;
+  className?: string;
+  cardClassName?: string;
+  renderImage?: (
+    src: string,
+    alt: string,
+    isCenter: boolean
+  ) => React.ReactNode;
 }
-
-type CardPosition =
-  | 'center'
-  | 'left'
-  | 'right'
-  | 'far-left'
-  | 'far-right'
-  | 'hidden';
 
 const SparkSlider = ({
   images,
-  onIdeaSelect,
+  onSlideSelect,
   autoPlayInterval = 6000,
   onSelectionChange,
-  altPrefix = 'Slide',
+  alt = 'Slide',
+  className,
+  cardClassName,
+  renderImage,
 }: SparkSliderProps) => {
-  const totalIdeas = images.length;
+  const totalSlides = images.length;
   const {
     currentIndex,
     selectedIds,
@@ -40,16 +41,16 @@ const SparkSlider = ({
     vhInPixels,
     handlers,
   } = useSparkSlider({
-    totalIdeas,
+    totalSlides,
     autoPlayInterval,
-    onIdeaSelect,
+    onSlideSelect,
     onSelectionChange,
   });
 
   const getCardPosition = useCallback(
     (cardIndex: number, currentIdx: number): CardPosition => {
       const getCircularIndex = (index: number) =>
-        ((index % totalIdeas) + totalIdeas) % totalIdeas;
+        ((index % totalSlides) + totalSlides) % totalSlides;
 
       const normalizedCard = getCircularIndex(cardIndex);
       const normalizedCurrent = getCircularIndex(currentIdx);
@@ -63,7 +64,7 @@ const SparkSlider = ({
         return 'far-right';
       return 'hidden';
     },
-    [totalIdeas]
+    [totalSlides]
   );
 
   const getCardTransform = useCallback(
@@ -147,13 +148,13 @@ const SparkSlider = ({
       if (e.key === 'ArrowLeft') {
         handlers.handleInteractionStart();
         const prevIndex =
-          currentIndex === 0 ? totalIdeas - 1 : currentIndex - 1;
+          currentIndex === 0 ? totalSlides - 1 : currentIndex - 1;
         handlers.handleSideCardClick(prevIndex);
         handlers.handleInteractionEnd();
         e.preventDefault();
       } else if (e.key === 'ArrowRight') {
         handlers.handleInteractionStart();
-        const nextIndex = (currentIndex + 1) % totalIdeas;
+        const nextIndex = (currentIndex + 1) % totalSlides;
         handlers.handleSideCardClick(nextIndex);
         handlers.handleInteractionEnd();
         e.preventDefault();
@@ -165,13 +166,13 @@ const SparkSlider = ({
         e.preventDefault();
       }
     },
-    [currentIndex, totalIdeas, handlers]
+    [currentIndex, totalSlides, handlers]
   );
 
   const renderCard = useCallback(
     (index: number, isCenter: boolean, position: CardPosition) => {
-      const ideaId = index + 1;
-      const isSelected = selectedIds.has(ideaId);
+      const slideIndex = index + 1;
+      const isSelected = selectedIds.has(slideIndex);
       const imageSrc = images[index % images.length];
 
       const aspectClass =
@@ -185,7 +186,7 @@ const SparkSlider = ({
       return (
         <motion.div
           key={`card-${index}`}
-          className={`relative z-30 ${aspectClass} overflow-hidden rounded-xl`}
+          className={`relative z-30 ${aspectClass} overflow-hidden rounded-xl ${cardClassName ?? ''}`}
           style={{ width: `${cardWidthVh}vh` }}
           onMouseEnter={handlers.handleInteractionStart}
           onMouseLeave={handlers.handleInteractionEnd}
@@ -237,18 +238,16 @@ const SparkSlider = ({
             </div>
           )}
           <div className='pointer-events-none relative h-full w-full overflow-hidden rounded-xl'>
-            <Image
-              src={imageSrc}
-              alt={`${altPrefix} ${index + 1}`}
-              fill
-              className='object-cover object-center'
-              sizes={
-                isCenter
-                  ? '(max-width: 768px) 90vw, 40vh'
-                  : '(max-width: 768px) 60vw, 30vh'
-              }
-              priority={isCenter}
-            />
+            {renderImage ? (
+              renderImage(imageSrc, `${alt} ${index + 1}`, isCenter)
+            ) : (
+              <img
+                src={imageSrc}
+                alt={`${alt} ${index + 1}`}
+                className='h-full w-full object-cover object-center'
+                loading={isCenter ? 'eager' : 'lazy'}
+              />
+            )}
             {!isCenter && (
               <div className='absolute inset-0 rounded-xl bg-black/40' />
             )}
@@ -257,7 +256,7 @@ const SparkSlider = ({
             )}
             {isCenter && (
               <div className='absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/70 to-transparent p-3'>
-                <span className='text-sm font-medium leading-tight text-white'>{`${altPrefix} ${index + 1}`}</span>
+                <span className='text-sm font-medium leading-tight text-white'>{`${alt} ${index + 1}`}</span>
               </div>
             )}
           </div>
@@ -267,21 +266,22 @@ const SparkSlider = ({
                 <span className='text-xs font-medium text-white'>
                   {index + 1}
                 </span>
-                <span className='text-xs text-white/60'>/ {totalIdeas}</span>
+                <span className='text-xs text-white/60'>/ {totalSlides}</span>
               </div>
             </div>
           )}
         </motion.div>
       );
     },
-    [selectedIds, handlers, images, altPrefix, totalIdeas]
+    [selectedIds, handlers, images, alt, totalSlides, cardClassName]
   );
 
   return (
     <div
-      className='relative w-full overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400'
+      className={`relative w-full overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${className ?? ''}`}
       tabIndex={0}
       role='region'
+      aria-roledescription='carousel'
       aria-label='Spark slider'
       onKeyDown={handleKeyDown}
       onFocus={handlers.handleInteractionStart}

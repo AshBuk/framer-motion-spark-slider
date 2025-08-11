@@ -5,16 +5,16 @@ import type { PanInfo } from 'framer-motion';
 import { SLIDER_CONFIG } from './config';
 
 interface UseSparkSliderProps {
-  totalIdeas: number;
+  totalSlides: number;
   autoPlayInterval: number;
-  onIdeaSelect?: (ideaId: number, isSelected: boolean) => void;
+  onSlideSelect?: (index: number, isSelected: boolean) => void;
   onSelectionChange?: (current: number, total: number) => void;
 }
 
 export const useSparkSlider = ({
-  totalIdeas,
+  totalSlides,
   autoPlayInterval,
-  onIdeaSelect,
+  onSlideSelect,
   onSelectionChange,
 }: UseSparkSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,7 +22,7 @@ export const useSparkSlider = ({
   const [isUserInteracting, setIsUserInteracting] = useState(false);
   const [lastCenterTap, setLastCenterTap] = useState<number | null>(null);
   const [pendingSelection, setPendingSelection] = useState<{
-    ideaId: number;
+    index: number;
     isSelected: boolean;
   } | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -50,20 +50,20 @@ export const useSparkSlider = ({
     onSelectionChangeRef.current = onSelectionChange;
   });
 
-  const onIdeaSelectRef = useRef(onIdeaSelect);
+  const onSlideSelectRef = useRef(onSlideSelect);
   useEffect(() => {
-    onIdeaSelectRef.current = onIdeaSelect;
+    onSlideSelectRef.current = onSlideSelect;
   });
 
   useEffect(() => {
     if (!onSelectionChangeRef.current) return;
-    onSelectionChangeRef.current(selectedIds.size, totalIdeas);
-  }, [selectedIds.size, totalIdeas]);
+    onSelectionChangeRef.current(selectedIds.size, totalSlides);
+  }, [selectedIds.size, totalSlides]);
 
   useEffect(() => {
     if (pendingSelection) {
-      onIdeaSelectRef.current?.(
-        pendingSelection.ideaId,
+      onSlideSelectRef.current?.(
+        pendingSelection.index,
         pendingSelection.isSelected
       );
       setPendingSelection(null);
@@ -72,9 +72,19 @@ export const useSparkSlider = ({
 
   useEffect(() => {
     if (isUserInteracting) return;
+    if (totalSlides < 2) return;
 
     const effectiveInterval =
       autoPlayInterval / SLIDER_CONFIG.AUTO_SCROLL_SPEED_MULTIPLIER;
+
+    let paused =
+      typeof document !== 'undefined' && document.visibilityState === 'hidden';
+    const onVisibility = () => {
+      paused = document.visibilityState === 'hidden';
+    };
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', onVisibility);
+    }
 
     const scheduleTransition = (update: () => void) => {
       setIsDragging(false);
@@ -90,15 +100,20 @@ export const useSparkSlider = ({
     };
 
     const interval = setInterval(() => {
-      if (!isTransitioning) {
+      if (!isTransitioning && !paused) {
         scheduleTransition(() =>
-          setCurrentIndex((prev) => (prev + 1) % totalIdeas)
+          setCurrentIndex((prev) => (prev + 1) % totalSlides)
         );
       }
     }, effectiveInterval);
 
-    return () => clearInterval(interval);
-  }, [autoPlayInterval, totalIdeas, isUserInteracting, isTransitioning]);
+    return () => {
+      clearInterval(interval);
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('visibilitychange', onVisibility);
+      }
+    };
+  }, [autoPlayInterval, totalSlides, isUserInteracting, isTransitioning]);
 
   const handleInteractionStart = useCallback(() => {
     if (interactionTimeoutRef.current) {
@@ -135,7 +150,7 @@ export const useSparkSlider = ({
       }
 
       const now = Date.now();
-      const ideaId = currentIndex + 1;
+      const index = currentIndex + 1;
 
       if (
         lastCenterTap &&
@@ -143,10 +158,10 @@ export const useSparkSlider = ({
       ) {
         setSelectedIds((prev) => {
           const newSet = new Set(prev);
-          const wasSelected = newSet.has(ideaId);
-          if (wasSelected) newSet.delete(ideaId);
-          else newSet.add(ideaId);
-          setPendingSelection({ ideaId, isSelected: !wasSelected });
+          const wasSelected = newSet.has(index);
+          if (wasSelected) newSet.delete(index);
+          else newSet.add(index);
+          setPendingSelection({ index, isSelected: !wasSelected });
           return newSet;
         });
         setLastCenterTap(null);
@@ -218,9 +233,11 @@ export const useSparkSlider = ({
         setIsTransitioning(true);
         setTimeout(() => {
           if (info.offset.x > 0) {
-            setCurrentIndex((prev) => (prev === 0 ? totalIdeas - 1 : prev - 1));
+            setCurrentIndex((prev) =>
+              prev === 0 ? totalSlides - 1 : prev - 1
+            );
           } else {
-            setCurrentIndex((prev) => (prev + 1) % totalIdeas);
+            setCurrentIndex((prev) => (prev + 1) % totalSlides);
           }
           setTimeout(() => {
             setIsTransitioning(false);
@@ -232,7 +249,7 @@ export const useSparkSlider = ({
 
       handleInteractionEnd();
     },
-    [totalIdeas, isTransitioning, handleInteractionEnd]
+    [totalSlides, isTransitioning, handleInteractionEnd]
   );
 
   const handlers = useMemo(
@@ -245,13 +262,13 @@ export const useSparkSlider = ({
       handleDrag,
       handleDragEnd,
       toggleCenterSelection: () => {
-        const ideaId = currentIndex + 1;
+        const index = currentIndex + 1;
         setSelectedIds((prev) => {
           const newSet = new Set(prev);
-          const wasSelected = newSet.has(ideaId);
-          if (wasSelected) newSet.delete(ideaId);
-          else newSet.add(ideaId);
-          setPendingSelection({ ideaId, isSelected: !wasSelected });
+          const wasSelected = newSet.has(index);
+          if (wasSelected) newSet.delete(index);
+          else newSet.add(index);
+          setPendingSelection({ index, isSelected: !wasSelected });
           return newSet;
         });
       },
