@@ -1,12 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: false,
-});
 
 export const metadata: Metadata = {
   title: 'Framer Motion Spark Slider',
@@ -26,9 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' className='h-full' suppressHydrationWarning>
-      <body
-        className={`${inter.className} min-h-screen bg-neutral-950 text-white`}
-      >
+      <body className='min-h-screen bg-neutral-950 font-sans text-white'>
         {children}
       </body>
     </html>
