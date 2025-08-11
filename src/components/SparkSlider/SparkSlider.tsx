@@ -146,7 +146,8 @@ const SparkSlider = ({
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       if (e.key === 'ArrowLeft') {
         handlers.handleInteractionStart();
-        const prevIndex = currentIndex === 0 ? totalIdeas - 1 : currentIndex - 1;
+        const prevIndex =
+          currentIndex === 0 ? totalIdeas - 1 : currentIndex - 1;
         handlers.handleSideCardClick(prevIndex);
         handlers.handleInteractionEnd();
         e.preventDefault();
@@ -158,8 +159,9 @@ const SparkSlider = ({
         e.preventDefault();
       } else if (e.key === 'Enter' || e.key === ' ') {
         // Programmatic toggle for center card selection
-        (handlers as unknown as { toggleCenterSelection?: () => void })
-          .toggleCenterSelection?.();
+        (
+          handlers as unknown as { toggleCenterSelection?: () => void }
+        ).toggleCenterSelection?.();
         e.preventDefault();
       }
     },
@@ -277,7 +279,7 @@ const SparkSlider = ({
 
   return (
     <div
-      className='relative w-full overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-xl'
+      className='relative w-full overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400'
       tabIndex={0}
       role='region'
       aria-label='Spark slider'

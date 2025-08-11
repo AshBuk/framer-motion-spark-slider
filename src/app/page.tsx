@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import SparkSlider from '@/components/SparkSlider/SparkSlider'; 
+import SparkSlider from '@/components/SparkSlider/SparkSlider';
 import ImageUploader from '@/components/ImageUploader';
 
 export default function HomePage() {
@@ -19,7 +19,9 @@ export default function HomePage() {
 
   return (
     <main className='min-h-screen p-6'>
-      <h1 className='mb-4 text-2xl font-semibold'>Framer Motion Spark Slider</h1>
+      <h1 className='mb-4 text-2xl font-semibold'>
+        Framer Motion Spark Slider
+      </h1>
       <p className='mb-4 text-sm text-neutral-700'>
         Upload images and preview them in the slider. Double tap center card to
         select.
@@ -32,7 +34,11 @@ export default function HomePage() {
         }}
       />
       <div className='mt-6'>
-        <SparkSlider images={images} altPrefix='Image' onSelectionChange={() => {}} />
+        <SparkSlider
+          images={images}
+          altPrefix='Image'
+          onSelectionChange={() => {}}
+        />
       </div>
     </main>
   );
