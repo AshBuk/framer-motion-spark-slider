@@ -145,6 +145,7 @@ const SparkSlider = ({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (totalSlides < 2) return;
       if (e.key === 'ArrowLeft') {
         handlers.handleInteractionStart();
         const prevIndex =
@@ -192,7 +193,7 @@ const SparkSlider = ({
           onMouseLeave={handlers.handleInteractionEnd}
           whileTap={{ scale: 0.95 }}
         >
-          {isCenter ? (
+          {isCenter && totalSlides > 1 ? (
             <motion.div
               className='absolute inset-0 z-50 cursor-grab active:cursor-grabbing'
               drag='x'
@@ -292,9 +293,10 @@ const SparkSlider = ({
         style={{
           height: `min(${SLIDER_CONFIG.CONTAINER_HEIGHTS_VH.base}vh, 100svh)`,
         }}
-        // md breakpoint override via CSS variable
-        // Consumers can override via Tailwind if needed
-        // We keep a single source of truth in config for base height
+
+        /* - md breakpoint override via CSS variable
+           - Consumers can override via Tailwind if needed
+           - We keep a single source of truth in config for base height */
       >
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
           <AnimatePresence mode='sync'>
