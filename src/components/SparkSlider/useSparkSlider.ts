@@ -4,71 +4,50 @@ import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import type { PanInfo } from 'framer-motion';
 import { SLIDER_CONFIG } from './config';
 
+export function computeSwipeTarget(
+  offsetX: number,
+  baseIndex: number,
+  totalSlides: number
+): number | null {
+  if (totalSlides < 2) return null;
+  if (Math.abs(offsetX) <= SLIDER_CONFIG.SWIPE_THRESHOLD_PX) return null;
+  const goPrev = offsetX > 0;
+  if (goPrev) return baseIndex === 0 ? totalSlides - 1 : baseIndex - 1;
+  return (baseIndex + 1) % totalSlides;
+}
+
 interface UseSparkSliderProps {
   totalSlides: number;
   autoPlayInterval: number;
-  onSlideSelect?: (index: number, isSelected: boolean) => void;
-  onSelectionChange?: (current: number, total: number) => void;
 }
 
 export const useSparkSlider = ({
   totalSlides,
   autoPlayInterval,
-  onSlideSelect,
-  onSelectionChange,
 }: UseSparkSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [isUserInteracting, setIsUserInteracting] = useState(false);
-  const [lastCenterTap, setLastCenterTap] = useState<number | null>(null);
-  const [pendingSelection, setPendingSelection] = useState<{
-    index: number;
-    isSelected: boolean;
-  } | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
-  const [vhInPixels, setVhInPixels] = useState(1);
+  const [vminInPixels, setVminInPixels] = useState(1);
   const lastSwipeAtRef = useRef<number>(0);
   const interactionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
 
   useEffect(() => {
-    setVhInPixels(window.innerHeight / 100);
+    setVminInPixels(Math.min(window.innerWidth, window.innerHeight) / 100);
   }, []);
 
-  // Keep vhInPixels in sync with viewport height changes
+  // Keep vminInPixels in sync with viewport size changes
   useEffect(() => {
-    const onResize = () => setVhInPixels(window.innerHeight / 100);
+    const onResize = () => {
+      setVminInPixels(Math.min(window.innerWidth, window.innerHeight) / 100);
+    };
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
-
-  const onSelectionChangeRef = useRef(onSelectionChange);
-  useEffect(() => {
-    onSelectionChangeRef.current = onSelectionChange;
-  });
-
-  const onSlideSelectRef = useRef(onSlideSelect);
-  useEffect(() => {
-    onSlideSelectRef.current = onSlideSelect;
-  });
-
-  useEffect(() => {
-    if (!onSelectionChangeRef.current) return;
-    onSelectionChangeRef.current(selectedIds.size, totalSlides);
-  }, [selectedIds.size, totalSlides]);
-
-  useEffect(() => {
-    if (pendingSelection) {
-      onSlideSelectRef.current?.(
-        pendingSelection.index,
-        pendingSelection.isSelected
-      );
-      setPendingSelection(null);
-    }
-  }, [pendingSelection]);
 
   useEffect(() => {
     if (isUserInteracting) return;
@@ -140,36 +119,6 @@ export const useSparkSlider = ({
       }
     },
     []
-  );
-
-  const handleCenterCardClick = useCallback(
-    (event: React.MouseEvent | React.TouchEvent) => {
-      if (isDragging) {
-        event.preventDefault();
-        return;
-      }
-
-      const now = Date.now();
-      const index = currentIndex + 1;
-
-      if (
-        lastCenterTap &&
-        now - lastCenterTap < SLIDER_CONFIG.DOUBLE_TAP_THRESHOLD_MS
-      ) {
-        setSelectedIds((prev) => {
-          const newSet = new Set(prev);
-          const wasSelected = newSet.has(index);
-          if (wasSelected) newSet.delete(index);
-          else newSet.add(index);
-          setPendingSelection({ index, isSelected: !wasSelected });
-          return newSet;
-        });
-        setLastCenterTap(null);
-      } else {
-        setLastCenterTap(now);
-      }
-    },
-    [currentIndex, lastCenterTap, isDragging]
   );
 
   const handleSideCardClick = useCallback(
@@ -256,43 +205,28 @@ export const useSparkSlider = ({
     () => ({
       handleInteractionStart,
       handleInteractionEnd,
-      handleCenterCardClick,
       handleSideCardClick,
       handleDragStart,
       handleDrag,
       handleDragEnd,
-      toggleCenterSelection: () => {
-        const index = currentIndex + 1;
-        setSelectedIds((prev) => {
-          const newSet = new Set(prev);
-          const wasSelected = newSet.has(index);
-          if (wasSelected) newSet.delete(index);
-          else newSet.add(index);
-          setPendingSelection({ index, isSelected: !wasSelected });
-          return newSet;
-        });
-      },
     }),
     [
       handleInteractionStart,
       handleInteractionEnd,
-      handleCenterCardClick,
       handleSideCardClick,
       handleDragStart,
       handleDrag,
       handleDragEnd,
-      currentIndex,
     ]
   );
 
   return {
     currentIndex,
-    selectedIds,
     isUserInteracting,
     isTransitioning,
     isDragging,
     dragOffset,
-    vhInPixels,
+    vminInPixels,
     handlers,
   };
 };

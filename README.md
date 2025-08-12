@@ -1,23 +1,14 @@
 # Framer Motion Spark Slider
 
-Optimized production-ready slider built with Next.js and Framer Motion. Includes a simple image upload API that stores files in `public/uploads`.
+Optimized production-ready slider built with Next.js and Framer Motion.
 
 ## Features
 
 - Smooth drag-to-swipe with momentum-free, precise control
 - Double-tap on the center card to select/deselect
 - Auto-play with pause on interaction
-- Responsive layout using `vh`
-- Simple upload/delete API (no external deps)
-- Docker-ready (standalone output, volume for uploads)
-
-## Support
-
-If you find this project useful, consider supporting ongoing development:
-
-[Sponsor on GitHub](https://github.com/sponsors/AshBuk)
-
-Sponsors are appreciated and can be listed in the README (optional).
+- Responsive layout using viewport units (`svh`/`svmin`)
+- Simple image uploads UI (Browse/Manage)
 
 ## Quick start
 
@@ -26,17 +17,12 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` and upload some images. They will appear in the slider.
+Open `http://localhost:3000`.
 
-## API
+- Use Browse/Manage to upload images — they will appear in the slider.
+- If no images yet, the demo shows a high-quality fallback set (randomized daily). Use the Shuffle button to regenerate.
 
-- GET `/api/images` → `{ images: string[] }`
-- POST `/api/images` with JSON body `{ dataUrl: string, filename?: string }` → `{ ok: true, url: string }`
-- DELETE `/api/images?name=<filename>` → `{ ok: true }`
-
-Files are saved under `public/uploads`.
-
-## Docker
+Using Docker? Use Docker Compose:
 
 ```bash
 docker compose up --build
@@ -44,22 +30,25 @@ docker compose up --build
 
 This mounts `./public/uploads` as a volume for persistence.
 
-## Usage (component)
+## For developers
 
-```tsx
-import SparkSlider from '@/components/SparkSlider/SparkSlider';
+Start onboarding by reading `project-context.md`. Comments in the codebase are concise and serve as additional documentation. 
+- The project adheres to SOLID and SRP principles.
+- The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, Tailwind CSS, CSS viewport units `svh`/`svmin`).
+- Performance: renders only visible cards, non-visible slides are not mounted, non-center images use `loading="lazy"`. Scales to large image lists while keeping the DOM small.
 
-<SparkSlider images={['/uploads/one.jpg', '/uploads/two.jpg']} />;
-```
 
-- `images`: array of strings
-- Optional props: `altPrefix`, `autoPlayInterval`, `onIdeaSelect`, `onFilteredCountChange`
+Slider breakdown:
+- `SparkSlider.tsx` — presentation and accessibility: renders position-based cards, handles keyboard and fullscreen.
+- `useSparkSlider.ts` — interaction/state: index, autoplay, drag/swipe, and transition gating.
+- `config.ts` — single source of truth (`SLIDER_CONFIG`) for sizes, spacing, positions, spring presets, and thresholds.
 
-## Development
 
-- Build: `npm run build`
-- Start: `npm start`
-- Lint: `npm run lint`
+## Support
+
+If you find this project useful, consider supporting ongoing development:
+
+[Sponsor on GitHub](https://github.com/sponsors/AshBuk)
 
 ## License
 
