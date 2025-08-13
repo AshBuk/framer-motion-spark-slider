@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "description": "SparkSlider – lightweight Framer Motion carousel component and hook",
+  "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",
   "license": "MIT",
   "sideEffects": false,
   "files": [

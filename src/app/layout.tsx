@@ -4,6 +4,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Framer Motion Spark Slider',
   description: 'Open-source slider built with Framer Motion and Next.js',
+  icons: '/favicon/favicon-32x32.png',
 };
 
 export const viewport: Viewport = {

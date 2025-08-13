@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "description": "Framer Motion slider demo with Next.js and simple image upload API",
+  "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

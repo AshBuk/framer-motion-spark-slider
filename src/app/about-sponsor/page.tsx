@@ -159,6 +159,9 @@ export default function AboutSponsorPage() {
         <div>Cheers,</div>
         <div>Asher Buk</div>
       </div>
+      <div className='mt-6 text-right text-xs text-neutral-500'>
+        © 2025 Asher Buk — MIT
+      </div>
     </main>
   );
 }
