@@ -52,9 +52,9 @@ export const useSparkSlider = ({
   useEffect(() => {
     if (isUserInteracting) return;
     if (totalSlides < 2) return;
+    if (!(autoPlayInterval > 0)) return;
 
-    const effectiveInterval =
-      autoPlayInterval / SLIDER_CONFIG.AUTO_SCROLL_SPEED_MULTIPLIER;
+    const effectiveInterval = Math.max(1, autoPlayInterval);
 
     let paused =
       typeof document !== 'undefined' && document.visibilityState === 'hidden';
@@ -106,10 +106,16 @@ export const useSparkSlider = ({
     if (interactionTimeoutRef.current) {
       clearTimeout(interactionTimeoutRef.current);
     }
-    interactionTimeoutRef.current = setTimeout(
-      () => setIsUserInteracting(false),
-      SLIDER_CONFIG.USER_INTERACTION_DEBOUNCE_MS
-    );
+    const debounceMs = SLIDER_CONFIG.USER_INTERACTION_DEBOUNCE_MS;
+    if (debounceMs > 0) {
+      interactionTimeoutRef.current = setTimeout(() => {
+        setIsUserInteracting(false);
+        interactionTimeoutRef.current = null;
+      }, debounceMs);
+    } else {
+      interactionTimeoutRef.current = null;
+      setIsUserInteracting(false);
+    }
   }, []);
 
   useEffect(
