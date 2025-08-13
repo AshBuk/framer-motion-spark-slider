@@ -19,6 +19,59 @@ const sanitize = (name: string) =>
 const isAllowedImageMime = (type: string) =>
   /^(image\/)(png|jpe?g|webp|gif|avif)$/i.test(type);
 
+// --- Minimal API hardening for public demo ---
+type RateState = { count: number; resetAt: number };
+const RATE_LIMIT_WINDOW_MS = 60_000; // 1 min
+const RATE_LIMIT_MAX = 30; // max requests per window per IP
+const rateStore = new Map<string, RateState>();
+
+function getClientIp(req: NextRequest): string {
+  const xff = req.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0]?.trim() || 'unknown';
+  const xrip = req.headers.get('x-real-ip');
+  if (xrip) return xrip.trim();
+  return 'unknown';
+}
+
+function rateLimit(
+  req: NextRequest,
+  bucket: string
+): { ok: true } | NextResponse {
+  const ip = getClientIp(req);
+  const key = `${bucket}:${ip}`;
+  const now = Date.now();
+  const st = rateStore.get(key);
+  if (!st || now >= st.resetAt) {
+    rateStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { ok: true };
+  }
+  if (st.count >= RATE_LIMIT_MAX) {
+    const retry = Math.max(0, st.resetAt - now);
+    return new NextResponse(JSON.stringify({ error: 'Too many requests' }), {
+      status: 429,
+      headers: {
+        'content-type': 'application/json',
+        'retry-after': String(Math.ceil(retry / 1000)),
+      },
+    });
+  }
+  st.count += 1;
+  return { ok: true };
+}
+
+function enforceSameOriginAndHeader(req: NextRequest): NextResponse | null {
+  const host = req.headers.get('host') || '';
+  const origin = req.headers.get('origin') || '';
+  const requestedWith = req.headers.get('x-requested-with') || '';
+  if (!origin || !host || !origin.endsWith(host)) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+  if (requestedWith.toLowerCase() !== 'fetch') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+  return null;
+}
+
 export async function GET() {
   // When token is present, use Vercel Blob (server-only)
   if (hasBlob) {
@@ -45,6 +98,14 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  // Basic rate-limit for write
+  const rl = rateLimit(req, 'POST');
+  if ('ok' in rl === false) return rl as NextResponse;
+
+  // Same-origin + header enforcement (mitigates cross-site form posts)
+  const forbidden = enforceSameOriginAndHeader(req);
+  if (forbidden) return forbidden;
+
   const contentType = req.headers.get('content-type') || '';
 
   // Blob-backed uploads in production when token is available
@@ -122,6 +183,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  // Basic rate-limit for write
+  const rl = rateLimit(req, 'DELETE');
+  if ('ok' in rl === false) return rl as NextResponse;
+
+  // Same-origin + header enforcement
+  const forbidden = enforceSameOriginAndHeader(req);
+  if (forbidden) return forbidden;
+
   const { searchParams } = new URL(req.url);
 
   // Blob-backed delete when token is available
