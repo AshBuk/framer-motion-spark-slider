@@ -33,7 +33,10 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ### Screencast
 
-<video src="/docs/spark-slider.webm" controls width="720" />
+<video src="https://raw.githubusercontent.com/AshBuk/framer-motion-spark-slider/main/public/docs/spark-slider.webm" controls width="720">
+  <a href="https://raw.githubusercontent.com/AshBuk/framer-motion-spark-slider/main/public/docs/spark-slider.webm">Open screencast</a>
+  Sorry, your browser doesn't support embedded videos.
+</video>
 
 ## Quick start
 
