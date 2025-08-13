@@ -1,4 +1,12 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
+/**
+ * We intentionally keep <img> as the default renderer to avoid coupling the
+ * component to Next.js when published as an npm library. Consumers using Next.js
+ * can provide a custom renderer via the `renderImage` prop (e.g., `next/image`).
+ * This local disable prevents Next-specific lint warnings in a framework-agnostic
+ * package context.
+ */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -285,7 +293,7 @@ const SparkSlider = ({
         </motion.div>
       );
     },
-    [handlers, images, alt, totalSlides, cardClassName]
+    [handlers, images, alt, totalSlides, cardClassName, renderImage, isDragging]
   );
 
   return (

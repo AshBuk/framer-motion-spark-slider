@@ -2,13 +2,30 @@
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
-import nextPlugin from '@next/eslint-plugin-next';
 import prettier from 'eslint-config-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
+import { FlatCompat } from '@eslint/eslintrc';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const compat = new FlatCompat({ baseDirectory: __dirname });
 
 export default [
+  {
+    ignores: [
+      '.next/**',
+      'out/**',
+      'node_modules/**',
+      '*.config.js',
+      'tailwind.config.js',
+      'postcss.config.js',
+    ],
+  },
+  // Next.js recommended rules (flat via FlatCompat)
+  ...compat.extends('next/core-web-vitals'),
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
@@ -25,14 +42,12 @@ export default [
       },
     },
     plugins: {
-      '@next/next': nextPlugin,
       '@typescript-eslint': tseslint,
       react,
       'react-hooks': reactHooks,
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...nextPlugin.configs['core-web-vitals'].rules,
       ...tseslint.configs.recommended.rules,
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -55,14 +70,4 @@ export default [
   },
   // Disable formatting-related rules to avoid conflicts with Prettier
   prettier,
-  {
-    ignores: [
-      '.next/**',
-      'out/**',
-      'node_modules/**',
-      '*.config.js',
-      'tailwind.config.js',
-      'postcss.config.js',
-    ],
-  },
 ];

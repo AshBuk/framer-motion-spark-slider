@@ -45,14 +45,18 @@ export default function HomePage() {
   const fallbackImages = useMemo(() => {
     const count = 8;
     // 4:3 aspect to better match horizontal card layout
-    return Array.from({ length: count }, (_, i) =>
-      `https://picsum.photos/seed/${fallbackSeed}-${i}/1600/1200`
+    return Array.from(
+      { length: count },
+      (_, i) => `https://picsum.photos/seed/${fallbackSeed}-${i}/1600/1200`
     );
   }, [fallbackSeed]);
 
   const refresh = async () => {
     const res = await fetch('/api/images', { cache: 'no-store' });
-    const json = (await res.json()) as { images?: string[]; canWrite?: boolean };
+    const json = (await res.json()) as {
+      images?: string[];
+      canWrite?: boolean;
+    };
     setImages(json.images || []);
     if (typeof json.canWrite === 'boolean') setCanWrite(json.canWrite);
   };
@@ -101,7 +105,7 @@ export default function HomePage() {
         >
           Framer Motion Spark Slider
         </h1>
-        <div className='order-3 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:justify-self-end sm:pl-0 sm:pr-[clamp(0.5rem,2vw,1.5rem)] relative'>
+        <div className='relative order-3 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:justify-self-end sm:pl-0 sm:pr-[clamp(0.5rem,2vw,1.5rem)]'>
           <div className='flex items-center gap-2'>
             <button
               type='button'
@@ -121,14 +125,23 @@ export default function HomePage() {
             </button>
           </div>
           {showConfig ? (
-            <div className='pointer-events-auto absolute top-full left-2 sm:left-auto sm:right-0 z-[250] mt-2 w-[min(92vw,22rem)] rounded-lg border border-white/10 bg-black/40 p-3 text-white backdrop-blur-sm'>
+            <div className='pointer-events-auto absolute left-2 top-full z-[250] mt-2 w-[min(92vw,22rem)] rounded-lg border border-white/10 bg-black/40 p-3 text-white backdrop-blur-sm sm:left-auto sm:right-0'>
               <div className='mb-2 text-sm font-medium'>Slider settings</div>
               <div className='flex flex-col gap-2'>
                 <label className='flex flex-col gap-1 text-sm'>
                   <div className='flex items-center justify-between gap-3'>
                     <span>Autoplay (s)</span>
-                     <span className='tabular-nums text-white/80'>
-                      {Math.min(30, Math.max(0, Math.round(((autoPlayMs ?? SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS) / 1000))))}
+                    <span className='tabular-nums text-white/80'>
+                      {Math.min(
+                        30,
+                        Math.max(
+                          0,
+                          Math.round(
+                            (autoPlayMs ??
+                              SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS) / 1000
+                          )
+                        )
+                      )}
                     </span>
                   </div>
                   <input
@@ -136,12 +149,31 @@ export default function HomePage() {
                     min={0}
                     max={30}
                     step={1}
-                    value={Math.min(30, Math.max(0, Math.round(((autoPlayMs ?? SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS) / 1000))))}
+                    value={Math.min(
+                      30,
+                      Math.max(
+                        0,
+                        Math.round(
+                          (autoPlayMs ??
+                            SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS) / 1000
+                        )
+                      )
+                    )}
                     onChange={(e) => {
-                      const secs = Math.min(30, Math.max(0, Number(e.target.value) || 0));
+                      const secs = Math.min(
+                        30,
+                        Math.max(0, Number(e.target.value) || 0)
+                      );
                       const nextMs = secs * 1000;
                       setAutoPlayMs(nextMs);
-                      try { sessionStorage.setItem('spark.autoPlayMs', String(nextMs)); } catch {}
+                      try {
+                        sessionStorage.setItem(
+                          'spark.autoPlayMs',
+                          String(nextMs)
+                        );
+                      } catch {
+                        const _ = null;
+                      }
                     }}
                     className='w-full accent-gray-400'
                   />
@@ -149,7 +181,9 @@ export default function HomePage() {
                 <label className='flex flex-col gap-1 text-sm'>
                   <div className='flex items-center justify-between gap-3'>
                     <span>Scale</span>
-                    <span className='tabular-nums text-white/80'>{(sliderScale ?? 1).toFixed(2)}</span>
+                    <span className='tabular-nums text-white/80'>
+                      {(sliderScale ?? 1).toFixed(2)}
+                    </span>
                   </div>
                   <input
                     type='range'
@@ -158,9 +192,19 @@ export default function HomePage() {
                     step={0.01}
                     value={sliderScale ?? 1}
                     onChange={(e) => {
-                      const next = Math.min(1.28, Math.max(0.8, Number(e.target.value) || 1));
+                      const next = Math.min(
+                        1.28,
+                        Math.max(0.8, Number(e.target.value) || 1)
+                      );
                       setSliderScale(next);
-                      try { sessionStorage.setItem('spark.sliderScale', String(next)); } catch {}
+                      try {
+                        sessionStorage.setItem(
+                          'spark.sliderScale',
+                          String(next)
+                        );
+                      } catch {
+                        const _ = null;
+                      }
                     }}
                     className='w-full accent-gray-400'
                   />
@@ -173,7 +217,9 @@ export default function HomePage() {
                       try {
                         sessionStorage.removeItem('spark.autoPlayMs');
                         sessionStorage.removeItem('spark.sliderScale');
-                      } catch {}
+                      } catch {
+                        const _ = null;
+                      }
                       setAutoPlayMs(null);
                       setSliderScale(null);
                     }}
@@ -192,14 +238,18 @@ export default function HomePage() {
           className='[--spark-slider-scale-default:0.88] [--spark-slider-scale:var(--spark-slider-scale-default)] sm:[--spark-slider-scale-default:1] lg:[--spark-slider-scale-default:1.12] xl:[--spark-slider-scale-default:1.2]'
           style={
             sliderScale != null
-              ? ({ ['--spark-slider-scale' as any]: `calc(var(--spark-slider-scale-default, 1) * ${sliderScale})` } as React.CSSProperties)
+              ? ({
+                  ['--spark-slider-scale' as string]: `calc(var(--spark-slider-scale-default, 1) * ${sliderScale})`,
+                } as React.CSSProperties)
               : undefined
           }
         >
           <SparkSlider
             images={sliderImages}
             alt='Image'
-            autoPlayInterval={autoPlayMs ?? SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS}
+            autoPlayInterval={
+              autoPlayMs ?? SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS
+            }
             className='[--spark-slider-h:calc(100svh-10rem)] lg:[--spark-slider-h:calc(100svh-8rem)] xl:[--spark-slider-h:calc(100svh-7rem)]'
           />
         </div>

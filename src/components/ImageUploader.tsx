@@ -34,11 +34,20 @@ export default function ImageUploader({
             method: 'POST',
             body: formData,
           });
+          if (!res.ok) {
+            const msg =
+              (await res.json().catch(() => ({}))).error || 'Upload failed';
+            throw new Error(msg);
+          }
           const json = await res.json();
           return json.url as string | undefined;
         })
       );
       onUploaded(results.filter(Boolean) as string[]);
+    } catch (err) {
+      // Minimal surface: alert once; avoid per-file spam
+      const message = err instanceof Error ? err.message : 'Upload failed';
+      alert(message);
     } finally {
       setLoading(false);
     }
@@ -89,10 +98,9 @@ export default function ImageUploader({
                   type='button'
                   className='rounded bg-white/10 px-2 py-0.5 text-[11px] text-red-300 hover:bg-white/20'
                   onClick={async () => {
-                    await fetch(
-                      `/api/images?url=${encodeURIComponent(url)}`,
-                      { method: 'DELETE' }
-                    );
+                    await fetch(`/api/images?url=${encodeURIComponent(url)}`, {
+                      method: 'DELETE',
+                    });
                     onDeleted?.(url);
                   }}
                 >
