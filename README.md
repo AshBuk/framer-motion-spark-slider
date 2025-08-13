@@ -12,7 +12,6 @@ Optimized production-ready slider built with Next.js and Framer Motion.
 
 ### Live demo
 
-
 - Public demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 uploads are turned off to keep the demo clean. You can browse the slider with high‑quality placeholder images and use the Shuffle button to refresh the set.
 - Private preview: if you received a private preview link, uploads and deletes are enabled (images up to 5 MB; common image formats).
