@@ -10,10 +10,12 @@ Optimized production-ready slider built with Next.js and Framer Motion.
 - Responsive layout using viewport units (`svh`/`svmin`)
 - Simple image uploads UI (Browse/Manage)
 
-### Vercel demo
+### Live demo
 
-- Deploying to Vercel without `BLOB_READ_WRITE_TOKEN` runs in read-only mode: the UI hides uploads and shows fallback images from `picsum.photos`.
-- To enable persistent uploads on Vercel, set the `BLOB_READ_WRITE_TOKEN` project environment variable. The server-side API uses `@vercel/blob` to store images and returns public URLs.
+
+- Public demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
+uploads are turned off to keep the demo clean. You can browse the slider with high‑quality placeholder images and use the Shuffle button to refresh the set.
+- Private preview: if you received a private preview link, uploads and deletes are enabled (images up to 5 MB; common image formats).
 
 ## Quick start
 

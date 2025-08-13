@@ -152,10 +152,10 @@ import SparkSlider from '@/components/SparkSlider/SparkSlider';
   - `ImageUploader` handles browse/manage; it sends `multipart/form-data` POST and `DELETE`
   - The Shuffle button lives in the header and regenerates fallback-only images; user uploads always take precedence when present
 
-### Vercel demo and Phase 2 (uploads persistence)
+### Vercel demo (uploads persistence)
 
 - Vercel’s filesystem is ephemeral; use `@vercel/blob` for persistence when a server token is configured.
 - Behavior summary:
-  - With token (Vercel/Prod): full browse/manage; public URLs; `canWrite: true`.
-  - Without token (Vercel/Prod): read-only; `{ images: [], canWrite: false }`; client shows `picsum.photos` fallback.
+  - Production (no token): read-only; `{ images: [], canWrite: false }`; client shows `picsum.photos` fallback.
+  - Preview (token set for Preview env): full browse/manage; public URLs; `canWrite: true`. Share preview URL privately for testing.
   - Local dev without token: filesystem in `public/uploads/` stays as-is.
