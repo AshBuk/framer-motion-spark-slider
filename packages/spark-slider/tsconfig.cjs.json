@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/cjs",
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"]
+}

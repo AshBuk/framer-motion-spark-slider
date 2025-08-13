@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/esm",
+    "declaration": true,
+    "declarationDir": "./dist/esm",
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"]
+}
