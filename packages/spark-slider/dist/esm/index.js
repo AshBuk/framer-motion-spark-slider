@@ -1,3 +1,3 @@
-export { default as SparkSlider } from './spark/SparkSlider';
-export { useSparkSlider, computeSwipeTarget } from './spark/useSparkSlider';
-export { SLIDER_CONFIG } from './spark/config';
+export { default as SparkSlider } from './spark/SparkSlider.js';
+export { useSparkSlider, computeSwipeTarget } from './spark/useSparkSlider.js';
+export { SLIDER_CONFIG } from './spark/config.js';
