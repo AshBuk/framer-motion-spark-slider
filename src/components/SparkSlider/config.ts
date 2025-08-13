@@ -7,6 +7,8 @@ export type CardPosition =
   | 'hidden';
 
 export const SLIDER_CONFIG = {
+  // Default autoplay interval in milliseconds
+  DEFAULT_AUTOPLAY_INTERVAL_MS: 4000,
   // Card layout orientation; controls base aspect ratio and spacing
   CARD_LAYOUT: 'horizontal' as 'horizontal' | 'vertical',
   // Width of the center card in svmin units (vmin-safe, scales with viewport)
@@ -20,8 +22,8 @@ export const SLIDER_CONFIG = {
   SWIPE_THRESHOLD_PX: 50,
   // Cooldown after a swipe to ignore accidental clicks and rapid swipes
   SWIPE_COOLDOWN_MS: 350,
-  // Time without user input before autoplay resumes
-  USER_INTERACTION_DEBOUNCE_MS: 8000,
+  // Debounce - time without user input before autoplay resumes
+  USER_INTERACTION_DEBOUNCE_MS: 0,
   // Programmatic transition duration gate in ms (visuals use spring presets)
   TRANSITION_DURATION_MS: 300,
   // Small delay before index switch to schedule exit/enter animations
@@ -39,7 +41,7 @@ export const SLIDER_CONFIG = {
     // Viewport min‑side in px where offsets reach 100%
     breakpointPx: 1024,
     // Minimum multiplier applied on very narrow screens
-    minMultiplier: 0.72,
+    minMultiplier: 0.76,
   },
 
   CONTAINER_HEIGHTS_VH: {
@@ -63,28 +65,28 @@ export const SLIDER_CONFIG = {
       opacity: 0.8,
       blur: 1,
       zIndex: 40,
-      xOffsetFactor: -0.4,
+      xOffsetFactor: -0.41,
     },
     right: {
       scale: 1.05,
       opacity: 0.8,
       blur: 1,
       zIndex: 40,
-      xOffsetFactor: 0.4,
+      xOffsetFactor: 0.41,
     },
     'far-left': {
       scale: 0.8,
       opacity: 0.5,
       blur: 2,
       zIndex: 30,
-      xOffsetFactor: -0.7,
+      xOffsetFactor: -0.66,
     },
     'far-right': {
       scale: 0.8,
       opacity: 0.5,
       blur: 2,
       zIndex: 30,
-      xOffsetFactor: 0.7,
+      xOffsetFactor: 0.66,
     },
     hidden: { scale: 0.5, opacity: 0, blur: 5, zIndex: 10, xOffsetFactor: 0 },
   } satisfies Record<

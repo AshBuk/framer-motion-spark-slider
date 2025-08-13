@@ -22,7 +22,7 @@ interface SparkSliderProps {
 
 const SparkSlider = ({
   images,
-  autoPlayInterval = 6000,
+  autoPlayInterval = SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS,
   alt = 'Slide',
   className,
   cardClassName,
