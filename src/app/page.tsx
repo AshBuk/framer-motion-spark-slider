@@ -19,6 +19,7 @@ function TapIcon({ className }: { className?: string }) {
 
 export default function HomePage() {
   const [images, setImages] = useState<string[]>([]);
+  const [canWrite, setCanWrite] = useState<boolean>(false);
   // Use a deterministic daily seed (UTC date) to avoid SSR/CSR hydration mismatch
   const [fallbackSeed, setFallbackSeed] = useState<string>(() =>
     new Date().toISOString().slice(0, 10)
@@ -33,8 +34,9 @@ export default function HomePage() {
 
   const refresh = async () => {
     const res = await fetch('/api/images', { cache: 'no-store' });
-    const json = (await res.json()) as { images?: string[] };
+    const json = (await res.json()) as { images?: string[]; canWrite?: boolean };
     setImages(json.images || []);
+    if (typeof json.canWrite === 'boolean') setCanWrite(json.canWrite);
   };
 
   useEffect(() => {
@@ -47,17 +49,19 @@ export default function HomePage() {
     <main className='relative flex min-h-screen flex-col items-center justify-center gap-6 px-3 py-6 sm:p-6'>
       <div className='absolute left-0 right-0 top-[clamp(0.5rem,1.5vw,1.25rem)] grid grid-cols-1 gap-[clamp(0.4rem,1vw,0.75rem)] sm:grid-cols-[1fr_auto_1fr] sm:items-center'>
         <div className='pointer-events-auto order-1 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:order-none'>
-          <ImageUploader
-            uploadedCount={images.length}
-            images={images}
-            onDeleted={(url) => {
-              setImages((prev) => prev.filter((u) => u !== url));
-            }}
-            onUploaded={(urls) => {
-              setImages((prev) => [...prev, ...urls]);
-              void refresh();
-            }}
-          />
+          {canWrite ? (
+            <ImageUploader
+              uploadedCount={images.length}
+              images={images}
+              onDeleted={(url) => {
+                setImages((prev) => prev.filter((u) => u !== url));
+              }}
+              onUploaded={(urls) => {
+                setImages((prev) => [...prev, ...urls]);
+                void refresh();
+              }}
+            />
+          ) : null}
         </div>
         <h1
           className='order-2 justify-self-center text-center font-semibold sm:order-none sm:col-start-2 sm:col-end-3'

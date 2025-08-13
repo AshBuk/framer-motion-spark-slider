@@ -89,10 +89,8 @@ export default function ImageUploader({
                   type='button'
                   className='rounded bg-white/10 px-2 py-0.5 text-[11px] text-red-300 hover:bg-white/20'
                   onClick={async () => {
-                    const name = url.split('/').pop();
-                    if (!name) return;
                     await fetch(
-                      `/api/images?name=${encodeURIComponent(name)}`,
+                      `/api/images?url=${encodeURIComponent(url)}`,
                       { method: 'DELETE' }
                     );
                     onDeleted?.(url);

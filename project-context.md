@@ -54,19 +54,27 @@ The slider is split into three files:
 - **Responsive sizing** - Uses vh units for consistent sizing across devices
 
 ### API Routes (`src/app/api/images/route.ts`)
-Simple file upload API with no external dependencies:
-- **GET** `/api/images` - Returns list of uploaded images
-- **POST** `/api/images` - Upload image (supports both `multipart/form-data` and base64 `dataUrl` JSON)
-- **DELETE** `/api/images?name=<filename>` - Delete image by filename
-- Files stored in `public/uploads/` directory
+Phase 2: Blob-backed API with safe fallbacks
+- **GET** `/api/images` - Returns `{ images: string[], canWrite: boolean }`
+  - With `BLOB_READ_WRITE_TOKEN`: lists `@vercel/blob` objects under prefix `uploads/` and returns public URLs; `canWrite: true`.
+  - On Vercel without token: `{ images: [], canWrite: false }` (client shows fallback set).
+  - Locally without token: reads `public/uploads/`; `canWrite: true`.
+- **POST** `/api/images` - Upload image:
+  - With token: `multipart/form-data` only; stores via `put(file, { access: 'public' })` and returns `{ ok: true, url }`.
+  - On Vercel without token: `403` read-only.
+  - Local dev without token: writes to `public/uploads/`.
+- **DELETE** `/api/images` - Delete image:
+  - With token: accepts `?url=<public-url>` or `?name=<filename>`; deletes via `del(urlOrPath)`.
+  - On Vercel without token: `403` read-only.
+  - Local dev without token: deletes from `public/uploads/` by `?name=`.
 
 Implementation details:
-- Preferred upload path is `multipart/form-data` with field `file`
-- JSON fallback accepts `{ dataUrl: string, filename?: string }`
-- Max file size: 5 MB; basic image mime-types allowed (`png`, `jpg/jpeg`, `webp`, `gif`, `avif`)
-- Filenames are sanitized with `replace(/[\w.-]/g, '_')` to avoid unsafe paths
-
-Note: For production demo, Phase 2 migrates this route to Vercel Blob with server-only token.
+- Blob prefix: `uploads/`.
+- Preferred upload path is `multipart/form-data` with field `file`.
+- JSON fallback (`dataUrl`) remains supported only in local dev fallback.
+- Max file size: 5 MB; image mime-types enforced.
+- Filenames are sanitized with `replace(/[^\w.-]/g, '_')` to avoid unsafe paths.
+- Token stays server-only; SDK is used exclusively in the route handler.
 
 ### Image Upload Component (`src/components/ImageUploader.tsx`)
 Handles image uploads with drag-and-drop interface that integrates with the slider.
@@ -146,14 +154,8 @@ import SparkSlider from '@/components/SparkSlider/SparkSlider';
 
 ### Vercel demo and Phase 2 (uploads persistence)
 
-- Vercel’s filesystem is ephemeral; Phase 1 local FS uploads won’t persist in a deployed demo
-- Phase 2 plan:
-  - Switch `/api/images` to `@vercel/blob` in Route Handlers (server-only)
-    - POST: `put(file, { access: 'public' })` → return public URL
-    - GET: `list({ prefix })` → return array of public URLs
-    - DELETE: `del(urlOrPath)`
-  - Configure `BLOB_READ_WRITE_TOKEN` in project settings (server-only; never expose to the client)
-  - Fallback modes:
-    - With token: full browse/manage retained on demo
-    - Without token: read-only demo; return curated fallback images on GET
-  - Optional future flag in GET: `{ images: string[], canWrite: boolean }` so the client can hide uploader in read-only mode
+- Vercel’s filesystem is ephemeral; use `@vercel/blob` for persistence when a server token is configured.
+- Behavior summary:
+  - With token (Vercel/Prod): full browse/manage; public URLs; `canWrite: true`.
+  - Without token (Vercel/Prod): read-only; `{ images: [], canWrite: false }`; client shows `picsum.photos` fallback.
+  - Local dev without token: filesystem in `public/uploads/` stays as-is.
