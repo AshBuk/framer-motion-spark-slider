@@ -299,6 +299,27 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* About/Sponsor floating button*/}
+      <div className='pointer-events-auto absolute bottom-[clamp(4.75rem,12vw,6rem)] left-[clamp(0.5rem,2vw,1.5rem)] z-[260] sm:bottom-[clamp(0.5rem,2vw,1rem)]'>
+        <a
+          href='/about-sponsor'
+          className='inline-flex items-center gap-1 rounded-md bg-white/10 px-[clamp(0.6rem,2vw,1rem)] py-[clamp(0.35rem,1.2vw,0.55rem)] text-[clamp(0.8rem,1.6vw,1rem)] text-white hover:bg-white/20'
+          aria-label='About and sponsor'
+        >
+          <span>about/</span>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='0 0 24 24'
+            className='h-[1em] w-[1em]'
+            fill='currentColor'
+            aria-hidden='true'
+          >
+            <path d='M12 21.35l-1.45-1.32C6.4 15.36 4 13.07 4 10.25 4 8.18 5.68 6.5 7.75 6.5c1.07 0 2.1.46 2.8 1.27l.45.51.45-.51c.7-.81 1.73-1.27 2.8-1.27 2.07 0 3.75 1.68 3.75 3.75 0 2.82-2.4 5.11-6.55 9.78L12 21.35z' />
+          </svg>
+          <span>sponsor</span>
+        </a>
+      </div>
     </main>
   );
 }
