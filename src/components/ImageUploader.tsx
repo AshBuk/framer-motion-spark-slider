@@ -33,6 +33,7 @@ export default function ImageUploader({
           const res = await fetch('/api/images', {
             method: 'POST',
             body: formData,
+            headers: { 'x-requested-with': 'fetch' },
           });
           if (!res.ok) {
             const msg =
@@ -100,6 +101,7 @@ export default function ImageUploader({
                   onClick={async () => {
                     await fetch(`/api/images?url=${encodeURIComponent(url)}`, {
                       method: 'DELETE',
+                      headers: { 'x-requested-with': 'fetch' },
                     });
                     onDeleted?.(url);
                   }}
