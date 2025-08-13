@@ -33,7 +33,8 @@ export default [
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
-        project: ['./tsconfig.json'],
+        project: ['./tsconfig.json', './packages/*/tsconfig.json'],
+        tsconfigRootDir: __dirname,
       },
       globals: {
         ...globals.browser,
@@ -66,6 +67,17 @@ export default [
       'object-shorthand': 'error',
       'prefer-template': 'error',
       'arrow-body-style': ['warn', 'as-needed'],
+    },
+  },
+  // Ensure ESLint uses the package-local tsconfig for the library workspace
+  {
+    files: ['packages/spark-slider/**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        project: ['./packages/spark-slider/tsconfig.json'],
+        tsconfigRootDir: __dirname,
+      },
     },
   },
   // Disable formatting-related rules to avoid conflicts with Prettier

@@ -2,6 +2,9 @@
   "name": "framer-motion-spark-slider",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "description": "Framer Motion slider demo with Next.js and simple image upload API",
   "scripts": {
     "dev": "next dev",

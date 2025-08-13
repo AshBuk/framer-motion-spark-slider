@@ -1,0 +1,51 @@
+{
+  "name": "@ashbuk/spark-slider",
+  "version": "0.1.0",
+  "private": false,
+  "description": "SparkSlider – lightweight Framer Motion carousel component and hook",
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshBuk/framer-motion-slider.git",
+    "directory": "packages/spark-slider"
+  },
+  "homepage": "https://github.com/AshBuk/framer-motion-slider/tree/main/packages/spark-slider#readme",
+  "bugs": {
+    "url": "https://github.com/AshBuk/framer-motion-slider/issues"
+  },
+  "keywords": [
+    "react",
+    "carousel",
+    "slider",
+    "framer-motion",
+    "nextjs"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18",
+    "framer-motion": ">=12"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "npm run build:esm && npm run build:cjs"
+  }
+}

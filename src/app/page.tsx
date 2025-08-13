@@ -1,9 +1,8 @@
 'use client';
 
-import { SLIDER_CONFIG } from '@/components/SparkSlider/config';
+import { SLIDER_CONFIG, SparkSlider } from '@ashbuk/spark-slider';
 
 import { useEffect, useMemo, useState } from 'react';
-import SparkSlider from '@/components/SparkSlider/SparkSlider';
 import ImageUploader from '@/components/ImageUploader';
 
 function TapIcon({ className }: { className?: string }) {
