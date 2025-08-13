@@ -1,16 +1,15 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { PanInfo } from 'framer-motion';
 
-import { useSparkSlider } from './useSparkSlider';
+import { useSparkSlider, computeSwipeTarget } from './useSparkSlider';
 import { SLIDER_CONFIG, type CardPosition } from './config';
 
 interface SparkSliderProps {
   images: readonly string[];
-  onSlideSelect?: (index: number, isSelected: boolean) => void;
   autoPlayInterval?: number;
-  onSelectionChange?: (current: number, total: number) => void;
   alt?: string;
   className?: string;
   cardClassName?: string;
@@ -23,29 +22,36 @@ interface SparkSliderProps {
 
 const SparkSlider = ({
   images,
-  onSlideSelect,
   autoPlayInterval = 6000,
-  onSelectionChange,
   alt = 'Slide',
   className,
   cardClassName,
   renderImage,
 }: SparkSliderProps) => {
   const totalSlides = images.length;
+  const [fullscreenIndex, setFullscreenIndex] = useState<number | null>(null);
+  const [isFullscreenDragging, setIsFullscreenDragging] = useState(false);
+  const lastCenterDragAtRef = useRef<number>(0);
   const {
     currentIndex,
-    selectedIds,
     isTransitioning,
     isDragging,
     dragOffset,
-    vhInPixels,
+    vminInPixels,
     handlers,
   } = useSparkSlider({
     totalSlides,
     autoPlayInterval,
-    onSlideSelect,
-    onSelectionChange,
   });
+
+  useEffect(() => {
+    if (fullscreenIndex === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setFullscreenIndex(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [fullscreenIndex]);
 
   const getCardPosition = useCallback(
     (cardIndex: number, currentIdx: number): CardPosition => {
@@ -69,21 +75,32 @@ const SparkSlider = ({
 
   const getCardTransform = useCallback(
     (position: CardPosition) => {
-      const centerWidthVH = SLIDER_CONFIG.CENTER_CARD_WIDTH_VH;
-      const sideWidthVH = SLIDER_CONFIG.SIDE_CARD_WIDTH_VH;
-      const spacingVH = SLIDER_CONFIG.SPACING_VH;
+      const centerWidthVH = SLIDER_CONFIG.CENTER_CARD_SIZE;
+      const sideWidthVH = SLIDER_CONFIG.SIDE_CARD_SIZE;
+      const spacingVH = SLIDER_CONFIG.SPACING_UNITS;
       const posConfig = SLIDER_CONFIG.positions[position];
 
       const widthVHForPos = position === 'center' ? centerWidthVH : sideWidthVH;
       let baseX = posConfig.xOffsetFactor * (widthVHForPos + spacingVH);
+      // Responsive clamp: reduce absolute X offset on narrow viewports so side/far cards remain visible
+      // Uses vmin (min(width,height)) to stay consistent in portrait
+      const minViewportSidePx = vminInPixels * 100;
+      const { breakpointPx, minMultiplier } = SLIDER_CONFIG.OFFSET_RESPONSIVE;
+      const responsiveOffsetMultiplier = Math.max(
+        minMultiplier,
+        Math.min(1, minViewportSidePx / breakpointPx)
+      );
+      baseX *= responsiveOffsetMultiplier;
       let baseScale = posConfig.scale;
       let baseOpacity = posConfig.opacity;
       let baseBlur = posConfig.blur;
       const baseZIndex = posConfig.zIndex;
 
       if (isDragging && dragOffset !== 0) {
+        // Use vmin to keep geometry consistent in portrait where height >> width
+        const baseUnit = vminInPixels;
         const dragDistance = widthVHForPos + spacingVH;
-        const dragProgress = dragOffset / (dragDistance * vhInPixels);
+        const dragProgress = dragOffset / (dragDistance * baseUnit);
 
         if (position === 'center') {
           const shrinkFactor = Math.min(
@@ -133,18 +150,19 @@ const SparkSlider = ({
       const clampedBlur = Math.max(0, baseBlur);
 
       return {
-        x: `${baseX}vh`,
+        x: `${baseX}svmin`,
         scale: baseScale,
         opacity: baseOpacity,
         filter: `blur(${clampedBlur}px)`,
         zIndex: baseZIndex,
       };
     },
-    [isDragging, dragOffset, vhInPixels]
+    [isDragging, dragOffset, vminInPixels]
   );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (totalSlides < 2) return;
       if (e.key === 'ArrowLeft') {
         handlers.handleInteractionStart();
         const prevIndex =
@@ -158,12 +176,6 @@ const SparkSlider = ({
         handlers.handleSideCardClick(nextIndex);
         handlers.handleInteractionEnd();
         e.preventDefault();
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        // Programmatic toggle for center card selection
-        (
-          handlers as unknown as { toggleCenterSelection?: () => void }
-        ).toggleCenterSelection?.();
-        e.preventDefault();
       }
     },
     [currentIndex, totalSlides, handlers]
@@ -171,8 +183,7 @@ const SparkSlider = ({
 
   const renderCard = useCallback(
     (index: number, isCenter: boolean, position: CardPosition) => {
-      const slideIndex = index + 1;
-      const isSelected = selectedIds.has(slideIndex);
+      // Disable selection visuals; fullscreen handles selection UX
       const imageSrc = images[index % images.length];
 
       const aspectClass =
@@ -180,19 +191,19 @@ const SparkSlider = ({
           ? 'aspect-[3/4]'
           : 'aspect-[4/3]';
       const cardWidthVh = isCenter
-        ? SLIDER_CONFIG.CENTER_CARD_WIDTH_VH
-        : SLIDER_CONFIG.SIDE_CARD_WIDTH_VH;
+        ? SLIDER_CONFIG.CENTER_CARD_SIZE
+        : SLIDER_CONFIG.SIDE_CARD_SIZE;
 
       return (
         <motion.div
           key={`card-${index}`}
           className={`relative z-30 ${aspectClass} overflow-hidden rounded-xl ${cardClassName ?? ''}`}
-          style={{ width: `${cardWidthVh}vh` }}
+          style={{ width: `${cardWidthVh}svmin` }}
           onMouseEnter={handlers.handleInteractionStart}
           onMouseLeave={handlers.handleInteractionEnd}
           whileTap={{ scale: 0.95 }}
         >
-          {isCenter ? (
+          {isCenter && totalSlides > 1 ? (
             <motion.div
               className='absolute inset-0 z-50 cursor-grab active:cursor-grabbing'
               drag='x'
@@ -204,8 +215,29 @@ const SparkSlider = ({
               dragMomentum={false}
               onDragStart={handlers.handleDragStart}
               onDrag={handlers.handleDrag}
-              onDragEnd={handlers.handleDragEnd}
-              onClick={handlers.handleCenterCardClick}
+              onDragEnd={(evt, info) => {
+                handlers.handleDragEnd(
+                  evt as unknown as MouseEvent | TouchEvent | PointerEvent,
+                  info
+                );
+                lastCenterDragAtRef.current = Date.now();
+              }}
+              onClick={(e) => {
+                // Avoid opening during drag
+                if (isDragging) {
+                  e.preventDefault();
+                  return;
+                }
+                // Ignore click that happens right after a swipe/drag
+                if (
+                  Date.now() - lastCenterDragAtRef.current <
+                  SLIDER_CONFIG.SWIPE_COOLDOWN_MS
+                ) {
+                  e.preventDefault();
+                  return;
+                }
+                setFullscreenIndex(index);
+              }}
             />
           ) : position === 'left' || position === 'right' ? (
             <div
@@ -215,28 +247,10 @@ const SparkSlider = ({
           ) : null}
 
           <div className='absolute inset-0 rounded-xl bg-gradient-to-b from-neutral-800 to-black' />
-          {(isCenter || isSelected) && (
-            <div
-              className={`absolute inset-0 rounded-xl border ${isSelected ? 'border-emerald-400' : 'border-emerald-400/50'}`}
-            />
+          {isCenter && (
+            <div className='absolute inset-0 rounded-xl border border-emerald-400/50' />
           )}
-          {isSelected && (
-            <div className='pointer-events-none absolute right-2 top-2 z-10'>
-              <div className='flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500'>
-                <svg
-                  className='h-4 w-4 text-white'
-                  fill='currentColor'
-                  viewBox='0 0 20 20'
-                >
-                  <path
-                    fillRule='evenodd'
-                    d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                    clipRule='evenodd'
-                  />
-                </svg>
-              </div>
-            </div>
-          )}
+          {/* Selection indicators removed in favor of fullscreen UX */}
           <div className='pointer-events-none relative h-full w-full overflow-hidden rounded-xl'>
             {renderImage ? (
               renderImage(imageSrc, `${alt} ${index + 1}`, isCenter)
@@ -251,9 +265,7 @@ const SparkSlider = ({
             {!isCenter && (
               <div className='absolute inset-0 rounded-xl bg-black/40' />
             )}
-            {isSelected && (
-              <div className='absolute inset-0 rounded-xl bg-emerald-500/10' />
-            )}
+            {/* No selection overlay */}
             {isCenter && (
               <div className='absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/70 to-transparent p-3'>
                 <span className='text-sm font-medium leading-tight text-white'>{`${alt} ${index + 1}`}</span>
@@ -273,7 +285,7 @@ const SparkSlider = ({
         </motion.div>
       );
     },
-    [selectedIds, handlers, images, alt, totalSlides, cardClassName]
+    [handlers, images, alt, totalSlides, cardClassName]
   );
 
   return (
@@ -287,15 +299,79 @@ const SparkSlider = ({
       onFocus={handlers.handleInteractionStart}
       onBlur={handlers.handleInteractionEnd}
     >
+      {/* Fullscreen overlay */}
+      {fullscreenIndex !== null && (
+        <div className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4'>
+          <motion.div
+            className='max-h-[96svh] max-w-[96svw]'
+            drag='x'
+            dragConstraints={{
+              left: -SLIDER_CONFIG.DRAG_CONSTRAINTS_PX,
+              right: SLIDER_CONFIG.DRAG_CONSTRAINTS_PX,
+            }}
+            dragElastic={SLIDER_CONFIG.DRAG_ELASTICITY}
+            dragMomentum={false}
+            onDragStart={() => setIsFullscreenDragging(true)}
+            onDragEnd={(
+              _: MouseEvent | TouchEvent | PointerEvent,
+              info: PanInfo
+            ) => {
+              if (fullscreenIndex !== null) {
+                const target = computeSwipeTarget(
+                  info.offset.x,
+                  fullscreenIndex,
+                  totalSlides
+                );
+                if (typeof target === 'number') {
+                  setFullscreenIndex(null);
+                  handlers.handleSideCardClick(target);
+                  setIsFullscreenDragging(false);
+                  return;
+                }
+              }
+              setIsFullscreenDragging(false);
+            }}
+            onClick={() => {
+              if (isFullscreenDragging || fullscreenIndex === null) return;
+              const idx = fullscreenIndex;
+              setFullscreenIndex(null);
+              handlers.handleSideCardClick(idx);
+            }}
+          >
+            {renderImage ? (
+              renderImage(
+                images[fullscreenIndex % images.length],
+                `${alt} ${fullscreenIndex + 1}`,
+                true
+              )
+            ) : (
+              <img
+                src={images[fullscreenIndex % images.length]}
+                alt={`${alt} ${fullscreenIndex + 1}`}
+                className='h-full max-h-[96svh] w-full max-w-[96svw] select-none object-contain'
+                draggable={false}
+              />
+            )}
+          </motion.div>
+        </div>
+      )}
       <div
         className='relative w-full overflow-hidden'
         style={{
-          height: `min(${SLIDER_CONFIG.CONTAINER_HEIGHTS_VH.base}vh, 100svh)`,
+          height: `min(var(--spark-slider-h, ${SLIDER_CONFIG.CONTAINER_HEIGHTS_VH.base}svh), 100svh)`,
+          transform: 'scale(var(--spark-slider-scale, 1))',
+          transformOrigin: 'center',
         }}
-        // md breakpoint override via CSS variable
-        // Consumers can override via Tailwind if needed
-        // We keep a single source of truth in config for base height
       >
+        {/**
+         * CSS variable override on any breakpoint via Tailwind (`--spark-slider-h`).
+         * - Default base height: SLIDER_CONFIG.CONTAINER_HEIGHTS_VH.base
+         * - Height is clamped by 100svh for mobile viewport safety
+         */}
+        <div
+          aria-live='polite'
+          className='sr-only'
+        >{`Slide ${currentIndex + 1} of ${totalSlides}`}</div>
         <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
           <AnimatePresence mode='sync'>
             {images.map((_, cardIndex) => {
