@@ -2,9 +2,7 @@
 
 [![CI](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml)
 [![Publish](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/publish-gh-packages.yml/badge.svg)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/publish-gh-packages.yml)
-[![Tag](https://img.shields.io/github/v/tag/AshBuk/framer-motion-spark-slider?label=tag)](https://github.com/AshBuk/framer-motion-spark-slider/tags)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/AshBuk/framer-motion-spark-slider?style=social)](https://github.com/AshBuk/framer-motion-spark-slider)
 [![Demo](https://img.shields.io/badge/demo-vercel-black?logo=vercel)](https://spark-slider.vercel.app/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-%E2%89%A518-61DAFB?logo=react&logoColor=white)](https://react.dev/)
@@ -74,6 +72,7 @@ Install:
 
 ```
 npm i @ashbuk/spark-slider framer-motion react react-dom
+```
 
 - Stars are appreciated; contributions are welcome! Start onboarding by reading `project-context.md`. Comments in the codebase are concise and serve as additional documentation.
 
@@ -101,4 +100,3 @@ Slider breakdown:
 ## License
 
 MIT — see `LICENSE`.
-```
