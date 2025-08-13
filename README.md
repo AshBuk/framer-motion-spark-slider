@@ -33,7 +33,7 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ### Screencast
 
-[▶ Watch the screencast (WebM)](https://raw.githubusercontent.com/AshBuk/framer-motion-spark-slider/main/public/docs/spark-slider.webm)
+[![Screencast preview](public/docs/spark-slider.gif)](https://raw.githubusercontent.com/AshBuk/framer-motion-spark-slider/main/public/docs/spark-slider.webm)
 
 ## Quick start
 
