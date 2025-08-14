@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 
 // Import from built CJS dist of package to verify package entrypoints
-const lib = require('../packages/spark-slider/dist/cjs');
+const lib = require('../../packages/spark-slider/dist/cjs');
 
 test('computeSwipeTarget: below threshold returns null', () => {
   const fn = lib.computeSwipeTarget;

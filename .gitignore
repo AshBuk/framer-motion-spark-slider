@@ -29,6 +29,10 @@ coverage/
 # TypeScript incremental build info
 tsconfig.tsbuildinfo
 
+# Build outputs
+dist/
+packages/*/dist/
+
 # Docker
 *.pid
 
