@@ -1,4 +1,5 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import {
   render,
   screen,
@@ -7,7 +8,7 @@ import {
   act,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { SparkSlider } from '@ashbuk/spark-slider';
+import { SparkSlider, SLIDER_CONFIG } from '@ashbuk/spark-slider';
 
 // Mock next/image for Next.js integration tests
 jest.mock('next/image', () => ({
@@ -23,6 +24,14 @@ describe('SparkSlider', () => {
     '/image4.jpg',
     '/image5.jpg',
   ];
+
+  const waitForTransitionEnd = () =>
+    new Promise((resolve) =>
+      setTimeout(
+        resolve,
+        SLIDER_CONFIG.TRANSITION_DELAY_MS + SLIDER_CONFIG.TRANSITION_DURATION_MS
+      )
+    );
 
   describe('rendering', () => {
     test('renders slider with images', () => {
@@ -85,7 +94,9 @@ describe('SparkSlider', () => {
       render(<SparkSlider images={mockImages} />);
 
       const slider = screen.getByRole('region');
-      await user.tab();
+      await act(async () => {
+        await user.tab();
+      });
 
       expect(slider).toHaveFocus();
       expect(slider).toHaveClass(
@@ -110,29 +121,24 @@ describe('SparkSlider', () => {
       // Navigate right
       await act(async () => {
         await user.keyboard('{ArrowRight}');
-        // Wait for all state updates to complete
-        await new Promise((resolve) => setTimeout(resolve, 400));
       });
 
       await waitFor(() => {
-        const slideNumbers = screen
-          .getAllByText(/^\d+$/)
-          .map((el) => el.textContent);
-        expect(slideNumbers).toContain('2');
+        expect(screen.getByText('Slide 2 of 5')).toBeInTheDocument();
+      });
+
+      // Ensure transition finished before next input
+      await act(async () => {
+        await waitForTransitionEnd();
       });
 
       // Navigate left
       await act(async () => {
         await user.keyboard('{ArrowLeft}');
-        // Wait for all state updates to complete
-        await new Promise((resolve) => setTimeout(resolve, 400));
       });
 
       await waitFor(() => {
-        const slideNumbers = screen
-          .getAllByText(/^\d+$/)
-          .map((el) => el.textContent);
-        expect(slideNumbers).toContain('1');
+        expect(screen.getByText('Slide 1 of 5')).toBeInTheDocument();
       });
     });
 
@@ -149,27 +155,24 @@ describe('SparkSlider', () => {
       // Navigate left from first slide (should wrap to last)
       await act(async () => {
         await user.keyboard('{ArrowLeft}');
-        await new Promise((resolve) => setTimeout(resolve, 400));
       });
 
       await waitFor(() => {
-        const slideNumbers = screen
-          .getAllByText(/^\d+$/)
-          .map((el) => el.textContent);
-        expect(slideNumbers).toContain('5');
+        expect(screen.getByText('Slide 5 of 5')).toBeInTheDocument();
+      });
+
+      // Ensure transition finished before next input
+      await act(async () => {
+        await waitForTransitionEnd();
       });
 
       // Navigate right from last slide (should wrap to first)
       await act(async () => {
         await user.keyboard('{ArrowRight}');
-        await new Promise((resolve) => setTimeout(resolve, 400));
       });
 
       await waitFor(() => {
-        const slideNumbers = screen
-          .getAllByText(/^\d+$/)
-          .map((el) => el.textContent);
-        expect(slideNumbers).toContain('1');
+        expect(screen.getByText('Slide 1 of 5')).toBeInTheDocument();
       });
     });
 
@@ -280,10 +283,7 @@ describe('SparkSlider', () => {
         .getByRole('region')
         .querySelector('.cursor-grab');
 
-      // Wait a moment to ensure no cooldown issues
-      await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 400));
-      });
+      // No fixed sleep: rely on waitFor below to observe modal
 
       // Click to enter fullscreen using fireEvent for better control
       await act(async () => {

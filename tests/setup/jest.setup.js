@@ -112,25 +112,6 @@ Object.defineProperty(window, 'innerHeight', {
 const originalWarn = console.warn;
 const originalError = console.error;
 
-beforeAll(() => {
-  // Configure testing-library to be less verbose about act warnings
-  const originalError = console.error;
-  console.error = (...args) => {
-    // Suppress React act warnings that are unavoidable with userEvent internal focus handling
-    if (
-      typeof args[0] === 'string' &&
-      args[0].includes('Warning: An update to') &&
-      args[0].includes('inside a test was not wrapped in act') &&
-      (args[0].includes('setIsUserInteracting') ||
-        args[0].includes('focus') ||
-        args[0].includes('HTMLDivElementImpl.focus'))
-    ) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-});
-
 afterAll(() => {
   console.warn = originalWarn;
   console.error = originalError;
