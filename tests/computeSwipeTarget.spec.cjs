@@ -18,4 +18,3 @@ test('computeSwipeTarget: above threshold navigates and wraps', () => {
   // Drag left (<0) goes to next; wrap from last -> 0 via baseIndex=4
   assert.equal(fn(-60, 4, 5), 0);
 });
-

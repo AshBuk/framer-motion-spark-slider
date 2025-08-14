@@ -19,11 +19,11 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ## ✦ Features
 
- ✦ Smooth drag-to-swipe with momentum-free, precise control
- ✦ Click on the center card to enter fullscreen (single tap on touch)
- ✦ Auto-play with pause on interaction
- ✦ Responsive layout using viewport units (`svh`/`svmin`)
- ✦ Simple image uploads UI (Browse/Manage)
+✦ Smooth drag-to-swipe with momentum-free, precise control
+✦ Click on the center card to enter fullscreen (single tap on touch)
+✦ Auto-play with pause on interaction
+✦ Responsive layout using viewport units (`svh`/`svmin`)
+✦ Simple image uploads UI (Browse/Manage)
 
 ### ✦ Vercel demo
 

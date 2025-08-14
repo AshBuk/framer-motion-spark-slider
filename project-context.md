@@ -178,4 +178,3 @@ import SparkSlider from '@/components/SparkSlider/SparkSlider';
   - Production (no token): read-only; `{ images: [], canWrite: false }`; client shows `picsum.photos` fallback.
   - Preview (token set for Preview env): full browse/manage; public URLs; `canWrite: true`. Share preview URL privately for testing.
   - Local dev without token: filesystem in `public/uploads/` stays as-is.
-
