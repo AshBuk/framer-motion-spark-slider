@@ -32,7 +32,7 @@
 
 ### Main Components
 
-#### SparkSlider Component (`src/components/SparkSlider/`)
+#### SparkSlider Component
 
 The slider is split into three files:
 
@@ -123,9 +123,11 @@ All slider behavior is controlled through `SLIDER_CONFIG` in `config.ts`:
 
 ### File Structure Conventions
 
-- Components in `src/components/` with co-located hooks and config
-- API routes follow Next.js App Router conventions
-- Images stored in `public/uploads/` for static serving
+- The application imports the slider from the package name: `@ashbuk/spark-slider`.
+- Single source of truth: slider sources live in `src/components/SparkSlider/*`.
+- The package workspace path `packages/spark-slider/src/spark` is a symbolic link to `src/components/SparkSlider` to avoid duplication.
+- API routes follow Next.js App Router conventions.
+- Images stored in `public/uploads/` for static serving.
 
 ### State Management
 
@@ -143,12 +145,12 @@ The slider uses Framer Motion and `vh` units; Tailwind utilities are optional an
 ### Component usage
 
 ```tsx
-import SparkSlider from '@/components/SparkSlider/SparkSlider';
+import { SparkSlider, SLIDER_CONFIG } from '@ashbuk/spark-slider';
 
 <SparkSlider
   images={['/uploads/one.jpg', '/uploads/two.jpg']}
   alt='Image'
-  autoPlayInterval={6000}
+  autoPlayInterval={SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS}
   className='md:[--spark-slider-h:48svh]'
 />;
 ```
@@ -178,3 +180,10 @@ import SparkSlider from '@/components/SparkSlider/SparkSlider';
   - Production (no token): read-only; `{ images: [], canWrite: false }`; client shows `picsum.photos` fallback.
   - Preview (token set for Preview env): full browse/manage; public URLs; `canWrite: true`. Share preview URL privately for testing.
   - Local dev without token: filesystem in `public/uploads/` stays as-is.
+
+### Package development and publishing
+
+- Local development: the app uses the package name, and Next is configured with `transpilePackages: ['@ashbuk/spark-slider']` so edits in `src/components/SparkSlider/*` are reflected immediately via the symlinked package sources.
+- Build/package: `npm -w packages/spark-slider run build` produces `dist/esm` and `dist/cjs`.
+- CI: `.github/workflows/ci.yml` runs type-check, lint, build and tests on pushes/PRs to `main`.
+- Publish to GitHub Packages: tag pushes matching `spark-slider-v*` trigger `.github/workflows/publish-gh-packages.yml` which runs `npm publish --workspace=@ashbuk/spark-slider` to `npm.pkg.github.com`.
