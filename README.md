@@ -13,25 +13,25 @@
 
 Spark Slider was originally built for a startup as a modern, custom, and highly optimized slider that performs well with large image datasets. It supports laptops, tablets, and phones, and works great with both touch and mouse/keyboard input. Plans changed, so the component was refined and released as open source.
 
-### For businesses and users
+### ✦ For businesses and users
 
 A robust slider suitable for galleries, installations, projections, events, or products that need precise, smooth interactions and an accessible UI.
 
-## Features
+## ✦ Features
 
-- Smooth drag-to-swipe with momentum-free, precise control
-- Click on the center card to enter fullscreen (single tap on touch)
-- Auto-play with pause on interaction
-- Responsive layout using viewport units (`svh`/`svmin`)
-- Simple image uploads UI (Browse/Manage)
+✦ Smooth drag-to-swipe with momentum-free, precise control
+✦ Click on the center card to enter fullscreen (single tap on touch)
+✦ Auto-play with pause on interaction
+✦ Responsive layout using viewport units (`svh`/`svmin`)
+✦ Simple image uploads UI (Browse/Manage)
 
-### Vercel demo
+### ✦ Vercel demo
 
 - Public demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
   You are viewing a hosted demo on Vercel. Images are randomized daily via [picsum.photos](https://picsum.photos) (sourced from the Unsplash photographers collection). Uploading and managing your own images is disabled here. I am considering expanding the online service with private-cloud storage so users can manage their own images.
   // Private preview (if provided): uploads and deletes are enabled (images up to 5 MB; common image formats).
 
-### Screencast
+### ✦ Screencast
 
 ![Screencast preview](public/docs/spark-slider.gif)
 
@@ -55,7 +55,7 @@ docker compose up --build
 
 This mounts `./public/uploads` as a volume for persistence.
 
-## For developers
+## ✦ For developers
 
 - Packaged as an npm React library for easy reuse in apps (see `packages/spark-slider/README.md`).
 
@@ -86,17 +86,17 @@ Slider breakdown:
 - `useSparkSlider.ts` — interaction/state: index, autoplay, drag/swipe, and transition gating.
 - `config.ts` — single source of truth (`SLIDER_CONFIG`) for sizes, spacing, positions, spring presets, and thresholds.
 
-## Sponsor
+## ✦ Sponsor
 
 - [Sponsor on GitHub](https://github.com/sponsors/AshBuk)
 - [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG)
 
-## Links and contact
+## ✦ Links and contact
 
 - GitHub: https://github.com/AshBuk
 - LinkedIn: https://www.linkedin.com/in/ashbuk/
 - Email: 2asherbuk@gmail.com
 
-## License
+## ✦ License
 
 MIT — see `LICENSE`.

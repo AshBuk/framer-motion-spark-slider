@@ -2,6 +2,7 @@
 
 ### Essential Commands
 
+- `npm test` - Run tests (Node.js Test Runner)
 - `npm run dev` - Start development server (localhost:3000)
 - `npm run build` - Build for production
 - `npm run start` - Start production server
