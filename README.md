@@ -13,7 +13,8 @@
 
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
-Spark Slider was originally built for a startup as a modern, custom, and highly optimized slider that performs well with large image datasets. It supports laptops, tablets, and phones, and works great with both touch and mouse/keyboard input. Plans changed, so the component was refined and released as open source.
+Spark Slider — a lightweight and fast React slider carousel powered by Framer Motion animations. 
+Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.
 
 ### ✦ For businesses and users
 
