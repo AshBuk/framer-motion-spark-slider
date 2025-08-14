@@ -23,11 +23,11 @@ export default function AboutSponsorPage() {
       </div>
       <h1 className='mb-4 text-2xl font-semibold'>About</h1>
       <p className='mb-6 text-sm text-neutral-300'>
-        Spark Slider was originally built for a startup as a modern, custom, and
-        highly optimized slider that performs well with large image datasets. It
-        supports laptops, tablets, and phones, and works great with both touch
-        and mouse/keyboard input. Plans changed, so the component was refined
-        and released as open source.
+        Spark Slider — a lightweight and fast React slider carousel powered by
+        Framer Motion animations. Designed as a modern, custom, and highly
+        optimized solution for large image datasets, it works seamlessly on
+        laptops, tablets, and phones, with smooth support for both touch and
+        mouse/keyboard input.
       </p>
 
       <section className='mb-6'>
