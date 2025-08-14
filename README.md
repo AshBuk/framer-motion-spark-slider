@@ -17,7 +17,7 @@ Spark Slider was originally built for a startup as a modern, custom, and highly 
 
 A robust slider suitable for galleries, installations, projections, events, or products that need precise, smooth interactions and an accessible UI.
 
-## ✦ Features
+## Features
 
 - Smooth drag-to-swipe with momentum-free, precise control
 - Click on the center card to enter fullscreen (single tap on touch)
