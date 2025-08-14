@@ -13,7 +13,7 @@
 
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
-Spark Slider — a lightweight and fast React slider carousel powered by Framer Motion animations.
+**Spark Slider** — a lightweight and fast React slider carousel powered by Framer Motion animations.
 Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.
 
 ### ✦ For businesses and users
