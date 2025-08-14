@@ -26,6 +26,17 @@ export default [
   },
   // Next.js recommended rules (flat via FlatCompat)
   ...compat.extends('next/core-web-vitals'),
+  // Ensure app sources use the root tsconfig for type-aware linting
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: __dirname,
+      },
+    },
+  },
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
