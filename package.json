@@ -11,6 +11,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "pretest": "npm -w packages/spark-slider run build && npm run build",
+    "test": "NODE_TEST_PARALLEL=0 node --test tests/*.spec.*",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",

@@ -2,6 +2,7 @@
 
 ### Essential Commands
 
+- `npm test` - Run tests (Node.js Test Runner)
 - `npm run dev` - Start development server (localhost:3000)
 - `npm run build` - Build for production
 - `npm run start` - Start production server
@@ -177,3 +178,4 @@ import SparkSlider from '@/components/SparkSlider/SparkSlider';
   - Production (no token): read-only; `{ images: [], canWrite: false }`; client shows `picsum.photos` fallback.
   - Preview (token set for Preview env): full browse/manage; public URLs; `canWrite: true`. Share preview URL privately for testing.
   - Local dev without token: filesystem in `public/uploads/` stays as-is.
+
