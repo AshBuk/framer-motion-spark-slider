@@ -1,6 +1,8 @@
 # Build outputs
 .next/
 out/
+dist/
+packages/*/dist/
 
 # Dependencies  
 node_modules/

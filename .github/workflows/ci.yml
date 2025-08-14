@@ -15,8 +15,6 @@ jobs:
         with:
           node-version: 20
       - run: npm ci
-      - run: npm run type-check
-      - run: npm run lint
-      - run: npm run format:check
+      - run: npm run check-all
       - run: npm run -w @ashbuk/spark-slider build
       - run: npm test

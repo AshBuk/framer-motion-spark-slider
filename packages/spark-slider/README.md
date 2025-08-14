@@ -65,6 +65,26 @@ import { SparkSlider } from '@ashbuk/spark-slider';
 - • `useSparkSlider` – hook used internally (advanced integration)
 - • `CardPosition` – type
 
+## ✦ Development (monorepo)
+
+- This package is developed inside a Next.js demo app. In dev, the package sources under `packages/spark-slider/src/spark` are a symbolic link to the app sources `src/components/SparkSlider/*` to avoid duplication.
+- The app imports by package name and Next is configured with `transpilePackages: ['@ashbuk/spark-slider']` for hot reload.
+- Build locally:
+
+```bash
+npm -w packages/spark-slider run build
+```
+
+## ✦ Publish (GitHub Packages)
+
+- Version bump `packages/spark-slider/package.json` and push a tag matching `spark-slider-v*` (e.g. `spark-slider-v0.1.4`). A GitHub Action will publish to `npm.pkg.github.com`.
+- Install from GitHub Packages:
+
+```npmrc
+@ashbuk:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
 ## ✦ Styling
 
 - No CSS required. Works without Tailwind.
