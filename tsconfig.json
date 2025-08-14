@@ -20,10 +20,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@ashbuk/spark-slider": [
-        "./packages/spark-slider/src/index.ts",
-        "./packages/spark-slider/src"
-      ]
+      "@ashbuk/spark-slider": ["./packages/spark-slider/src/index.ts"],
+      "@ashbuk/spark-slider/*": ["./packages/spark-slider/src/*"]
     },
     "target": "ES2022"
   },
