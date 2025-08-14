@@ -36,7 +36,7 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ### ✦ Screencast
 
-![Screencast preview](public/docs/spark-slider.gif)
+https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
 
 ## Quick start
 
