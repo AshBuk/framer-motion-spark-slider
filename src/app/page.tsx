@@ -37,6 +37,7 @@ export default function HomePage() {
   const [showConfig, setShowConfig] = useState<boolean>(false);
   const [autoPlayMs, setAutoPlayMs] = useState<number | null>(null);
   const [sliderScale, setSliderScale] = useState<number | null>(null);
+  const [isShuffling, setIsShuffling] = useState<boolean>(false);
   // Use a deterministic daily seed (UTC date) to avoid SSR/CSR hydration mismatch
   const [fallbackSeed, setFallbackSeed] = useState<string>(() =>
     new Date().toISOString().slice(0, 10)
@@ -105,15 +106,27 @@ export default function HomePage() {
           Framer Motion Spark Slider
         </h1>
         <div className='relative order-3 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:justify-self-end sm:pl-0 sm:pr-[clamp(0.5rem,2vw,1.5rem)]'>
-          <div className='flex items-center gap-2'>
-            <button
-              type='button'
-              className='rounded-md bg-white/10 px-[clamp(0.5rem,2vw,1rem)] py-[clamp(0.3rem,1.2vw,0.5rem)] text-[clamp(0.8rem,1.6vw,1rem)] text-white hover:bg-white/20'
-              onClick={() => setFallbackSeed(`${Date.now().toString(36)}`)}
-              aria-label='Shuffle images'
-            >
-              Shuffle
-            </button>
+          <div className='flex items-start gap-2'>
+            <div className='relative'>
+              <button
+                type='button'
+                className='rounded-md bg-white/10 px-[clamp(0.5rem,2vw,1rem)] py-[clamp(0.3rem,1.2vw,0.5rem)] text-[clamp(0.8rem,1.6vw,1rem)] text-white hover:bg-white/20'
+                onClick={() => {
+                  setIsShuffling(true);
+                  setFallbackSeed(`${Date.now().toString(36)}`);
+                  // Micro-delay to let UI reflect the state change; images change on next render
+                  setTimeout(() => setIsShuffling(false), 1500);
+                }}
+                aria-label='Shuffle images'
+              >
+                Shuffle
+              </button>
+              {isShuffling ? (
+                <span className='pointer-events-none absolute left-0 top-full mt-0.5 whitespace-nowrap text-[clamp(0.72rem,1.3vw,0.9rem)] text-white/70'>
+                  refresh images…
+                </span>
+              ) : null}
+            </div>
             <button
               type='button'
               className='rounded-md bg-white/10 px-[clamp(0.5rem,2vw,1rem)] py-[clamp(0.3rem,1.2vw,0.5rem)] text-[clamp(0.8rem,1.6vw,1rem)] text-white hover:bg-white/20'
