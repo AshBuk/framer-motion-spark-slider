@@ -4,19 +4,11 @@ Lightweight React carousel built with Framer Motion. Framework-agnostic by defau
 
 ## ✦ Install
 
-### From npm (recommended)
 ```bash
 npm i @ashbuk/spark-slider framer-motion react react-dom
 ```
 
-### From GitHub Packages
-```bash
-# Add to .npmrc:
-echo "@ashbuk:registry=https://npm.pkg.github.com" >> .npmrc
-echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc
-
-npm i @ashbuk/spark-slider framer-motion react react-dom
-```
+**Alternative:** Install from GitHub Packages (requires [GitHub token setup](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-a-package))
 
 Peer deps expected in host app: React 18, Framer Motion 12.
 
