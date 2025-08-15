@@ -79,12 +79,13 @@ npm -w packages/spark-slider run build
 
 ## ✦ Publish
 
-- Version bump `packages/spark-slider/package.json` and push a tag matching `spark-slider-v*` (e.g. `spark-slider-v0.1.4`). 
+- Version bump `packages/spark-slider/package.json` and push a tag matching `spark-slider-v*` (e.g. `spark-slider-v0.1.4`).
 - A GitHub Action will automatically publish to **both**:
   - **npm registry** (https://npmjs.com) - public access
   - **GitHub Packages** (https://npm.pkg.github.com) - requires auth
 
 ### Requirements for dual publishing:
+
 - `NPM_TOKEN` secret in GitHub repository settings
 - npm account with publish permissions
 
