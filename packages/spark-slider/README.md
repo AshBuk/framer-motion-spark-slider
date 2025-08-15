@@ -8,6 +8,8 @@ Lightweight React carousel built with Framer Motion. Framework-agnostic by defau
 npm i @ashbuk/spark-slider framer-motion react react-dom
 ```
 
+**Alternative:** Install from GitHub Packages (requires [GitHub token setup](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#installing-a-package))
+
 Peer deps expected in host app: React 18, Framer Motion 12.
 
 ## ✦ Usage
@@ -75,15 +77,17 @@ import { SparkSlider } from '@ashbuk/spark-slider';
 npm -w packages/spark-slider run build
 ```
 
-## ✦ Publish (GitHub Packages)
+## ✦ Publish
 
-- Version bump `packages/spark-slider/package.json` and push a tag matching `spark-slider-v*` (e.g. `spark-slider-v0.1.4`). A GitHub Action will publish to `npm.pkg.github.com`.
-- Install from GitHub Packages:
+- Version bump `packages/spark-slider/package.json` and push a tag matching `spark-slider-v*` (e.g. `spark-slider-v0.1.4`).
+- A GitHub Action will automatically publish to **both**:
+  - **npm registry** (https://npmjs.com) - public access
+  - **GitHub Packages** (https://npm.pkg.github.com) - requires auth
 
-```npmrc
-@ashbuk:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
+### Requirements for dual publishing:
+
+- `NPM_TOKEN` secret in GitHub repository settings
+- npm account with publish permissions
 
 ## ✦ Styling
 
