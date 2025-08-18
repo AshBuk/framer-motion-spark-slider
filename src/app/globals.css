@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Root scope for CSS variables if needed */
-:root {
-}
-
-/* Using system fonts for better performance */
-
 /* Base styles */
 * {
   box-sizing: border-box;
@@ -17,12 +11,4 @@
 html,
 body {
   height: 100%;
-}
-
-/* Kiosk utilities (placeholder for future use) */
-.kiosk-container {
-}
-
-/* Frame 1342 hero typography (placeholder) */
-.text-frame-1342-hero {
 }
