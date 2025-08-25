@@ -1,4 +1,10 @@
-# About Framer Motion Spark Slider
+<div align="center">
+
+# Spark Slider
+
+> \*\*Responsive carousel slider built with Next.js and Framer Motion 
+
+</div>
 
 [![CI](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml)
 [![Publish](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/publish-package.yml/badge.svg)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/publish-package.yml)
@@ -14,7 +20,7 @@
 
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
-**Spark Slider** — a lightweight and fast React slider carousel powered by Framer Motion animations.
+Lightweight and fast React slider carousel powered by Framer Motion animations.
 Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.
 
 ### ✦ For businesses and users
