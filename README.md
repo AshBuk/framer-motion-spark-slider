@@ -2,7 +2,7 @@
 
 # Spark Slider
 
-> \*\*Responsive carousel slider built with Next.js and Framer Motion 
+> \*\*Responsive carousel slider built with Next.js and Framer Motion
 
 </div>
 
