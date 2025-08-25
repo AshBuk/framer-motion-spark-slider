@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 import '@testing-library/jest-dom';
 
 // Mock Framer Motion to avoid animation issues in tests

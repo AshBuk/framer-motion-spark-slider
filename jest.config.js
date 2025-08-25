@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 const nextJest = require('next/jest');
 
 const createJestConfig = nextJest({

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 'use client';
 
 import { useEffect, useState } from 'react';

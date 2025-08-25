@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { promises as fs } from 'fs';

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [

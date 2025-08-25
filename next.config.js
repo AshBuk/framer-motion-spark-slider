@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
