@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Asher Buk
+ * SPDX-License-Identifier: MIT
+ */
+
 import { renderHook, act } from '@testing-library/react';
 import { useSparkSlider } from '@ashbuk/spark-slider';
 
