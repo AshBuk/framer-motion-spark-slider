@@ -62,11 +62,13 @@ A robust slider suitable for galleries, installations, projections, events, or p
 npm i @ashbuk/spark-slider framer-motion react react-dom
 ```
 
-- Stars are appreciated; contributions are welcome! Start onboarding by reading `DEVELOPMENT.md` and `CONTRIBUTING.md`. Comments in the codebase are concise and serve as additional documentation.
-
-- The project adheres to SOLID and DRY principles.
-- The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, Tailwind CSS, CSS viewport units `svh`/`svmin`).
-- Performance: renders only visible cards, non-visible slides are not mounted, non-center images use `loading="lazy"`. Scales to large image lists while keeping the DOM small.
+- Stars are appreciated; contributions are welcome! Start onboarding by reading:
+* [`DEVELOPMENT.md`](DEVELOPMENT.md)
+* [`CONTRIBUTING.md`](CONTRIBUTING.md) 
+* Comments in the codebase are concise and serve as additional documentation.
+* The project adheres to SOLID and DRY principles.
+* The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, Tailwind CSS, CSS viewport units `svh`/`svmin`).
+* Performance: renders only visible cards, non-visible slides are not mounted, non-center images use `loading="lazy"`. Scales to large image lists while keeping the DOM small.
 
 Slider breakdown:
 
