@@ -29,6 +29,10 @@
 
 </div>
 
+### ✦ Screencast
+
+https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
+
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
 **Lightweight and fast React slider carousel powered by Framer Motion animations.
@@ -39,10 +43,6 @@ Designed as a modern, custom, and highly optimized solution for large image data
 A robust slider suitable for galleries, installations, projections, events, or products that need precise, smooth interactions and an accessible UI.
 
 ## Features
-
-### ✦ Screencast
-
-https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
 
 - Smooth drag-to-swipe with momentum-free, precise control
 - Click on the center card to enter fullscreen (single tap on touch)
