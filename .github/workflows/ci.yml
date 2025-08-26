@@ -16,5 +16,7 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run check-all
+      - name: Check license headers
+        run: chmod +x scripts/check-license-headers.sh && ./scripts/check-license-headers.sh
       - run: npm run -w @ashbuk/spark-slider build
       - run: npm test
