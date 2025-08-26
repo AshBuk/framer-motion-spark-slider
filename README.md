@@ -18,10 +18,6 @@
 [![Framer Motion](https://img.shields.io/badge/Framer%20Motion-%E2%89%A512-0055FF?logo=framer)](https://www.framer.com/motion/)
 [![Node](https://img.shields.io/badge/node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 
-[![Lines of Code](https://tokei.rs/b1/github/AshBuk/framer-motion-spark-slider?category=code)](https://github.com/AshBuk/framer-motion-spark-slider)
-[![Dependencies](https://img.shields.io/librariesio/github/AshBuk/framer-motion-spark-slider)](https://libraries.io/github/AshBuk/framer-motion-spark-slider)
-[![Monorepo](https://img.shields.io/badge/monorepo-workspaces-orange)](#)
-
 [![npm](https://img.shields.io/npm/v/@ashbuk/spark-slider?logo=npm)](https://npmjs.com/package/@ashbuk/spark-slider)
 [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-enabled-181717?logo=github)](https://github.com/AshBuk/framer-motion-spark-slider/packages)
 
