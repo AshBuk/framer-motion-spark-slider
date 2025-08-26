@@ -6,17 +6,27 @@
 
 </div>
 
+<div align="center">
+
 [![CI](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml)
 [![Publish](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/publish-package.yml/badge.svg)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/publish-package.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Demo](https://img.shields.io/badge/demo-vercel-black?logo=vercel)](https://spark-slider.vercel.app/)
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-%E2%89%A518-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Framer Motion](https://img.shields.io/badge/Framer%20Motion-%E2%89%A512-0055FF?logo=framer)](https://www.framer.com/motion/)
 [![Node](https://img.shields.io/badge/node-20.x-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+
 [![npm](https://img.shields.io/npm/v/@ashbuk/spark-slider?logo=npm)](https://npmjs.com/package/@ashbuk/spark-slider)
 [![GitHub Packages](https://img.shields.io/badge/GitHub%20Packages-enabled-181717?logo=github)](https://github.com/AshBuk/framer-motion-spark-slider/packages)
+[![Lines of Code](https://tokei.rs/b1/github/AshBuk/framer-motion-spark-slider?category=code)](https://github.com/AshBuk/framer-motion-spark-slider)
+
+[![Code Quality](https://img.shields.io/badge/Code%20Quality-TypeScript%20%7C%20ESLint%20%7C%20Prettier-brightgreen?logo=eslint)](https://github.com/AshBuk/framer-motion-spark-slider)
+[![Dependencies](https://img.shields.io/librariesio/github/AshBuk/framer-motion-spark-slider)](https://libraries.io/github/AshBuk/framer-motion-spark-slider)
 [![Monorepo](https://img.shields.io/badge/monorepo-workspaces-orange)](#)
+
+</div>
 
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
