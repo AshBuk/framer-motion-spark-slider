@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages
+name: Publish Package
 
 on:
   push:
@@ -17,14 +17,27 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run -w @ashbuk/spark-slider build
+
+      # Publish to npm
+      - name: Publish to npm
+        run: npm publish --workspace=@ashbuk/spark-slider --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Publish to GitHub Packages  
+      - name: Setup Node.js for GitHub Packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
           registry-url: 'https://npm.pkg.github.com'
           scope: '@ashbuk'
 
-      - run: npm ci
-      - run: npm run -w @ashbuk/spark-slider build
-
-      # Publish to GitHub Packages
       - name: Publish to GitHub Packages
-        run: npm publish --workspace=@ashbuk/spark-slider --registry=https://npm.pkg.github.com
+        run: npm publish --workspace=@ashbuk/spark-slider
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
