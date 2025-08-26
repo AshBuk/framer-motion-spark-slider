@@ -40,6 +40,10 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ## Features
 
+### ✦ Screencast
+
+https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
+
 - Smooth drag-to-swipe with momentum-free, precise control
 - Click on the center card to enter fullscreen (single tap on touch)
 - Auto-play with pause on interaction
@@ -51,10 +55,6 @@ A robust slider suitable for galleries, installations, projections, events, or p
 - Public demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
   You are viewing a hosted demo on Vercel. Images are randomized daily via [picsum.photos](https://picsum.photos) (sourced from the Unsplash photographers collection). Uploading and managing your own images is disabled here. I am considering expanding the online service with private-cloud storage so users can manage their own images.
   // Private preview (if provided): uploads and deletes are enabled (images up to 5 MB; common image formats).
-
-### ✦ Screencast
-
-https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
 
 ## For developers
 
