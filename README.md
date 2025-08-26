@@ -75,7 +75,7 @@ This mounts `./public/uploads` as a volume for persistence.
 npm i @ashbuk/spark-slider framer-motion react react-dom
 ```
 
-- Stars are appreciated; contributions are welcome! Start onboarding by reading `project-context.md`. Comments in the codebase are concise and serve as additional documentation.
+- Stars are appreciated; contributions are welcome! Start onboarding by reading `DEVELOPMENT.md` and `CONTRIBUTING.md`. Comments in the codebase are concise and serve as additional documentation.
 
 - The project adheres to SOLID and DRY principles.
 - The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, Tailwind CSS, CSS viewport units `svh`/`svmin`).
