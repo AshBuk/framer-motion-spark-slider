@@ -20,8 +20,8 @@
 
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
-Lightweight and fast React slider carousel powered by Framer Motion animations.
-Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.
+**Lightweight and fast React slider carousel powered by Framer Motion animations.
+Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.**
 
 ### ✦ For businesses and users
 
@@ -45,26 +45,6 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
 
-## Quick start
-
-```bash
-npm install
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-- Use Browse/Manage to upload images — they will appear in the slider.
-- If no images yet, the demo shows a high-quality fallback set (randomized daily). Use the Shuffle button to regenerate.
-
-Using Docker? Use Docker Compose:
-
-```bash
-docker compose up --build
-```
-
-This mounts `./public/uploads` as a volume for persistence.
-
 ## For developers
 
 - Packaged as an npm React library for easy reuse in apps (see `packages/spark-slider/README.md`).
@@ -87,11 +67,6 @@ Slider breakdown:
 - `useSparkSlider.ts` — interaction/state: index, autoplay, drag/swipe, and transition gating.
 - `config.ts` — single source of truth (`SLIDER_CONFIG`) for sizes, spacing, positions, spring presets, and thresholds.
 
-## ✦ Sponsor
-
-- [Sponsor on GitHub](https://github.com/sponsors/AshBuk)
-- [Donate via PayPal](https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG)
-
 ## ✦ Links and contact
 
 - GitHub: https://github.com/AshBuk
@@ -101,3 +76,7 @@ Slider breakdown:
 ## ✦ License
 
 MIT — see `LICENSE`.
+
+## ✦ Sponsor
+
+[![Sponsor](https://img.shields.io/badge/Sponsor-💖-pink?style=for-the-badge&logo=github)](https://github.com/sponsors/AshBuk) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG)
