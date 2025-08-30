@@ -13,12 +13,14 @@
  * package context.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { PanInfo } from 'framer-motion';
 
-import { useSparkSlider, computeSwipeTarget } from './useSparkSlider';
+import { useSparkSlider } from './useSparkSlider';
+import { useSparkKeyboard } from './useSparkKeyboard';
 import { SLIDER_CONFIG, type CardPosition } from './config';
+import { useSparkTransforms } from './useSparkTransforms';
+import { useFullscreen } from './useFullscreen';
 
 interface SparkSliderProps {
   images: readonly string[];
@@ -42,9 +44,6 @@ const SparkSlider = ({
   renderImage,
 }: SparkSliderProps) => {
   const totalSlides = images.length;
-  const [fullscreenIndex, setFullscreenIndex] = useState<number | null>(null);
-  const [isFullscreenDragging, setIsFullscreenDragging] = useState(false);
-  const lastCenterDragAtRef = useRef<number>(0);
   const {
     currentIndex,
     isTransitioning,
@@ -57,148 +56,44 @@ const SparkSlider = ({
     autoPlayInterval,
   });
 
-  useEffect(() => {
-    if (fullscreenIndex === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' || e.key === 'Enter') setFullscreenIndex(null);
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [fullscreenIndex]);
+  const centerGestureMovedRef = useRef<boolean>(false);
 
-  const getCardPosition = useCallback(
-    (cardIndex: number, currentIdx: number): CardPosition => {
-      const getCircularIndex = (index: number) =>
-        ((index % totalSlides) + totalSlides) % totalSlides;
+  const lastCenterDragAtRef = useRef<number>(Date.now());
 
-      const normalizedCard = getCircularIndex(cardIndex);
-      const normalizedCurrent = getCircularIndex(currentIdx);
+  const {
+    fullscreenIndex,
+    isFullscreenDragging: _isFullscreenDragging,
+    openFullscreenAt,
+    exitFullscreen,
+    fullscreenHandlers,
+  } = useFullscreen({
+    currentIndex,
+    totalSlides,
+    isDragging,
+    handlers,
+    lastCenterDragAtRef,
+  });
 
-      if (normalizedCard === normalizedCurrent) return 'center';
-      if (normalizedCard === getCircularIndex(currentIdx - 1)) return 'left';
-      if (normalizedCard === getCircularIndex(currentIdx - 2))
-        return 'far-left';
-      if (normalizedCard === getCircularIndex(currentIdx + 1)) return 'right';
-      if (normalizedCard === getCircularIndex(currentIdx + 2))
-        return 'far-right';
-      return 'hidden';
-    },
-    [totalSlides]
-  );
+  // Global keyboard handling via hook (single source of truth)
+  useSparkKeyboard({
+    currentIndex,
+    totalSlides,
+    isFullscreen: fullscreenIndex !== null,
+    openFullscreenAt,
+    navigateTo: handlers.handleSideCardClick,
+    onInteractionStart: handlers.handleInteractionStart,
+    onInteractionEnd: handlers.handleInteractionEnd,
+    exitFullscreen: () => exitFullscreen(),
+  });
 
-  const getCardTransform = useCallback(
-    (position: CardPosition) => {
-      const centerWidthVH = SLIDER_CONFIG.CENTER_CARD_SIZE;
-      const sideWidthVH = SLIDER_CONFIG.SIDE_CARD_SIZE;
-      const spacingVH = SLIDER_CONFIG.SPACING_UNITS;
-      const posConfig = SLIDER_CONFIG.positions[position];
+  const { getCardPosition, getCardTransform } = useSparkTransforms({
+    totalSlides,
+    isDragging,
+    dragOffset,
+    vminInPixels,
+  });
 
-      const widthVHForPos = position === 'center' ? centerWidthVH : sideWidthVH;
-      let baseX = posConfig.xOffsetFactor * (widthVHForPos + spacingVH);
-      // Responsive clamp: reduce absolute X offset on narrow viewports so side/far cards remain visible
-      // Uses vmin (min(width,height)) to stay consistent in portrait
-      const minViewportSidePx = vminInPixels * 100;
-      const { breakpointPx, minMultiplier } = SLIDER_CONFIG.OFFSET_RESPONSIVE;
-      const responsiveOffsetMultiplier = Math.max(
-        minMultiplier,
-        Math.min(1, minViewportSidePx / breakpointPx)
-      );
-      baseX *= responsiveOffsetMultiplier;
-      let baseScale = posConfig.scale;
-      let baseOpacity = posConfig.opacity;
-      let baseBlur = posConfig.blur;
-      const baseZIndex = posConfig.zIndex;
-
-      if (isDragging && dragOffset !== 0) {
-        // Use vmin to keep geometry consistent in portrait where height >> width
-        const baseUnit = vminInPixels;
-        const dragDistance = widthVHForPos + spacingVH;
-        const dragProgress = dragOffset / (dragDistance * baseUnit);
-
-        if (position === 'center') {
-          const shrinkFactor = Math.min(
-            SLIDER_CONFIG.drag.center.maxShrink,
-            Math.abs(dragProgress) * SLIDER_CONFIG.drag.center.shrinkFactor
-          );
-          baseScale = Math.max(0.7, baseScale - shrinkFactor);
-          baseOpacity = Math.max(
-            0.4,
-            1 - Math.abs(dragProgress) * SLIDER_CONFIG.drag.center.opacityFactor
-          );
-          baseBlur =
-            Math.abs(dragProgress) * SLIDER_CONFIG.drag.center.blurFactor;
-        } else if (position === 'left' || position === 'right') {
-          const isMovingTowardCenter =
-            (position === 'left' && dragProgress > 0) ||
-            (position === 'right' && dragProgress < 0);
-          if (isMovingTowardCenter) {
-            const progressFactor = Math.abs(dragProgress);
-            const target = SLIDER_CONFIG.positions.center;
-            baseScale +=
-              (target.scale - baseScale) *
-              progressFactor *
-              SLIDER_CONFIG.drag.side.scaleFactor;
-            baseOpacity +=
-              (target.opacity - baseOpacity) *
-              progressFactor *
-              SLIDER_CONFIG.drag.side.opacityFactor;
-            baseBlur +=
-              (target.blur - baseBlur) *
-              progressFactor *
-              SLIDER_CONFIG.drag.side.blurFactor;
-            baseX +=
-              (target.xOffsetFactor - baseX) *
-              progressFactor *
-              SLIDER_CONFIG.drag.side.xOffsetFactor;
-          }
-        }
-      }
-
-      // Prevent fully invisible non-center cards in rare race conditions
-      if (position !== 'center') {
-        baseOpacity = Math.max(baseOpacity, SLIDER_CONFIG.MIN_SIDE_OPACITY);
-      }
-
-      // Ensure blur is never negative to avoid keyframe filter warnings
-      const clampedBlur = Math.max(0, baseBlur);
-
-      return {
-        x: `${baseX}svmin`,
-        scale: baseScale,
-        opacity: baseOpacity,
-        filter: `blur(${clampedBlur}px)`,
-        zIndex: baseZIndex,
-      };
-    },
-    [isDragging, dragOffset, vminInPixels]
-  );
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (e.key === 'Enter') {
-        // Enter fullscreen on center card
-        setFullscreenIndex(currentIndex);
-        e.preventDefault();
-        return;
-      }
-      if (totalSlides < 2) return;
-      if (e.key === 'ArrowLeft') {
-        handlers.handleInteractionStart();
-        const prevIndex =
-          currentIndex === 0 ? totalSlides - 1 : currentIndex - 1;
-        handlers.handleSideCardClick(prevIndex);
-        handlers.handleInteractionEnd();
-        e.preventDefault();
-      } else if (e.key === 'ArrowRight') {
-        handlers.handleInteractionStart();
-        const nextIndex = (currentIndex + 1) % totalSlides;
-        handlers.handleSideCardClick(nextIndex);
-        handlers.handleInteractionEnd();
-        e.preventDefault();
-      }
-    },
-    [currentIndex, totalSlides, handlers]
-  );
+  // Removed local onKeyDown; use global document handler instead
 
   const renderCard = useCallback(
     (index: number, isCenter: boolean, position: CardPosition) => {
@@ -232,8 +127,19 @@ const SparkSlider = ({
               }}
               dragElastic={SLIDER_CONFIG.DRAG_ELASTICITY}
               dragMomentum={false}
-              onDragStart={handlers.handleDragStart}
-              onDrag={handlers.handleDrag}
+              onDragStart={(_evt) => {
+                centerGestureMovedRef.current = false;
+                handlers.handleDragStart();
+              }}
+              onDrag={(_evt, info) => {
+                if (Math.abs(info.offset.x) > 2) {
+                  centerGestureMovedRef.current = true;
+                }
+                handlers.handleDrag(
+                  _evt as unknown as MouseEvent | TouchEvent | PointerEvent,
+                  info
+                );
+              }}
               onDragEnd={(evt, info) => {
                 handlers.handleDragEnd(
                   evt as unknown as MouseEvent | TouchEvent | PointerEvent,
@@ -241,21 +147,14 @@ const SparkSlider = ({
                 );
                 lastCenterDragAtRef.current = Date.now();
               }}
-              onClick={(e) => {
-                // Avoid opening during drag
-                if (isDragging) {
-                  e.preventDefault();
+              onTap={() => {
+                if (isDragging) return;
+                if (centerGestureMovedRef.current) {
+                  // Do not open fullscreen if there was any drag movement in this gesture
+                  centerGestureMovedRef.current = false;
                   return;
                 }
-                // Ignore click that happens right after a swipe/drag
-                if (
-                  Date.now() - lastCenterDragAtRef.current <
-                  SLIDER_CONFIG.SWIPE_COOLDOWN_MS
-                ) {
-                  e.preventDefault();
-                  return;
-                }
-                setFullscreenIndex(index);
+                openFullscreenAt(index);
               }}
             />
           ) : position === 'left' || position === 'right' ? (
@@ -304,7 +203,17 @@ const SparkSlider = ({
         </motion.div>
       );
     },
-    [handlers, images, alt, totalSlides, cardClassName, renderImage, isDragging]
+    [
+      handlers,
+      images,
+      alt,
+      totalSlides,
+      cardClassName,
+      renderImage,
+      isDragging,
+      lastCenterDragAtRef,
+      openFullscreenAt,
+    ]
   );
 
   return (
@@ -314,13 +223,16 @@ const SparkSlider = ({
       role='region'
       aria-roledescription='carousel'
       aria-label='Spark slider'
-      onKeyDown={handleKeyDown}
       onFocus={handlers.handleInteractionStart}
       onBlur={handlers.handleInteractionEnd}
     >
       {/* Fullscreen overlay */}
       {fullscreenIndex !== null && (
-        <div className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4'>
+        <div
+          className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4'
+          role='dialog'
+          aria-modal='true'
+        >
           <motion.div
             className='max-h-[96svh] max-w-[96svw]'
             drag='x'
@@ -330,32 +242,9 @@ const SparkSlider = ({
             }}
             dragElastic={SLIDER_CONFIG.DRAG_ELASTICITY}
             dragMomentum={false}
-            onDragStart={() => setIsFullscreenDragging(true)}
-            onDragEnd={(
-              _: MouseEvent | TouchEvent | PointerEvent,
-              info: PanInfo
-            ) => {
-              if (fullscreenIndex !== null) {
-                const target = computeSwipeTarget(
-                  info.offset.x,
-                  fullscreenIndex,
-                  totalSlides
-                );
-                if (typeof target === 'number') {
-                  setFullscreenIndex(null);
-                  handlers.handleSideCardClick(target);
-                  setIsFullscreenDragging(false);
-                  return;
-                }
-              }
-              setIsFullscreenDragging(false);
-            }}
-            onClick={() => {
-              if (isFullscreenDragging || fullscreenIndex === null) return;
-              const idx = fullscreenIndex;
-              setFullscreenIndex(null);
-              handlers.handleSideCardClick(idx);
-            }}
+            onDragStart={fullscreenHandlers.onDragStart}
+            onDragEnd={fullscreenHandlers.onDragEnd}
+            onTap={fullscreenHandlers.onClick}
           >
             {renderImage ? (
               renderImage(
