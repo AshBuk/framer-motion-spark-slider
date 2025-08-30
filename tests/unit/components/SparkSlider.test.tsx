@@ -258,6 +258,60 @@ describe('SparkSlider', () => {
   });
 
   describe('fullscreen mode', () => {
+    test('exits fullscreen with Enter key', async () => {
+      const user = userEvent.setup();
+      render(<SparkSlider images={mockImages} />);
+
+      const centerCard = screen
+        .getByRole('region')
+        .querySelector('.cursor-grab');
+
+      // Enter fullscreen via click
+      await act(async () => {
+        fireEvent.click(centerCard!);
+      });
+
+      // Ensure fullscreen is shown
+      await waitFor(
+        () => {
+          expect(document.querySelector('.fixed.inset-0')).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
+
+      // Press Enter to exit fullscreen
+      await act(async () => {
+        await user.keyboard('{Enter}');
+      });
+
+      // Fullscreen should be gone
+      await waitFor(() => {
+        expect(document.querySelector('.fixed.inset-0')).not.toBeInTheDocument();
+      });
+    });
+    test('enters fullscreen with Enter key', async () => {
+      const user = userEvent.setup();
+      render(<SparkSlider images={mockImages} />);
+
+      const slider = screen.getByRole('region');
+
+      // Focus slider region to receive key events
+      await act(async () => {
+        await user.click(slider);
+      });
+
+      // Press Enter to open fullscreen
+      await act(async () => {
+        await user.keyboard('{Enter}');
+      });
+
+      await waitFor(
+        () => {
+          expect(document.querySelector('.fixed.inset-0')).toBeInTheDocument();
+        },
+        { timeout: 2000 }
+      );
+    });
     test('does not enter fullscreen during drag', async () => {
       const user = userEvent.setup();
       render(<SparkSlider images={mockImages} />);

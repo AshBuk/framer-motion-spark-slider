@@ -60,7 +60,7 @@ const SparkSlider = ({
   useEffect(() => {
     if (fullscreenIndex === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setFullscreenIndex(null);
+      if (e.key === 'Escape' || e.key === 'Enter') setFullscreenIndex(null);
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
@@ -175,6 +175,12 @@ const SparkSlider = ({
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Enter') {
+        // Enter fullscreen on center card
+        setFullscreenIndex(currentIndex);
+        e.preventDefault();
+        return;
+      }
       if (totalSlides < 2) return;
       if (e.key === 'ArrowLeft') {
         handlers.handleInteractionStart();
