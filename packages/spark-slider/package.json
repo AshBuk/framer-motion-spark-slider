@@ -1,6 +1,6 @@
 {
   "name": "@ashbuk/spark-slider",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "description": "SparkSlider – lightweight Framer Motion carousel component and hook",
   "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",
