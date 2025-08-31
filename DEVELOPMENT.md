@@ -40,16 +40,48 @@ npm run dev     # → http://localhost:3000
 
 **SparkSlider** (`src/components/SparkSlider/`)
 
-- `SparkSlider.tsx` - Main component with accessibility
-- `useSparkSlider.ts` - State management and interactions
-- `config.ts` - Configuration and positioning
+The slider is split into specialized modules:
 
-**Key Features**
+1. **`SparkSlider.tsx`** — Main React component
+   - Framer Motion cards with drag, side-clicks, double-tap select
+   - Accessibility: keyboard arrows, focus ring, `aria-roledescription="carousel"`
+   - Props: `images`, `alt`, `onSlideSelect`, `onSelectionChange`, `autoPlayInterval`, `className`, `cardClassName`, `renderImage`
+   - `renderImage` allows injecting `next/image`; default uses `<img>`
+   - Guards for 0/1 slide; uses `vh`-based sizing
 
-- Circular navigation with position-based rendering
-- Auto-play with interaction pause
-- Drag/swipe support with momentum
-- Responsive sizing using viewport units
+2. **`useSparkSlider.ts`** — Core slider hook
+   - Manages index, selection, interaction and drag state
+   - Auto-play with pause on interaction and on hidden tab (`visibilitychange`)
+   - Debounced resume; swipe thresholds/cooldowns
+
+3. **`useFullscreen.ts`** — Fullscreen functionality hook
+   - Handles fullscreen mode activation/deactivation
+   - Manages fullscreen drag interactions and navigation
+   - Provides fullscreen state and control functions
+
+4. **`useSparkKeyboard.ts`** — Keyboard navigation hook
+   - Arrow keys for slide navigation with circular wrapping
+   - Enter key to open fullscreen mode
+   - Escape/Enter keys to exit fullscreen mode
+   - Form field detection to avoid conflicts with user input
+   - Proper event handling and cleanup
+
+5. **`useSparkTransforms.ts`** — Position and animation calculations
+   - Card positioning logic (center, left, right, far-left, far-right, hidden)
+   - Transform calculations for smooth animations
+   - Position-based rendering optimization
+
+6. **`config.ts`** — Configuration constants
+   - Positions, visual effects, drag constraints, timing/springs
+   - Exposes `SLIDER_CONFIG` and `type CardPosition`
+
+**Key Design Patterns**
+
+- **Circular navigation** - Slides wrap around infinitely
+- **Position-based rendering** - Cards have specific positions with optimized transforms
+- **Interaction states** - Different animations for idle, transitioning, and dragging
+- **Responsive sizing** - Uses vh units for consistent sizing across devices
+- **Accessibility-first** - Full keyboard navigation and screen reader support
 
 ### API Routes
 
@@ -113,10 +145,20 @@ import { SparkSlider, SLIDER_CONFIG } from '@ashbuk/spark-slider';
 ### File Structure
 
 ```
-src/components/SparkSlider/    # Core slider code
-packages/spark-slider/         # NPM package (symlinked)
-src/app/api/images/           # Image management API
-public/uploads/               # Local image storage
+src/components/SparkSlider/
+├── SparkSlider.tsx           # Main React component
+├── useSparkSlider.ts         # Core slider hook
+├── useFullscreen.ts          # Fullscreen functionality
+├── useSparkKeyboard.ts       # Keyboard navigation
+├── useSparkTransforms.ts     # Position calculations
+└── config.ts                 # Configuration constants
+
+packages/spark-slider/        # NPM package (symlinked to src)
+src/app/api/images/          # Image management API
+public/uploads/              # Local image storage
+tests/
+├── unit/                    # Component and hook tests
+└── integration/             # API and E2E tests
 ```
 
 ### Deployment

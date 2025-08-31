@@ -70,12 +70,6 @@ npm i @ashbuk/spark-slider framer-motion react react-dom
 - The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, Tailwind CSS, CSS viewport units `svh`/`svmin`).
 - Performance: renders only visible cards, non-visible slides are not mounted, non-center images use `loading="lazy"`. Scales to large image lists while keeping the DOM small.
 
-Slider breakdown:
-
-- `SparkSlider.tsx` — presentation and accessibility: renders position-based cards, handles keyboard and fullscreen.
-- `useSparkSlider.ts` — interaction/state: index, autoplay, drag/swipe, and transition gating.
-- `config.ts` — single source of truth (`SLIDER_CONFIG`) for sizes, spacing, positions, spring presets, and thresholds.
-
 ## ✦ Links and contact
 
 - GitHub: https://github.com/AshBuk

@@ -304,14 +304,13 @@ export default function HomePage() {
                 →
               </span>
               <span className='ml-1 opacity-80'>navigate</span>
-            </div>
-            <div className='flex items-center gap-1'>
-              <TapIcon className='h-3 w-3 opacity-80 sm:h-4 sm:w-4' />
-              <SwipeIcon className='h-3 w-3 opacity-80 sm:h-4 sm:w-4' />
+              <span className='rounded border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
+                Enter
+              </span>
               <span className='rounded border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
                 Esc
               </span>
-              <span className='opacity-80'>exit fullscreen</span>
+              <span className='opacity-80'>manage</span>
             </div>
           </div>
         </div>

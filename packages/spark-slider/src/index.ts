@@ -5,5 +5,7 @@
 
 export { default as SparkSlider } from './spark/SparkSlider';
 export { useSparkSlider, computeSwipeTarget } from './spark/useSparkSlider';
+export { useSparkKeyboard } from './spark/useSparkKeyboard';
 export { SLIDER_CONFIG } from './spark/config';
 export type { CardPosition } from './spark/config';
+export { useSparkTransforms } from './spark/useSparkTransforms';

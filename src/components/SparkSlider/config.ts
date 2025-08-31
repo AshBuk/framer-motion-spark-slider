@@ -27,6 +27,8 @@ export const SLIDER_CONFIG = {
   SWIPE_THRESHOLD_PX: 50,
   // Cooldown after a swipe to ignore accidental clicks and rapid swipes
   SWIPE_COOLDOWN_MS: 350,
+  // Cooldown after exiting fullscreen to prevent accidental re-open
+  FULLSCREEN_EXIT_COOLDOWN_MS: 280,
   // Debounce - time without user input before autoplay resumes
   USER_INTERACTION_DEBOUNCE_MS: 0,
   // Programmatic transition duration gate in ms (visuals use spring presets)
