@@ -38,6 +38,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/AshBuk"
+  },
   "peerDependencies": {
     "react": ">=18",
     "react-dom": ">=18",
