@@ -77,16 +77,16 @@ import { SparkSlider } from '@ashbuk/spark-slider';
 
 ### SparkSlider Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `images` | `string[]` | Array of image URLs or paths |
-| `alt?` | `string` | Alt text for images |
-| `autoPlayInterval?` | `number` | Auto-play interval in milliseconds |
-| `className?` | `string` | CSS classes for container |
-| `cardClassName?` | `string` | CSS classes for each card wrapper |
-| `renderImage?` | `(src, alt, isCenter) => ReactNode` | Custom image renderer |
-| `onSlideSelect?` | `(index: number) => void` | Called when slide is selected |
-| `onSelectionChange?` | `(index: number) => void` | Called when selection changes |
+| Prop                 | Type                                | Description                        |
+| -------------------- | ----------------------------------- | ---------------------------------- |
+| `images`             | `string[]`                          | Array of image URLs or paths       |
+| `alt?`               | `string`                            | Alt text for images                |
+| `autoPlayInterval?`  | `number`                            | Auto-play interval in milliseconds |
+| `className?`         | `string`                            | CSS classes for container          |
+| `cardClassName?`     | `string`                            | CSS classes for each card wrapper  |
+| `renderImage?`       | `(src, alt, isCenter) => ReactNode` | Custom image renderer              |
+| `onSlideSelect?`     | `(index: number) => void`           | Called when slide is selected      |
+| `onSelectionChange?` | `(index: number) => void`           | Called when selection changes      |
 
 ### Exports
 
