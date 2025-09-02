@@ -21,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AshBuk/framer-motion-slider.git",
+    "url": "git+https://github.com/AshBuk/framer-motion-spark-slider.git",
     "directory": "packages/spark-slider"
   },
-  "homepage": "https://github.com/AshBuk/framer-motion-slider/tree/main/packages/spark-slider#readme",
+  "homepage": "https://github.com/AshBuk/framer-motion-spark-slider/tree/main/packages/spark-slider#readme",
   "bugs": {
-    "url": "https://github.com/AshBuk/framer-motion-slider/issues"
+    "url": "https://github.com/AshBuk/framer-motion-spark-slider/issues"
   },
   "keywords": [
     "react",

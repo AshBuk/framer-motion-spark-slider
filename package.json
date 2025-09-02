@@ -7,6 +7,14 @@
   ],
   "description": "Framer Motion slider demo with Next.js and simple image upload API",
   "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AshBuk/framer-motion-spark-slider.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AshBuk/framer-motion-spark-slider/issues"
+  },
+  "homepage": "https://github.com/AshBuk/framer-motion-spark-slider#readme",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
