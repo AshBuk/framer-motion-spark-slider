@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Major architecture refactoring** - decomposed SparkSlider into specialized hooks:
   - `useSparkSlider.ts` - Core slider state management
-  - `useFullscreen.ts` - Fullscreen functionality
+  - `useSparkFullscreen.ts` - Fullscreen functionality
   - `useSparkKeyboard.ts` - Keyboard navigation handling
   - `useSparkTransforms.ts` - Position calculations and animations
 - **Performance optimizations**

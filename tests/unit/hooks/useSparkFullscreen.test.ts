@@ -4,7 +4,7 @@
  */
 
 import { renderHook, act } from '@testing-library/react';
-import { useFullscreen } from '../../../src/components/SparkSlider/useFullscreen';
+import { useSparkFullscreen } from '../../../src/components/SparkSlider/useSparkFullscreen';
 import { SLIDER_CONFIG } from '../../../src/components/SparkSlider/config';
 
 // Mock computeSwipeTarget
@@ -17,7 +17,7 @@ const mockComputeSwipeTarget = computeSwipeTarget as jest.MockedFunction<
   typeof computeSwipeTarget
 >;
 
-describe('useFullscreen', () => {
+describe('useSparkFullscreen', () => {
   const mockHandlers = {
     handleSideCardClick: jest.fn(),
   };
@@ -40,7 +40,7 @@ describe('useFullscreen', () => {
 
   describe('initial state', () => {
     it('should initialize with correct default values', () => {
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       expect(result.current.fullscreenIndex).toBe(null);
       expect(result.current.isFullscreenDragging).toBe(false);
@@ -50,7 +50,7 @@ describe('useFullscreen', () => {
 
   describe('openFullscreenAt', () => {
     it('should open fullscreen at specified index', () => {
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       act(() => {
         result.current.openFullscreenAt(2);
@@ -61,7 +61,7 @@ describe('useFullscreen', () => {
 
     it('should not open fullscreen when isDragging is true', () => {
       const { result } = renderHook(() =>
-        useFullscreen({ ...defaultOptions, isDragging: true })
+        useSparkFullscreen({ ...defaultOptions, isDragging: true })
       );
 
       act(() => {
@@ -72,7 +72,7 @@ describe('useFullscreen', () => {
     });
 
     it('should respect FULLSCREEN_EXIT_COOLDOWN_MS', () => {
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       // First, exit fullscreen to set the cooldown
       act(() => {
@@ -111,7 +111,7 @@ describe('useFullscreen', () => {
     });
 
     it('should respect SWIPE_COOLDOWN_MS from lastCenterDragAtRef', () => {
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       // Simulate a recent drag
       act(() => {
@@ -141,7 +141,7 @@ describe('useFullscreen', () => {
 
   describe('exitFullscreen', () => {
     it('should close fullscreen without navigation when no targetIndex', () => {
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       // Open fullscreen first
       act(() => {
@@ -160,7 +160,7 @@ describe('useFullscreen', () => {
     });
 
     it('should close fullscreen and navigate when targetIndex provided', () => {
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       // Open fullscreen first
       act(() => {
@@ -180,7 +180,7 @@ describe('useFullscreen', () => {
   describe('fullscreenHandlers', () => {
     describe('onDragStart', () => {
       it('should set isFullscreenDragging to true', () => {
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         act(() => {
           result.current.fullscreenHandlers.onDragStart();
@@ -202,7 +202,7 @@ describe('useFullscreen', () => {
       });
 
       it('should exit fullscreen and navigate on valid swipe', () => {
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         // Open fullscreen first
         act(() => {
@@ -225,7 +225,7 @@ describe('useFullscreen', () => {
 
       it('should only reset dragging state when swipe is invalid', () => {
         mockComputeSwipeTarget.mockReturnValue(null);
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         // Open fullscreen and start dragging
         act(() => {
@@ -247,7 +247,7 @@ describe('useFullscreen', () => {
       });
 
       it('should do nothing when fullscreenIndex is null', () => {
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         // Don't open fullscreen, just try to drag
         act(() => {
@@ -264,7 +264,7 @@ describe('useFullscreen', () => {
 
     describe('onClick', () => {
       it('should exit fullscreen when clicked', () => {
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         // Open fullscreen first
         act(() => {
@@ -281,7 +281,7 @@ describe('useFullscreen', () => {
       });
 
       it('should do nothing when dragging', () => {
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         // Open fullscreen and start dragging
         act(() => {
@@ -298,7 +298,7 @@ describe('useFullscreen', () => {
       });
 
       it('should do nothing when fullscreenIndex is null', () => {
-        const { result } = renderHook(() => useFullscreen(defaultOptions));
+        const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
         // Try to click without opening fullscreen
         act(() => {
@@ -314,7 +314,7 @@ describe('useFullscreen', () => {
   describe('integration scenarios', () => {
     it('should handle complete open -> drag -> close cycle', () => {
       mockComputeSwipeTarget.mockReturnValue(4);
-      const { result } = renderHook(() => useFullscreen(defaultOptions));
+      const { result } = renderHook(() => useSparkFullscreen(defaultOptions));
 
       // Open fullscreen
       act(() => {

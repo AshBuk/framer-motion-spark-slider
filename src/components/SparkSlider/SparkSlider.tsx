@@ -20,7 +20,7 @@ import { useSparkSlider } from './useSparkSlider';
 import { useSparkKeyboard } from './useSparkKeyboard';
 import { SLIDER_CONFIG, type CardPosition } from './config';
 import { useSparkTransforms } from './useSparkTransforms';
-import { useFullscreen } from './useFullscreen';
+import { useSparkFullscreen } from './useSparkFullscreen';
 
 interface SparkSliderProps {
   images: readonly string[];
@@ -66,7 +66,7 @@ const SparkSlider = ({
     openFullscreenAt,
     exitFullscreen,
     fullscreenHandlers,
-  } = useFullscreen({
+  } = useSparkFullscreen({
     currentIndex,
     totalSlides,
     isDragging,

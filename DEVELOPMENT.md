@@ -54,7 +54,7 @@ The slider is split into specialized modules:
    - Auto-play with pause on interaction and on hidden tab (`visibilitychange`)
    - Debounced resume; swipe thresholds/cooldowns
 
-3. **`useFullscreen.ts`** — Fullscreen functionality hook
+3. **`useSparkFullscreen.ts`** — Fullscreen functionality hook
    - Handles fullscreen mode activation/deactivation
    - Manages fullscreen drag interactions and navigation
    - Provides fullscreen state and control functions
@@ -148,7 +148,7 @@ import { SparkSlider, SLIDER_CONFIG } from '@ashbuk/spark-slider';
 src/components/SparkSlider/
 ├── SparkSlider.tsx           # Main React component
 ├── useSparkSlider.ts         # Core slider hook
-├── useFullscreen.ts          # Fullscreen functionality
+├── useSparkFullscreen.ts     # Fullscreen functionality
 ├── useSparkKeyboard.ts       # Keyboard navigation
 ├── useSparkTransforms.ts     # Position calculations
 └── config.ts                 # Configuration constants

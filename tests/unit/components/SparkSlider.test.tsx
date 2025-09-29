@@ -104,10 +104,8 @@ describe('SparkSlider', () => {
       });
 
       expect(slider).toHaveFocus();
-      expect(slider).toHaveClass(
-        'focus-visible:ring-2',
-        'focus-visible:ring-emerald-400'
-      );
+      expect(slider).toHaveClass('spark');
+      expect(slider).toHaveAttribute('tabIndex', '0');
     });
   });
 
@@ -207,14 +205,16 @@ describe('SparkSlider', () => {
 
       const dragArea = screen
         .getByRole('region')
-        .querySelector('[role="region"] .cursor-grab');
+        .querySelector('.spark-card-drag');
       expect(dragArea).toBeInTheDocument();
     });
 
     test('does not show drag area for single slide', () => {
       render(<SparkSlider images={['/single.jpg']} />);
 
-      const dragArea = screen.getByRole('region').querySelector('.cursor-grab');
+      const dragArea = screen
+        .getByRole('region')
+        .querySelector('.spark-card-drag');
       expect(dragArea).not.toBeInTheDocument();
     });
   });
@@ -266,7 +266,7 @@ describe('SparkSlider', () => {
 
       const centerCard = screen
         .getByRole('region')
-        .querySelector('.cursor-grab');
+        .querySelector('.spark-card-drag');
 
       // Simulate drag to prevent fullscreen
       await act(async () => {
@@ -278,8 +278,8 @@ describe('SparkSlider', () => {
         await user.click(centerCard!);
       });
 
-      // Should not show fullscreen overlay
-      expect(screen.queryByTestId('fullscreen')).not.toBeInTheDocument();
+      // Should not show fullscreen overlay (spark-fullscreen class)
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
   });
 
@@ -307,10 +307,10 @@ describe('SparkSlider', () => {
     test('shows green border on center card', () => {
       render(<SparkSlider images={mockImages} />);
 
-      const centerBorder = screen
+      const centerHighlight = screen
         .getByRole('region')
-        .querySelector('.border-emerald-400\\/50');
-      expect(centerBorder).toBeInTheDocument();
+        .querySelector('.spark-highlight');
+      expect(centerHighlight).toBeInTheDocument();
     });
 
     test('shows slide number and total', () => {

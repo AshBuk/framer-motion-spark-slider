@@ -71,12 +71,22 @@ export default function Example() {
 | `onSlideSelect?`     | `(index: number) => void`           | Called when slide is selected      |
 | `onSelectionChange?` | `(index: number) => void`           | Called when selection changes      |
 
-### Exports
+### Package Breakdown
 
-- `SparkSlider` – Main component
-- `SLIDER_CONFIG` – Configuration constants
-- `useSparkSlider` – Internal hook for advanced usage
-- `CardPosition` – TypeScript type
+**Component:**
+
+- `SparkSlider` – Main slider component
+  **Configuration:**
+- `SLIDER_CONFIG` – Configuration constants and defaults
+  **Hooks:**
+- `useSparkSlider` – Core slider state management hook
+- `useSparkKeyboard` – Keyboard navigation hook
+- `useSparkTransforms` – Card positioning and transforms hook
+- `useSparkFullscreen` – Fullscreen overlay management hook
+  **Utilities:**
+- `computeSwipeTarget` – Swipe gesture calculation utility
+  **Types:**
+- `CardPosition` – TypeScript type for card positions
 
 ## Styling
 

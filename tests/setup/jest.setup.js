@@ -15,6 +15,7 @@ jest.mock('framer-motion', () => ({
       onDrag,
       onDragEnd,
       onClick,
+      onTap,
       // Filter out Framer Motion props to avoid React warnings
       animate: _animate,
       initial: _initial,
@@ -50,6 +51,10 @@ jest.mock('framer-motion', () => ({
         // Don't trigger onClick if we've detected a drag
         if (onClick) {
           onClick(e);
+        }
+        // Also handle onTap (Framer Motion's tap gesture)
+        if (onTap) {
+          onTap(e);
         }
       };
 
