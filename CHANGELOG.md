@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2025-09-29
+
+### Added
+
+- **Pure CSS implementation** - Migrated from Tailwind CSS to pure CSS with BEM-like naming convention (`spark-*` prefix)
+
+### Changed
+
+- **Breaking: CSS class names** - All classes now use `spark-*` prefix (e.g., `spark-card`, `spark-stage`)
+- **Breaking: Tailwind CSS removed** - Package no longer requires Tailwind CSS dependency
+- **Renamed hook** - `useFullscreen` renamed to `useSparkFullscreen` for consistency
+
 ## [0.1.6] - 2025-09-02
 
 ### Changed
