@@ -7,12 +7,14 @@
 [![React](https://img.shields.io/badge/React-%E2%89%A518-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Framer Motion](https://img.shields.io/badge/Framer%20Motion-%E2%89%A512-0055FF?logo=framer)](https://www.framer.com/motion/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 [![Sponsor](https://img.shields.io/badge/Sponsor-💖-pink?style=for-the-badge&logo=github)](https://github.com/sponsors/AshBuk) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG)
 
 Try the live demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
+
 Project repo: [github.com/AshBuk/framer-motion-spark-slider](https://github.com/AshBuk/framer-motion-spark-slider)
 
-**Lightweight React carousel built with Framer Motion. Framework-agnostic by default (renders with <img>), with an escape hatch to inject next/image. Designed as a modern and highly optimized solution for large image datasets, it works seamlessly across laptops, tablets, and phones.**
+**Lightweight React carousel built with Framer Motion. Framework-agnostic by default (renders with `<img>`), with an escape hatch to inject `next/image`. Designed as a modern and highly optimized solution for large image datasets, it works seamlessly across laptops, tablets, and phones.**
 
 ## ✦ Features
 
@@ -76,16 +78,12 @@ export default function Example() {
 **Component:**
 
 - `SparkSlider` – Main slider component
-  **Configuration:**
 - `SLIDER_CONFIG` – Configuration constants and defaults
-  **Hooks:**
 - `useSparkSlider` – Core slider state management hook
 - `useSparkKeyboard` – Keyboard navigation hook
 - `useSparkTransforms` – Card positioning and transforms hook
 - `useSparkFullscreen` – Fullscreen overlay management hook
-  **Utilities:**
 - `computeSwipeTarget` – Swipe gesture calculation utility
-  **Types:**
 - `CardPosition` – TypeScript type for card positions
 
 ## Styling
