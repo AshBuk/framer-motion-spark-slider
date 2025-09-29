@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Repository URLs updated** - to point to correct `framer-motion-spark-slider` repository
+- **Repository URLs updated** - point to correct `framer-motion-spark-slider` repository
 - **Enhanced package documentation** - Improved README with badges, detailed features, API reference table, and npmjs-optimized formatting
 
 ## [0.1.5] - 2025-08-31
