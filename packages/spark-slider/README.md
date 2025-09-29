@@ -97,9 +97,10 @@ import { SparkSlider } from '@ashbuk/spark-slider';
 
 ## ✦ Styling
 
-- No CSS required. Works without Tailwind.
+- Pre-styled with utility classes (no external CSS files required).
 - Height can be set via CSS var `--spark-slider-h` using svh units.
 - Custom styling via `className` and `cardClassName` props.
+> **Note**: Component uses Tailwind utility classes internally. If you don't use Tailwind, you may want to add it or override styles via className props.
 
 ## ✦ Demo
 
