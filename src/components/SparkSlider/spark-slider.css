@@ -1,0 +1,180 @@
+/* Root container */
+.spark {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem; /* 12px */
+  outline: none;
+}
+.spark:focus-visible {
+  outline: 2px solid #34d399; /* emerald-400 */
+  outline-offset: 2px;
+}
+
+/* Inner container */
+.spark-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+/* Visually hidden (sr-only) */
+.spark-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Stage */
+.spark-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.spark-stage-card {
+  position: absolute;
+  pointer-events: auto;
+}
+
+/* Card */
+.spark-card {
+  position: relative;
+  z-index: 30;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+.spark-card.is-horizontal {
+  aspect-ratio: 4 / 3;
+}
+.spark-card.is-vertical {
+  aspect-ratio: 3 / 4;
+}
+
+/* Overlays */
+.spark-card-drag,
+.spark-card-click,
+.spark-gradient,
+.spark-highlight,
+.spark-dim {
+  position: absolute;
+  inset: 0;
+}
+.spark-card-drag {
+  z-index: 50;
+  cursor: grab;
+}
+.spark-card-drag:active {
+  cursor: grabbing;
+}
+.spark-card-click {
+  z-index: 50;
+  cursor: pointer;
+}
+.spark-gradient {
+  border-radius: 0.75rem;
+  background: linear-gradient(to bottom, rgb(38 38 38), rgb(0 0 0));
+}
+.spark-highlight {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(52, 211, 153, 0.5);
+}
+
+/* Content */
+.spark-content {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  pointer-events: none;
+}
+.spark-card-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Dim for non-center */
+.spark-dim {
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Caption */
+.spark-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  padding: 12px; /* p-3 */
+  backdrop-filter: blur(4px);
+}
+.spark-caption-text {
+  color: #ffffff;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.25rem;
+  font-weight: 500; /* font-medium */
+}
+
+/* Badge */
+.spark-badge {
+  position: absolute;
+  right: 8px; /* right-2 */
+  bottom: 8px; /* bottom-2 */
+}
+.spark-badge-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* gap-2 */
+  border-radius: 9999px; /* rounded-full */
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 8px; /* py-1 px-2 */
+  backdrop-filter: blur(4px); /* backdrop-blur-sm */
+}
+.spark-badge-text {
+  color: #ffffff;
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+}
+.spark-badge-subtext {
+  color: rgba(255, 255, 255, 0.6); /* text-white/60 */
+  font-size: 0.75rem; /* text-xs */
+}
+
+/* Fullscreen */
+.spark-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 16px; /* p-4 */
+}
+.spark-fullscreen-inner {
+  max-width: 96svw;
+  max-height: 96svh;
+}
+.spark-fullscreen-inner > img {
+  width: 100%;
+  height: 100%;
+  max-width: 96svw;
+  max-height: 96svh;
+  object-fit: contain;
+  user-select: none;
+}

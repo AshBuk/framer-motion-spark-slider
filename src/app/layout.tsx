@@ -5,6 +5,7 @@
 
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import '@/components/SparkSlider/spark-slider.css';
 
 export const metadata: Metadata = {
   title: 'Framer Motion Spark Slider',

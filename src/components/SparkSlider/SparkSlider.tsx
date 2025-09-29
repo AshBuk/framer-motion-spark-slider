@@ -102,8 +102,8 @@ const SparkSlider = ({
 
       const aspectClass =
         SLIDER_CONFIG.CARD_LAYOUT === 'vertical'
-          ? 'aspect-[3/4]'
-          : 'aspect-[4/3]';
+          ? 'is-vertical'
+          : 'is-horizontal';
       const cardWidthVh = isCenter
         ? SLIDER_CONFIG.CENTER_CARD_SIZE
         : SLIDER_CONFIG.SIDE_CARD_SIZE;
@@ -111,7 +111,7 @@ const SparkSlider = ({
       return (
         <motion.div
           key={`card-${index}`}
-          className={`relative z-30 ${aspectClass} overflow-hidden rounded-xl ${cardClassName ?? ''}`}
+          className={`spark-card ${aspectClass} ${cardClassName ?? ''}`}
           style={{ width: `${cardWidthVh}svmin` }}
           onMouseEnter={handlers.handleInteractionStart}
           onMouseLeave={handlers.handleInteractionEnd}
@@ -119,7 +119,7 @@ const SparkSlider = ({
         >
           {isCenter && totalSlides > 1 ? (
             <motion.div
-              className='absolute inset-0 z-50 cursor-grab active:cursor-grabbing'
+              className='spark-card-drag'
               drag='x'
               dragConstraints={{
                 left: -SLIDER_CONFIG.DRAG_CONSTRAINTS_PX,
@@ -159,44 +159,38 @@ const SparkSlider = ({
             />
           ) : position === 'left' || position === 'right' ? (
             <div
-              className='absolute inset-0 z-50 cursor-pointer'
+              className='spark-card-click'
               onClick={() => handlers.handleSideCardClick(index)}
             />
           ) : null}
 
-          <div className='absolute inset-0 rounded-xl bg-gradient-to-b from-neutral-800 to-black' />
-          {isCenter && (
-            <div className='absolute inset-0 rounded-xl border border-emerald-400/50' />
-          )}
+          <div className='spark-gradient' />
+          {isCenter && <div className='spark-highlight' />}
           {/* Selection indicators removed in favor of fullscreen UX */}
-          <div className='pointer-events-none relative h-full w-full overflow-hidden rounded-xl'>
+          <div className='spark-content'>
             {renderImage ? (
               renderImage(imageSrc, `${alt} ${index + 1}`, isCenter)
             ) : (
               <img
                 src={imageSrc}
                 alt={`${alt} ${index + 1}`}
-                className='h-full w-full object-cover object-center'
+                className='spark-card-image'
                 loading={isCenter ? 'eager' : 'lazy'}
               />
             )}
-            {!isCenter && (
-              <div className='absolute inset-0 rounded-xl bg-black/40' />
-            )}
+            {!isCenter && <div className='spark-dim' />}
             {/* No selection overlay */}
             {isCenter && (
-              <div className='absolute bottom-0 left-0 right-0 rounded-b-xl bg-gradient-to-t from-black/70 to-transparent p-3'>
-                <span className='text-sm font-medium leading-tight text-white'>{`${alt} ${index + 1}`}</span>
+              <div className='spark-caption'>
+                <span className='spark-caption-text'>{`${alt} ${index + 1}`}</span>
               </div>
             )}
           </div>
           {isCenter && (
-            <div className='absolute bottom-2 right-2'>
-              <div className='flex items-center gap-2 rounded-full bg-black/50 px-2 py-1 backdrop-blur-sm'>
-                <span className='text-xs font-medium text-white'>
-                  {index + 1}
-                </span>
-                <span className='text-xs text-white/60'>/ {totalSlides}</span>
+            <div className='spark-badge'>
+              <div className='spark-badge-inner'>
+                <span className='spark-badge-text'>{index + 1}</span>
+                <span className='spark-badge-subtext'>/ {totalSlides}</span>
               </div>
             </div>
           )}
@@ -218,7 +212,7 @@ const SparkSlider = ({
 
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 ${className ?? ''}`}
+      className={`spark ${className ?? ''}`}
       tabIndex={0}
       role='region'
       aria-roledescription='carousel'
@@ -228,13 +222,9 @@ const SparkSlider = ({
     >
       {/* Fullscreen overlay */}
       {fullscreenIndex !== null && (
-        <div
-          className='fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4'
-          role='dialog'
-          aria-modal='true'
-        >
+        <div className='spark-fullscreen' role='dialog' aria-modal='true'>
           <motion.div
-            className='max-h-[96svh] max-w-[96svw]'
+            className='spark-fullscreen-inner'
             drag='x'
             dragConstraints={{
               left: -SLIDER_CONFIG.DRAG_CONSTRAINTS_PX,
@@ -256,7 +246,7 @@ const SparkSlider = ({
               <img
                 src={images[fullscreenIndex % images.length]}
                 alt={`${alt} ${fullscreenIndex + 1}`}
-                className='h-full max-h-[96svh] w-full max-w-[96svw] select-none object-contain'
+                className=''
                 draggable={false}
               />
             )}
@@ -264,7 +254,7 @@ const SparkSlider = ({
         </div>
       )}
       <div
-        className='relative w-full overflow-hidden'
+        className='spark-container'
         style={{
           height: `min(var(--spark-slider-h, ${SLIDER_CONFIG.CONTAINER_HEIGHTS_VH.base}svh), 100svh)`,
           transform: 'scale(var(--spark-slider-scale, 1))',
@@ -278,9 +268,9 @@ const SparkSlider = ({
          */}
         <div
           aria-live='polite'
-          className='sr-only'
+          className='spark-visually-hidden'
         >{`Slide ${currentIndex + 1} of ${totalSlides}`}</div>
-        <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
+        <div className='spark-stage'>
           <AnimatePresence mode='sync'>
             {images.map((_, cardIndex) => {
               const position = getCardPosition(cardIndex, currentIndex);
@@ -297,7 +287,7 @@ const SparkSlider = ({
               return (
                 <motion.div
                   key={`card-${cardIndex}`}
-                  className='pointer-events-auto absolute'
+                  className='spark-stage-card'
                   initial={isCenter ? transform : { ...transform, opacity: 0 }}
                   animate={transform}
                   exit={{ ...transform, opacity: 0 }}

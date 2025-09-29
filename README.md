@@ -32,19 +32,22 @@ https://github.com/user-attachments/assets/95d524de-4d2f-402b-a7b2-62f9f4add3f8
 [spark-slider.vercel.app](https://spark-slider.vercel.app/)
 
 **Lightweight and fast React slider carousel powered by Framer Motion animations.
-Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.**
+Designed as a modern and highly optimized solution for large image datasets, it works seamlessly across laptops, tablets, and phones, with smooth support for both touch and mouse/keyboard input.**
 
 ### ✦ For businesses and users
 
 A robust slider suitable for galleries, installations, projections, events, or products that need precise, smooth interactions and an accessible UI.
 
-## Features
+## ✦ Features
 
 - Smooth drag-to-swipe with momentum-free, precise control
-- Click on the center card to enter fullscreen (single tap on touch)
-- Auto-play with pause on interaction
+- Click on center card to select (single tap on touch)
+- Auto-play with pause on interaction and hidden tab detection
 - Responsive layout using viewport units (`svh`/`svmin`)
-- Simple image uploads UI (Browse/Manage)
+- Keyboard navigation (arrow keys)
+- Accessibility features with ARIA support
+- Performance: renders only visible cards, lazy loading for non-center images
+- Framework-agnostic: works with Next.js, Vite, Create React App, Remix, Gatsby, and any React framework
 
 ### ✦ Vercel demo
 
