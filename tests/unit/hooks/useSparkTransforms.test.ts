@@ -313,7 +313,7 @@ describe('useSparkTransforms', () => {
         { initialProps: defaultOptions }
       );
 
-      const position5Slides = result.current.getCardPosition(3, 1);
+      const _position5Slides = result.current.getCardPosition(3, 1);
 
       // Change total slides
       rerender({ ...defaultOptions, totalSlides: 8 });
