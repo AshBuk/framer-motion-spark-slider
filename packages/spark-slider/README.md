@@ -7,10 +7,12 @@
 [![React](https://img.shields.io/badge/React-%E2%89%A518-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Framer Motion](https://img.shields.io/badge/Framer%20Motion-%E2%89%A512-0055FF?logo=framer)](https://www.framer.com/motion/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/Sponsor-💖-pink?style=for-the-badge&logo=github)](https://github.com/sponsors/AshBuk) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG)
 
-[![Demo](https://img.shields.io/badge/demo-vercel-black?logo=vercel)](https://spark-slider.vercel.app/)
+Try the live demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
+Project repo: [github.com/AshBuk/framer-motion-spark-slider](https://github.com/AshBuk/framer-motion-spark-slider)
 
-**Lightweight React carousel built with Framer Motion. Framework-agnostic by default (uses `<img>`), with an escape hatch to inject `next/image`. Designed as a modern, custom, and highly optimized solution for large image datasets, it works seamlessly on laptops, tablets, and phones.**
+**Lightweight React carousel built with Framer Motion. Framework-agnostic by default (renders with <img>), with an escape hatch to inject next/image. Designed as a modern and highly optimized solution for large image datasets, it works seamlessly across laptops, tablets, and phones.**
 
 ## ✦ Features
 
@@ -21,7 +23,7 @@
 - Keyboard navigation (arrow keys)
 - Accessibility features with ARIA support
 - Performance: renders only visible cards, lazy loading for non-center images
-- Framework-agnostic with Next.js integration support
+- Framework-agnostic: works with Next.js, Vite, Create React App, Remix, Gatsby, and any React framework
 
 ## ✦ Install
 
@@ -35,6 +37,7 @@ Peer dependencies: React 18+, Framer Motion 12+
 
 ```tsx
 import { SparkSlider, SLIDER_CONFIG } from '@ashbuk/spark-slider';
+import '@ashbuk/spark-slider/dist/spark-slider.css';
 
 export default function Example() {
   const images = [
@@ -53,27 +56,7 @@ export default function Example() {
 }
 ```
 
-With Next.js `next/image`:
-
-```tsx
-import Image from 'next/image';
-import { SparkSlider } from '@ashbuk/spark-slider';
-
-<SparkSlider
-  images={['/a.jpg', '/b.jpg']}
-  renderImage={(src, alt, isCenter) => (
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      priority={isCenter}
-      style={{ objectFit: 'cover' }}
-    />
-  )}
-/>;
-```
-
-## ✦ API Reference
+## API Reference
 
 ### SparkSlider Props
 
@@ -88,29 +71,30 @@ import { SparkSlider } from '@ashbuk/spark-slider';
 | `onSlideSelect?`     | `(index: number) => void`           | Called when slide is selected      |
 | `onSelectionChange?` | `(index: number) => void`           | Called when selection changes      |
 
-### Exports
+### Package Breakdown
 
-- `SparkSlider` – Main component
-- `SLIDER_CONFIG` – Configuration constants
-- `useSparkSlider` – Internal hook for advanced usage
-- `CardPosition` – TypeScript type
+**Component:**
 
-## ✦ Styling
+- `SparkSlider` – Main slider component
+  **Configuration:**
+- `SLIDER_CONFIG` – Configuration constants and defaults
+  **Hooks:**
+- `useSparkSlider` – Core slider state management hook
+- `useSparkKeyboard` – Keyboard navigation hook
+- `useSparkTransforms` – Card positioning and transforms hook
+- `useSparkFullscreen` – Fullscreen overlay management hook
+  **Utilities:**
+- `computeSwipeTarget` – Swipe gesture calculation utility
+  **Types:**
+- `CardPosition` – TypeScript type for card positions
 
-- Pre-styled with utility classes (no external CSS files required).
-- Height can be set via CSS var `--spark-slider-h` using svh units.
-- Custom styling via `className` and `cardClassName` props.
-  > **Note**: Component uses Tailwind utility classes internally. If you don't use Tailwind, you may want to add it or override styles via className props.
+## Styling
 
-## ✦ Demo
+- Ships with a prebuilt stylesheet: `@ashbuk/spark-slider/dist/spark-slider.css` (import required)
+- Height can be set via CSS var `--spark-slider-h` using svh units
+- Custom styling via `className` and `cardClassName` props
 
-Try the live demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
-
-## ✦ GitHub Repository
-
-Full source code and demo app: [github.com/AshBuk/framer-motion-spark-slider](https://github.com/AshBuk/framer-motion-spark-slider)
-
-## ✦ Development (monorepo)
+## Development (monorepo)
 
 - This package is developed inside a Next.js demo app. In dev, the package sources under `packages/spark-slider/src/spark` are a symbolic link to the app sources `src/components/SparkSlider/*` to avoid duplication.
 - The app imports by package name and Next is configured with `transpilePackages: ['@ashbuk/spark-slider']` for hot reload.
@@ -120,11 +104,11 @@ Full source code and demo app: [github.com/AshBuk/framer-motion-spark-slider](ht
 npm -w packages/spark-slider run build
 ```
 
-## ✦ Support
+## Support
 
 - GitHub Issues: [Report bugs or request features](https://github.com/AshBuk/framer-motion-spark-slider/issues)
 - Contributions welcome! See [CONTRIBUTING.md](https://github.com/AshBuk/framer-motion-spark-slider/blob/main/CONTRIBUTING.md)
 
-## ✦ License
+## License
 
 MIT — see [LICENSE](https://github.com/AshBuk/framer-motion-spark-slider/blob/main/LICENSE)

@@ -10,7 +10,7 @@ import type { PanInfo } from 'framer-motion';
 import { SLIDER_CONFIG } from './config';
 import { computeSwipeTarget } from './useSparkSlider';
 
-interface UseFullscreenOptions {
+interface UseSparkFullscreenOptions {
   currentIndex: number;
   totalSlides: number;
   isDragging: boolean;
@@ -20,7 +20,7 @@ interface UseFullscreenOptions {
   lastCenterDragAtRef?: React.MutableRefObject<number>;
 }
 
-interface UseFullscreenReturn {
+interface UseSparkFullscreenReturn {
   fullscreenIndex: number | null;
   isFullscreenDragging: boolean;
   openFullscreenAt: (index: number) => void;
@@ -39,13 +39,13 @@ interface UseFullscreenReturn {
 /**
  * Hook for managing fullscreen overlay state and interactions
  */
-export function useFullscreen({
+export function useSparkFullscreen({
   currentIndex: _currentIndex,
   totalSlides,
   isDragging,
   handlers,
   lastCenterDragAtRef,
-}: UseFullscreenOptions): UseFullscreenReturn {
+}: UseSparkFullscreenOptions): UseSparkFullscreenReturn {
   const [fullscreenIndex, setFullscreenIndex] = useState<number | null>(null);
   const [isFullscreenDragging, setIsFullscreenDragging] = useState(false);
   const lastFullscreenExitAtRef = useRef<number>(0);

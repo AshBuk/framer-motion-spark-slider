@@ -12,6 +12,7 @@
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
+  "style": "./dist/spark-slider.css",
   "exports": {
     ".": {
       "types": "./dist/esm/index.d.ts",
@@ -49,9 +50,10 @@
   },
   "scripts": {
     "clean": "rm -rf dist",
+    "build:css": "mkdir -p dist && cp ../../src/components/SparkSlider/spark-slider.css dist/",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build": "npm run build:esm && npm run build:cjs",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:css",
     "prepublishOnly": "npm run clean && npm run build"
   }
 }
