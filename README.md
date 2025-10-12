@@ -57,7 +57,9 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ## For developers
 
-- Packaged as an npm React library for easy reuse in apps (see `packages/spark-slider/README.md`).
+- Packaged as an npm React library for easy reuse in apps
+- NPM Package: [@ashbuk/spark-slider](https://www.npmjs.com/package/@ashbuk/spark-slider)
+- Package documentation: `packages/spark-slider/README.md`
 
 **Install as a library**
 
