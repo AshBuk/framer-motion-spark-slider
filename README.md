@@ -2,7 +2,7 @@
 
 # Spark Slider
 
-> Responsive carousel slider built with Next.js and Framer Motion
+> High-performance framework-agnostic React carousel slider powered by Framer Motion.
 
 </div>
 
@@ -47,6 +47,7 @@ A robust slider suitable for galleries, installations, projections, events, or p
 - Keyboard navigation (arrow keys)
 - Accessibility features with ARIA support
 - Performance: renders only visible cards, lazy loading for non-center images
+- Lightweight (~12KB gzipped core)
 - Framework-agnostic: works with Next.js, Vite, Create React App, Remix, Gatsby, and any React framework
 
 ### ✦ Vercel demo
@@ -61,13 +62,30 @@ A robust slider suitable for galleries, installations, projections, events, or p
 - NPM Package: [@ashbuk/spark-slider](https://www.npmjs.com/package/@ashbuk/spark-slider)
 - Package documentation: `packages/spark-slider/README.md`
 
-**Install as a library**
+**Installation**
 
 ```bash
-npm i @ashbuk/spark-slider framer-motion react react-dom
+npm install @ashbuk/spark-slider
+# or
+yarn add @ashbuk/spark-slider
+# or
+pnpm add @ashbuk/spark-slider
 ```
 
-- Stars are appreciated; contributions are welcome! Start onboarding by reading:
+**Quick Start:**
+
+```tsx
+import SparkSlider from '@ashbuk/spark-slider';
+import '@ashbuk/spark-slider/dist/spark-slider.css';
+
+const images = ['/image1.jpg', '/image2.jpg', '/image3.jpg'];
+
+export default function App() {
+  return <SparkSlider images={images} />;
+}
+```
+
+- Start onboarding by reading:
 - [`DEVELOPMENT.md`](DEVELOPMENT.md)
 - [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - Comments in the codebase are concise and serve as additional documentation.

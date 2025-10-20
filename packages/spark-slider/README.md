@@ -16,7 +16,7 @@ Project repo: [github.com/AshBuk/framer-motion-spark-slider](https://github.com/
 
 **Lightweight React carousel built with Framer Motion. Framework-agnostic by default (renders with `<img>`), with an escape hatch to inject `next/image`. Designed as a modern and highly optimized solution for large image datasets, it works seamlessly across laptops, tablets, and phones.**
 
-## ✦ Features
+## Features
 
 - Smooth drag-to-swipe with momentum-free, precise control
 - Click on center card to select (single tap on touch)
@@ -27,13 +27,23 @@ Project repo: [github.com/AshBuk/framer-motion-spark-slider](https://github.com/
 - Performance: renders only visible cards, lazy loading for non-center images
 - Framework-agnostic: works with Next.js, Vite, Create React App, Remix, Gatsby, and any React framework
 
-## ✦ Install
+## ✦ Installation
 
 ```bash
-npm i @ashbuk/spark-slider framer-motion react react-dom
+npm install @ashbuk/spark-slider
+# or
+yarn add @ashbuk/spark-slider
+# or
+pnpm add @ashbuk/spark-slider
 ```
 
-Peer dependencies: React 18+, Framer Motion 12+
+**Peer dependencies** (install separately if not already in your project):
+
+```bash
+npm install framer-motion react react-dom
+```
+
+_Requirements: React 18+, Framer Motion 12+_
 
 ## ✦ Usage
 

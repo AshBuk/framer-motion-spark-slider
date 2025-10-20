@@ -5,7 +5,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "description": "Framer Motion slider demo with Next.js and simple image upload API",
+  "description": "Framework-agnostic React slider library with Framer Motion animations",
   "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",
   "repository": {
     "type": "git",
