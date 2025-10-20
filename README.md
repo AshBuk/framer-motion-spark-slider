@@ -94,7 +94,9 @@ export default function App() {
 - Performance: renders only visible cards, non-visible slides are not mounted, non-center images use `loading="lazy"`. Scales to large image lists while keeping the DOM small.
 
 ## ✦ Links and contact
+
 **📝 Original article:** [Read on my blog](https://ashbuk.hashnode.dev/high-performance-framework-agnostic-react-carousel-slider-powered-by-framer-motion)
+
 - GitHub: https://github.com/AshBuk
 - LinkedIn: https://www.linkedin.com/in/ashbuk/
 - Email: 2asherbuk@gmail.com
