@@ -73,6 +73,8 @@ export default function Example() {
 
 ## API Reference
 
+> Note: Public API is annotated with TSDoc. Most editors will show inline documentation on hover.
+
 ### SparkSlider Props
 
 | Prop                 | Type                                | Description                        |
