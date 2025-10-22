@@ -2,12 +2,14 @@
   "name": "@ashbuk/spark-slider",
   "version": "1.0.0",
   "private": false,
-  "description": "SparkSlider – lightweight Framer Motion carousel component and hook",
+  "description": "Lightweight, fast, and accessible React carousel slider component powered by Framer Motion. Framework-agnostic with full TypeScript support, drag gestures, keyboard navigation, and auto-play. Works with Next.js, Vite, Remix, and any React framework.",
   "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",
   "license": "MIT",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -18,30 +20,80 @@
       "types": "./dist/esm/index.d.ts",
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
-    }
+    },
+    "./dist/spark-slider.css": "./dist/spark-slider.css"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AshBuk/framer-motion-spark-slider.git",
     "directory": "packages/spark-slider"
   },
-  "homepage": "https://github.com/AshBuk/framer-motion-spark-slider/tree/main/packages/spark-slider#readme",
+  "homepage": "https://spark-slider.vercel.app",
   "bugs": {
-    "url": "https://github.com/AshBuk/framer-motion-spark-slider/issues"
+    "url": "https://github.com/AshBuk/framer-motion-spark-slider/issues",
+    "email": "2asherbuk@gmail.com"
   },
   "keywords": [
     "react",
     "carousel",
     "slider",
     "framer-motion",
-    "nextjs"
+    "nextjs",
+    "animation",
+    "npm-package",
+    "typescript",
+    "web-application",
+    "react-component",
+    "react-carousel",
+    "image-slider",
+    "image-carousel",
+    "swipe",
+    "drag",
+    "responsive",
+    "accessible",
+    "a11y",
+    "aria",
+    "keyboard-navigation",
+    "touch",
+    "mobile",
+    "framework-agnostic",
+    "vite",
+    "remix",
+    "gatsby",
+    "autoplay",
+    "lazy-loading",
+    "performance",
+    "lightweight"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
-  "funding": {
-    "type": "github",
-    "url": "https://github.com/sponsors/AshBuk"
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/AshBuk"
+    },
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG"
+    }
+  ],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "peerDependencies": {
     "react": ">=18",
@@ -54,6 +106,9 @@
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build": "npm run build:esm && npm run build:cjs && npm run build:css",
+    "test": "cd ../.. && npm test",
+    "test:watch": "cd ../.. && npm run test:watch",
+    "test:coverage": "cd ../.. && npm run test:coverage",
     "prepublishOnly": "npm run clean && npm run build"
   }
 }

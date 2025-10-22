@@ -2,7 +2,10 @@
 
 > Lightweight and fast React carousel slider powered by Framer Motion animations
 
-[![npm](https://img.shields.io/npm/v/@ashbuk/spark-slider?logo=npm)](https://npmjs.com/package/@ashbuk/spark-slider)
+[![npm version](https://img.shields.io/npm/v/@ashbuk/spark-slider?logo=npm)](https://npmjs.com/package/@ashbuk/spark-slider)
+[![npm downloads](https://img.shields.io/npm/dm/@ashbuk/spark-slider)](https://www.npmjs.com/package/@ashbuk/spark-slider)
+[![CI](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml/badge.svg)](https://github.com/AshBuk/framer-motion-spark-slider/actions/workflows/ci.yml)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/@ashbuk/spark-slider)](https://bundlephobia.com/package/@ashbuk/spark-slider)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-%E2%89%A518-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![Framer Motion](https://img.shields.io/badge/Framer%20Motion-%E2%89%A512-0055FF?logo=framer)](https://www.framer.com/motion/)
