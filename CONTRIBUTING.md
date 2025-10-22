@@ -2,14 +2,14 @@
 
 Thank you for your interest in contributing to Spark Slider! This document provides guidelines for contributing to the project.
 
-## 🤝 Code of Conduct
+## Code of Conduct
 
-- Be respectful and inclusive
-- Focus on constructive feedback
+- Respect the chosen tech stack and minimalism
+- Be respectful and constructive
 - Help others learn and grow
 - Maintain a welcoming environment
 
-## 🚀 Getting Started
+## Getting Started
 
 1. Fork the repository
 2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/framer-motion-spark-slider.git`
