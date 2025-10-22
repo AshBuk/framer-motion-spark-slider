@@ -13,6 +13,11 @@ import { SLIDER_CONFIG } from './config';
  * Decides which slide to go to based on horizontal drag offset.
  * Returns null if movement is under the swipe threshold or total < 2.
  * Positive offset means previous slide (drag right → reveal previous).
+ *
+ * @param offsetX - Horizontal drag offset in pixels; positive means drag to the right.
+ * @param baseIndex - Index used as a starting point for computing target.
+ * @param totalSlides - Total number of slides in the carousel.
+ * @returns Target slide index or `null` if swipe threshold not met.
  */
 export function computeSwipeTarget(
   offsetX: number,
@@ -26,11 +31,24 @@ export function computeSwipeTarget(
   return (baseIndex + 1) % totalSlides;
 }
 
+/**
+ * Options for {@link useSparkSlider} hook.
+ */
 interface UseSparkSliderProps {
   totalSlides: number;
   autoPlayInterval: number;
 }
 
+/**
+ * Core state and interaction logic for the Spark slider.
+ *
+ * @remarks
+ * - Manages index transitions, drag state, and auto‑play with visibility handling.
+ * - Exposes a stable `handlers` bundle suitable for wiring into component events.
+ *
+ * @param props - {@link UseSparkSliderProps}
+ * @returns Slider state and interaction handlers.
+ */
 export const useSparkSlider = ({
   totalSlides,
   autoPlayInterval,

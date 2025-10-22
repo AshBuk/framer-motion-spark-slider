@@ -22,6 +22,14 @@ import { SLIDER_CONFIG, type CardPosition } from './config';
 import { useSparkTransforms } from './useSparkTransforms';
 import { useSparkFullscreen } from './useSparkFullscreen';
 
+/**
+ * Props for the `SparkSlider` component.
+ *
+ * @remarks
+ * - This component is framework‑agnostic by default and renders images using `<img>`.
+ *   Consumers can inject their own image component (e.g. Next.js `next/image`) via `renderImage`.
+ * - Height is controlled via CSS variable `--spark-slider-h` (svh units). See `SLIDER_CONFIG` for defaults.
+ */
 interface SparkSliderProps {
   images: readonly string[];
   autoPlayInterval?: number;
@@ -35,6 +43,12 @@ interface SparkSliderProps {
   ) => React.ReactNode;
 }
 
+/**
+ * High‑performance React carousel slider powered by Framer Motion.
+ *
+ * @param props - See {@link SparkSliderProps} for details.
+ * @returns A focusable, accessible carousel region with draggable center card and optional fullscreen overlay.
+ */
 const SparkSlider = ({
   images,
   autoPlayInterval = SLIDER_CONFIG.DEFAULT_AUTOPLAY_INTERVAL_MS,
