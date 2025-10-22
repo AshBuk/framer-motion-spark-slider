@@ -7,6 +7,9 @@
 
 import { useEffect, useCallback } from 'react';
 
+/**
+ * Options for {@link useSparkKeyboard} hook.
+ */
 interface UseSparkKeyboardOptions {
   currentIndex: number;
   totalSlides: number;
@@ -19,6 +22,15 @@ interface UseSparkKeyboardOptions {
   exitFullscreen: () => void;
 }
 
+/**
+ * Global keyboard controller for Spark slider.
+ *
+ * @remarks
+ * - Attaches a `keydown` listener on `document` to handle arrows and Enter/Escape.
+ * - Skips handling while user types in standard form fields.
+ *
+ * @param options - {@link UseSparkKeyboardOptions}
+ */
 export function useSparkKeyboard({
   currentIndex,
   totalSlides,

@@ -3,6 +3,12 @@
  * SPDX-License-Identifier: MIT
  */
 
+/**
+ * Relative position of a slide within the carousel rendering layout.
+ *
+ * @remarks
+ * Positions drive z‑index, scale, opacity, blur and x‑offset presets.
+ */
 export type CardPosition =
   | 'center'
   | 'left'
@@ -11,6 +17,14 @@ export type CardPosition =
   | 'far-right'
   | 'hidden';
 
+/**
+ * Public configuration object for Spark slider behavior and visuals.
+ *
+ * @remarks
+ * - Sizing uses viewport units (`svh`/`svmin`) for consistent geometry on mobile.
+ * - Drag interactions are tuned to be precise (no momentum) and predictable.
+ * - Consumers may read constants (e.g., default autoplay interval) for integration.
+ */
 export const SLIDER_CONFIG = {
   // Default autoplay interval in milliseconds
   DEFAULT_AUTOPLAY_INTERVAL_MS: 4000,

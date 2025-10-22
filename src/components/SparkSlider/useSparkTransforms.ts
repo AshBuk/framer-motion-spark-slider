@@ -9,6 +9,9 @@ import { useCallback } from 'react';
 import { SLIDER_CONFIG, type CardPosition } from './config';
 import type { TargetAndTransition } from 'framer-motion';
 
+/**
+ * Options for {@link useSparkTransforms}.
+ */
 interface UseSparkTransformsArgs {
   totalSlides: number;
   isDragging: boolean;
@@ -16,10 +19,16 @@ interface UseSparkTransformsArgs {
   vminInPixels: number;
 }
 
+/**
+ * Alias for transform object accepted by Framer Motion.
+ */
 type SparkTransform = TargetAndTransition;
 
 /**
  * Provides memoized helpers for computing card positions and transforms.
+ *
+ * @param args - {@link UseSparkTransformsArgs}
+ * @returns Functions to compute relative position and animated transform for a card.
  */
 export function useSparkTransforms({
   totalSlides,
