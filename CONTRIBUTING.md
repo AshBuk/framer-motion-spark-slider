@@ -4,8 +4,8 @@ Thank you for your interest in contributing to Spark Slider! This document provi
 
 ## Code of Conduct
 
-- Respect the chosen tech stack and minimalism
-- Be respectful and constructive
+- Keep it small and framework-agnostic — respect the project's minimalist philosophy, the chosen tech stack and existing architecture
+- Be respectful and constructive in all interactions
 - Help others learn and grow
 - Maintain a welcoming environment
 
