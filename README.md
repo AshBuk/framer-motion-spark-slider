@@ -102,7 +102,7 @@ export default function App() {
 - LinkedIn: https://www.linkedin.com/in/ashbuk/
 - Email: 2asherbuk@gmail.com
 
-## ✦ ✦ MIT License - see the [LICENSE](LICENSE) file for details.
+## ✦ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## ✦ Sponsor
 
