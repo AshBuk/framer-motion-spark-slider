@@ -102,10 +102,10 @@ export default function App() {
 - LinkedIn: https://www.linkedin.com/in/ashbuk/
 - Email: 2asherbuk@gmail.com
 
-## ✦ License
-
-MIT — see `LICENSE`.
+## ✦ ✦ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## ✦ Sponsor
 
 [![Sponsor](https://img.shields.io/badge/Sponsor-💖-pink?style=for-the-badge&logo=github)](https://github.com/sponsors/AshBuk) [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=R3HZH8DX7SCJG)
+
+If you find Spark Slider useful, please consider supporting development.
