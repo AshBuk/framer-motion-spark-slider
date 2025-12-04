@@ -11,7 +11,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write # Required for Trusted Publishing
     steps:
       - uses: actions/checkout@v4
 
@@ -24,9 +23,11 @@ jobs:
       - run: npm test
       - run: npm run -w @ashbuk/spark-slider build
 
-      # Publish to npm using Trusted Publishing (OIDC)
+      # Publish to npm
       - name: Publish to npm
-        run: npm publish --workspace=@ashbuk/spark-slider --access public --provenance
+        run: npm publish --workspace=@ashbuk/spark-slider --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # Publish to GitHub Packages
       - name: Setup Node.js for GitHub Packages
