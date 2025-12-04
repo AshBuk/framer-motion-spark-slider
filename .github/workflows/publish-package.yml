@@ -11,6 +11,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write # Required for Trusted Publishing
     steps:
       - uses: actions/checkout@v4
 
@@ -19,15 +20,17 @@ jobs:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
 
+      # Update npm to 11.5.1+ for Trusted Publishing support
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - run: npm ci
       - run: npm test
       - run: npm run -w @ashbuk/spark-slider build
 
-      # Publish to npm
+      # Publish to npm using Trusted Publishing
       - name: Publish to npm
-        run: npm publish --workspace=@ashbuk/spark-slider --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --workspace=@ashbuk/spark-slider --access public --provenance
 
       # Publish to GitHub Packages
       - name: Setup Node.js for GitHub Packages
