@@ -1,6 +1,6 @@
 {
   "name": "@ashbuk/spark-slider",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "description": "Lightweight, fast, and accessible React carousel slider component powered by Framer Motion. Framework-agnostic with full TypeScript support, drag gestures, keyboard navigation, and auto-play. Works with Next.js, Vite, Remix, and any React framework.",
   "author": "Asher Buk <2asherbuk@gmail.com> (https://github.com/AshBuk)",

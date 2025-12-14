@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2025-12-14
+
+### Security
+
+- **Security patch** for CVE-2025-55184 (DoS) and CVE-2025-55183 (Source Code Exposure)
+- Next.js: 15.5.7 → 15.5.9
+- Updated @next/eslint-plugin-next and eslint-config-next to 15.5.9
+- Security: 0 vulnerabilities
+
+See [Vercel Security Bulletin](https://vercel.com/kb/bulletin/security-bulletin-cve-2025-55184-and-cve-2025-55183) for details.
+
 ## [1.0.2] - 2025-12-04
 
 ### Security
