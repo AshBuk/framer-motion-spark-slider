@@ -46,9 +46,10 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 ### ✦ Vercel demo
 
-- Public demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
-  You are viewing a hosted demo on Vercel. Images are randomized daily via [picsum.photos](https://picsum.photos) (sourced from the Unsplash photographers collection). Uploading and managing your own images is disabled here. I am considering expanding the online service with private-cloud storage so users can manage their own images.
-  // Private preview (if provided): uploads and deletes are enabled (images up to 5 MB; common image formats).
+- Public hosted demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
+  Images are randomized daily via [picsum.photos](https://picsum.photos) (sourced from the Unsplash photographers collection). Uploading and managing your own images is disabled here.
+  
+>Private preview (if provided): uploads and deletes are enabled (images up to 5 MB; common image formats).
 
 ## For developers
 
@@ -85,16 +86,10 @@ export default function App() {
 - [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - Comments in the codebase are concise and serve as additional documentation.
 - The project adheres to SOLID and DRY principles.
-- The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, Tailwind CSS, CSS viewport units `svh`/`svmin`).
+- The slider uses modern technologies with minimal dependencies (Next.js 15 App Router, React, Framer Motion, CSS viewport units `svh`/`svmin`).
 - Performance: renders only visible cards, non-visible slides are not mounted, non-center images use `loading="lazy"`. Scales to large image lists while keeping the DOM small.
 
-## ✦ Links and contact
-
-**📝 Original article:** [Read on my blog](https://ashbuk.hashnode.dev/high-performance-framework-agnostic-react-carousel-slider-powered-by-framer-motion)
-
-- GitHub: https://github.com/AshBuk
-- LinkedIn: https://www.linkedin.com/in/ashbuk/
-- Email: 2asherbuk@gmail.com
+**📝 AshBuk’s Dev Journal** [Building Spark Slider](https://ashbuk.hashnode.dev/high-performance-framework-agnostic-react-carousel-slider-powered-by-framer-motion)
 
 ## ✦ MIT [LICENSE](LICENSE)
 
