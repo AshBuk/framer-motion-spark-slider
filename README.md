@@ -48,8 +48,8 @@ A robust slider suitable for galleries, installations, projections, events, or p
 
 - Public hosted demo: [spark-slider.vercel.app](https://spark-slider.vercel.app/)
   Images are randomized daily via [picsum.photos](https://picsum.photos) (sourced from the Unsplash photographers collection). Uploading and managing your own images is disabled here.
-  
->Private preview (if provided): uploads and deletes are enabled (images up to 5 MB; common image formats).
+
+> Private preview (if provided): uploads and deletes are enabled (images up to 5 MB; common image formats).
 
 ## For developers
 
