@@ -2,16 +2,9 @@
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+import nextConfig from 'eslint-config-next';
 import prettier from 'eslint-config-prettier';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
-import { FlatCompat } from '@eslint/eslintrc';
-import { fileURLToPath } from 'url';
-import path from 'path';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const compat = new FlatCompat({ baseDirectory: __dirname });
 
 const config = [
   {
@@ -27,8 +20,9 @@ const config = [
       'packages/*/dist/**',
       '*.d.ts',
     ],
-  }, // Next.js recommended rules (flat via FlatCompat)
-  ...compat.extends('next/core-web-vitals'),
+  },
+  // Next.js recommended rules (native flat config in v16)
+  ...nextConfig,
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
@@ -36,7 +30,6 @@ const config = [
       parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
-        tsconfigRootDir: __dirname,
       },
       globals: {
         ...globals.browser,
@@ -46,12 +39,11 @@ const config = [
     },
     plugins: {
       '@typescript-eslint': tseslint,
-      react,
-      'react-hooks': reactHooks,
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...tseslint.configs.recommended.rules,
+      // Disable base rule in favor of @typescript-eslint version
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
@@ -64,22 +56,13 @@ const config = [
         'error',
         { props: 'never', children: 'never' },
       ],
+      // Allow setState in effects for initialization (DOM measurements, sessionStorage)
+      'react-hooks/set-state-in-effect': 'off',
       'no-console': 'warn',
       'prefer-const': 'error',
       'object-shorthand': 'error',
       'prefer-template': 'error',
       'arrow-body-style': ['warn', 'as-needed'],
-    },
-  },
-  // Ensure ESLint uses the package-local tsconfig for the library workspace
-  {
-    files: ['packages/spark-slider/**/*.{ts,tsx}'],
-    languageOptions: {
-      parser: tsparser,
-      parserOptions: {
-        project: ['./packages/spark-slider/tsconfig.json'],
-        tsconfigRootDir: __dirname,
-      },
     },
   },
   // Test files configuration

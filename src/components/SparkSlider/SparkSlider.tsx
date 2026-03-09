@@ -72,7 +72,7 @@ const SparkSlider = ({
 
   const centerGestureMovedRef = useRef<boolean>(false);
 
-  const lastCenterDragAtRef = useRef<number>(Date.now());
+  const lastCenterDragAtRef = useRef<number>(0);
 
   const {
     fullscreenIndex,

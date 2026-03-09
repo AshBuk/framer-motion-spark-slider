@@ -1,9 +1,30 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to spark-slider will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.1.0] - 2026-03-09
+
+### Updated
+
+- **React 19 support** — demo app upgraded to React 19.2.4, library already supports React >=18 via peerDependencies
+- **Next.js 16 support** — demo app upgraded to Next.js 16.1.6 with Turbopack
+- **ESLint config modernized** — migrated from `FlatCompat` wrapper to native flat config (`eslint-config-next@16`)
+- **eslint-plugin-react-hooks v7** — upgraded via eslint-config-next, includes new React 19 rules
+- **All dependencies bumped to latest compatible versions:**
+- React: 18.3.1 → 19.2.4
+- Next.js: 15.5.9 → 16.1.6
+- Framer Motion: 12.23.22 → 12.35.2
+- TypeScript: 5.9.2 → 5.9.3
+- ESLint: 9.36.0 → 9.39.4
+- @typescript-eslint/\*: 8.45.0 → 8.57.0
+- Prettier: 3.6.2 → 3.8.1
+- PostCSS: 8.5.6 → 8.5.8
+- Autoprefixer: 10.4.21 → 10.4.27
+- Tailwind CSS: 3.4.17 → 3.4.19
+- @vercel/blob: 2.0.0 → 2.3.1
+- @testing-library/jest-dom: 6.8.0 → 6.9.1
+- @testing-library/react: 16.3.0 → 16.3.2
+- Security: 0 vulnerabilities
 
 ## [1.0.3] - 2025-12-14
 
