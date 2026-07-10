@@ -20,9 +20,9 @@ jobs:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
 
-      # Update npm to 11.5.1+ for Trusted Publishing support
+      # npm 11.5.1+ required for Trusted Publishing support
       - name: Update npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
 
       - run: npm ci
       - run: npm test
