@@ -6,6 +6,9 @@ import nextConfig from 'eslint-config-next';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
 
+// Reuse the same plugin instance that nextConfig registers to avoid "Cannot redefine" error
+const tsPlugin = nextConfig[1]?.plugins?.['@typescript-eslint'] ?? tseslint;
+
 const config = [
   {
     ignores: [
@@ -38,7 +41,7 @@ const config = [
       },
     },
     plugins: {
-      '@typescript-eslint': tseslint,
+      '@typescript-eslint': tsPlugin,
     },
     rules: {
       ...js.configs.recommended.rules,

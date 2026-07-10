@@ -10,12 +10,7 @@
  * Positions drive z‑index, scale, opacity, blur and x‑offset presets.
  */
 export type CardPosition =
-  | 'center'
-  | 'left'
-  | 'right'
-  | 'far-left'
-  | 'far-right'
-  | 'hidden';
+  'center' | 'left' | 'right' | 'far-left' | 'far-right' | 'hidden';
 
 /**
  * Public configuration object for Spark slider behavior and visuals.
