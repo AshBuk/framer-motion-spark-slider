@@ -44,3 +44,6 @@ jobs:
         run: npm publish --workspace=@ashbuk/spark-slider
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to Vercel
+        run: curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
