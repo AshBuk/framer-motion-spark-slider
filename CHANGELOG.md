@@ -2,6 +2,29 @@
 
 All notable changes to spark-slider will be documented in this file.
 
+## [1.1.1] - 2026-07-10
+
+### Added
+
+- **Dependabot** — automated dependency update PRs for npm, GitHub Actions, and Docker
+- **Vercel deploy hook** — production deploy now triggers on tag push instead of every commit
+
+### Updated
+
+- Framer Motion: 12.35.2 → 12.42.2
+- Next.js: 16.1.6 → 16.2.10
+- @vercel/blob: 2.3.1 → 2.6.1
+- @types/node: 24.12.0 → 26.1.1
+- @eslint/compat: 1.4.1 → 2.1.0
+- eslint-plugin-react-hooks: 5.2.0 → 7.1.1
+- actions/checkout: v4 → v7
+- actions/setup-node: v4 → v6
+- Docker node: 20-alpine → 26-alpine
+
+### Fixed
+
+- ESLint config: resolved "Cannot redefine plugin" error with eslint-config-next v16
+
 ## [1.1.0] - 2026-03-09
 
 ### Updated
