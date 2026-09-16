@@ -91,7 +91,7 @@ export default function ImageUploader({
       {manageOpen && images && images.length > 0 ? (
         <div
           id='upload-manage-panel'
-          className='absolute left-0 top-full z-50 mt-2 w-64 rounded-md border border-white/10 bg-black/90 p-2 shadow-lg backdrop-blur'
+          className='absolute top-full left-0 z-50 mt-2 w-64 rounded-md border border-white/10 bg-black/90 p-2 shadow-lg backdrop-blur-sm'
         >
           <ul className='max-h-60 overflow-auto text-xs sm:text-sm'>
             {images.slice(0, visibleCount).map((url) => (
@@ -102,7 +102,7 @@ export default function ImageUploader({
                 <span className='truncate'>{url.split('/').pop()}</span>
                 <button
                   type='button'
-                  className='rounded bg-white/10 px-2 py-0.5 text-[11px] text-red-300 hover:bg-white/20'
+                  className='rounded-sm bg-white/10 px-2 py-0.5 text-[11px] text-red-300 hover:bg-white/20'
                   onClick={async () => {
                     await fetch(`/api/images?url=${encodeURIComponent(url)}`, {
                       method: 'DELETE',
@@ -120,7 +120,7 @@ export default function ImageUploader({
             <div className='mt-2 flex justify-center'>
               <button
                 type='button'
-                className='rounded bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20'
+                className='rounded-sm bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20'
                 onClick={() =>
                   setVisibleCount((v) => Math.min(v + 100, images.length))
                 }

@@ -87,9 +87,9 @@ export default function HomePage() {
   const sliderImages = images.length > 0 ? images : fallbackImages;
 
   return (
-    <main className='relative flex min-h-[100svh] flex-col items-center justify-center gap-6 px-3 py-6 sm:p-6'>
-      <div className='absolute left-0 right-0 top-[clamp(0.5rem,1.5vw,1.25rem)] z-[200] grid grid-cols-1 gap-[clamp(0.4rem,1vw,0.75rem)] sm:grid-cols-[1fr_auto_1fr] sm:items-center'>
-        <div className='pointer-events-auto order-1 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:order-none'>
+    <main className='relative flex min-h-svh flex-col items-center justify-center gap-6 px-3 py-6 sm:p-6'>
+      <div className='absolute top-[clamp(0.5rem,1.5vw,1.25rem)] right-0 left-0 z-200 grid grid-cols-1 gap-[clamp(0.4rem,1vw,0.75rem)] sm:grid-cols-[1fr_auto_1fr] sm:items-center'>
+        <div className='pointer-events-auto order-1 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:order-0'>
           {canWrite ? (
             <ImageUploader
               uploadedCount={images.length}
@@ -105,12 +105,12 @@ export default function HomePage() {
           ) : null}
         </div>
         <h1
-          className='order-2 justify-self-center text-center font-semibold sm:order-none sm:col-start-2 sm:col-end-3'
+          className='order-2 justify-self-center text-center font-semibold sm:order-0 sm:col-start-2 sm:col-end-3'
           style={{ fontSize: 'clamp(0.9rem, 2.4vw, 1.35rem)' }}
         >
           Framer Motion Spark Slider
         </h1>
-        <div className='relative order-3 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:justify-self-end sm:pl-0 sm:pr-[clamp(0.5rem,2vw,1.5rem)]'>
+        <div className='relative order-3 justify-self-start pl-[clamp(0.5rem,2vw,1.5rem)] sm:justify-self-end sm:pr-[clamp(0.5rem,2vw,1.5rem)] sm:pl-0'>
           <div className='flex items-start gap-2'>
             <div className='relative'>
               <button
@@ -127,7 +127,7 @@ export default function HomePage() {
                 Shuffle
               </button>
               {isShuffling ? (
-                <span className='pointer-events-none absolute left-0 top-full mt-0.5 whitespace-nowrap text-[clamp(0.72rem,1.3vw,0.9rem)] text-white/70'>
+                <span className='pointer-events-none absolute top-full left-0 mt-0.5 text-[clamp(0.72rem,1.3vw,0.9rem)] whitespace-nowrap text-white/70'>
                   refresh images…
                 </span>
               ) : null}
@@ -142,13 +142,13 @@ export default function HomePage() {
             </button>
           </div>
           {showConfig ? (
-            <div className='pointer-events-auto absolute left-2 top-full z-[250] mt-2 w-[min(92vw,22rem)] rounded-lg border border-white/10 bg-black/40 p-3 text-white backdrop-blur-sm sm:left-auto sm:right-0'>
+            <div className='pointer-events-auto absolute top-full left-2 z-250 mt-2 w-[min(92vw,22rem)] rounded-lg border border-white/10 bg-black/40 p-3 text-white backdrop-blur-xs sm:right-0 sm:left-auto'>
               <div className='mb-2 text-sm font-medium'>Slider settings</div>
               <div className='flex flex-col gap-2'>
                 <label className='flex flex-col gap-1 text-sm'>
                   <div className='flex items-center justify-between gap-3'>
                     <span>Autoplay (s)</span>
-                    <span className='tabular-nums text-white/80'>
+                    <span className='text-white/80 tabular-nums'>
                       {Math.min(
                         30,
                         Math.max(
@@ -198,7 +198,7 @@ export default function HomePage() {
                 <label className='flex flex-col gap-1 text-sm'>
                   <div className='flex items-center justify-between gap-3'>
                     <span>Scale</span>
-                    <span className='tabular-nums text-white/80'>
+                    <span className='text-white/80 tabular-nums'>
                       {(sliderScale ?? 1).toFixed(2)}
                     </span>
                   </div>
@@ -297,17 +297,17 @@ export default function HomePage() {
           {/* Line 2: Keyboard help */}
           <div className='flex max-w-full flex-wrap items-center justify-center gap-3 rounded-full bg-black/25 px-2.5 py-1.5 sm:gap-4 sm:px-3 sm:py-1.5'>
             <div className='flex items-center gap-1'>
-              <span className='rounded border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
+              <span className='rounded-sm border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
                 ←
               </span>
-              <span className='rounded border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
+              <span className='rounded-sm border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
                 →
               </span>
               <span className='ml-1 opacity-80'>navigate</span>
-              <span className='rounded border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
+              <span className='rounded-sm border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
                 Enter
               </span>
-              <span className='rounded border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
+              <span className='rounded-sm border border-white/20 bg-white/5 px-1.5 py-0.5 leading-none'>
                 Esc
               </span>
               <span className='opacity-80'>manage</span>
@@ -317,7 +317,7 @@ export default function HomePage() {
       </div>
 
       {/* About/Sponsor floating button*/}
-      <div className='pointer-events-auto absolute bottom-[clamp(4.75rem,12vw,6rem)] left-[clamp(0.5rem,2vw,1.5rem)] z-[260] sm:bottom-[clamp(0.5rem,2vw,1rem)]'>
+      <div className='pointer-events-auto absolute bottom-[clamp(4.75rem,12vw,6rem)] left-[clamp(0.5rem,2vw,1.5rem)] z-260 sm:bottom-[clamp(0.5rem,2vw,1rem)]'>
         <a
           href='/about-sponsor'
           className='inline-flex items-center gap-1 rounded-md bg-white/10 px-[clamp(0.6rem,2vw,1rem)] py-[clamp(0.35rem,1.2vw,0.55rem)] text-[clamp(0.8rem,1.6vw,1rem)] text-white hover:bg-white/20'
