@@ -6,15 +6,7 @@ All notable changes to spark-slider will be documented in this file.
 
 ### Updated
 
-- Framer Motion: 12.42.2 → 13.2.0
-- React / React DOM: 19.2.7 → 19.3.0
-- Next.js: 16.2.10 → 16.3.4
-- @vercel/blob: 2.6.1 → 2.8.0
-- @testing-library/jest-dom: 6.8.0 → 7.0.1
-- Jest: 30.4.2 → 30.5.1
-- typescript-eslint: 8.63.0 → 8.70.0
-- actions/setup-node: v6 → v7
-- Minor and patch bumps for other dev dependencies
+- **Dependency update:** Framer Motion 13.2.0, React 19.3.0, Next.js 16.3.4, @vercel/blob 2.8.0, ESLint 10 and Tailwind CSS 4 in the demo app, plus dev dependency and CI action bumps. No changes to the library API or peer dependency ranges.
 
 ## [1.1.1] - 2026-07-10
 
