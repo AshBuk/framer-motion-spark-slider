@@ -1,10 +1,14 @@
 // @ts-check
+import { fixupConfigRules } from '@eslint/compat';
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
-import nextConfig from 'eslint-config-next';
+import nextConfigRaw from 'eslint-config-next';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+
+// eslint-plugin-react, jsx-a11y and import still call context APIs removed in ESLint 10
+const nextConfig = fixupConfigRules(nextConfigRaw);
 
 // Reuse the same plugin instance that nextConfig registers to avoid "Cannot redefine" error
 const tsPlugin = nextConfig[1]?.plugins?.['@typescript-eslint'] ?? tseslint;
@@ -26,6 +30,11 @@ const config = [
   },
   // Next.js recommended rules (native flat config in v16)
   ...nextConfig,
+  // Next's bundled Babel parser predates ESLint 10 scope API
+  {
+    files: ['**/*.{mjs,cjs}'],
+    languageOptions: { parser: tsparser },
+  },
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
