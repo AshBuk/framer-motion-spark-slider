@@ -2,6 +2,12 @@
 
 All notable changes to spark-slider will be documented in this file.
 
+## [1.1.3] - 2026-09-29
+
+### Updated
+
+- **Dependency update:** Framer Motion 13.4.4 and Next.js 16.3.6 in the demo app, plus dev dependency bumps. No changes to the library API or peer dependency ranges.
+
 ## [1.1.2] - 2026-09-16
 
 ### Updated
