@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
-    "framer-motion": "^13.2.0",
+    "framer-motion": "^13.4.4",
     "next": "^16.3.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
