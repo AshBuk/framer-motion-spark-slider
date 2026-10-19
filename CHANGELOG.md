@@ -2,6 +2,12 @@
 
 All notable changes to spark-slider will be documented in this file.
 
+## [1.1.4] - 2026-10-19
+
+### Updated
+
+- **Dependency update:** Framer Motion 13.5.0, React 19.3.1, @vercel/blob 2.8.2 in the demo app, plus dev dependency bumps (ESLint 10.12, eslint-config-next 16.4.2, typescript-eslint 8.71.2, Prettier 3.9.10). No changes to the library API or peer dependency ranges.
+
 ## [1.1.3] - 2026-09-29
 
 ### Updated
