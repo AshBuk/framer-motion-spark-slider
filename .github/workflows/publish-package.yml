@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
       # npm 11.5.1+ required for Trusted Publishing support
@@ -36,7 +36,7 @@ jobs:
       - name: Setup Node.js for GitHub Packages
         uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
           registry-url: 'https://npm.pkg.github.com'
           scope: '@ashbuk'
 
